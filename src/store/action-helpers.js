@@ -12,9 +12,7 @@ export const logError = (err, key) => {
   red(`actions.logError(key:${key})`, err)
 }
 
-// // if (requestKey === 'TODOS_CREATE_REQUEST_KEY') {
-// //   pink('createRequestThunk: calling create')
-// // }
+
 // console.group()
 // pink('request', request)
 // pink('key', key)
@@ -60,33 +58,6 @@ export const createRequestThunk = ({
   }
 }
 
-// Promise
-// export const createRequestThunk = ({
-//   request,
-//   key,
-//   start = [],
-//   success = [],
-//   failure = []
-// }) => {
-//   return (...args) => dispatch => {
-//     const requestKey = typeof key === 'function' ? key(...args) : key
-//     start.forEach(actionCreator => dispatch(actionCreator()))
-//     dispatch(requestPending(requestKey))
-
-//     return request(...args)
-//       .then(data => {
-//         success.forEach(actionCreator => dispatch(actionCreator(data)))
-//         dispatch(requestSuccess(requestKey))
-//       })
-//       .catch(reason => {
-//         failure.forEach(actionCreator => {
-//           pink('failure.actionCreator', actionCreator)
-//           dispatch(actionCreator(reason))
-//         })
-//         dispatch(requestFailed(reason, requestKey))
-//       })
-//   }
-// }
 
 // ORIG
 // export const createRequestThunk = ({
