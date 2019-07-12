@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import { green } from 'logger'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -25,6 +26,10 @@ export const Auth0Provider = ({
       const auth0FromHook = await createAuth0Client(initOptions);
       // setAuth0(auth0FromHook)
       auth0Client = auth0FromHook;
+
+
+      green('auth0FromHook', auth0FromHook)
+      green('auth0Client', auth0Client)
 
       if (window.location.search.includes("code=")) {
         const { appState } = await auth0FromHook.handleRedirectCallback();
