@@ -13,9 +13,14 @@ import { orange } from 'logger'
 // }
 
 export const fetchJson = async (url, options = {}) => {
-
-  const token = await getTokenSilently()
-  orange('token', token)
+  let token
+  try {
+    token = await getTokenSilently()
+    orange('token', token)
+  } catch (e) {
+    console.log('fetchJson ERROR', e)
+  }
+  
 
   let headers = {
     ...options.headers,

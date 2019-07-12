@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
-import { log } from 'util';
+import { green } from 'logger'
+import { isEmpty } from 'ramda'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -8,25 +9,50 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
 export const Auth0Context = React.createContext()
 export const useAuth0 = () => useContext(Auth0Context)
 
-
+let _initOptions
 
 // THIS NEEDS TO BE A PROMISE !!
-const auth0Client = async (initOptions) => {
-  let client
-  if (!client) {
-    try {
-      client = await createAuth0Client(initOptions)
-      console.log('client', client)
-    } catch (e) {
-      throw new Error('Unable to connect to Auth0')
+// const auth0Client = async (initOptions) => {
+//   let client
+//   if (!client) {
+//     try {
+//       client = await createAuth0Client(initOptions)
+//       console.log('client', client)
+//     } catch (e) {
+//       throw new Error('Unable to connect to Auth0')
+//     }
+//   }
+  
+  
+//   return client
+// }
+
+
+
+const getAuth0Client = () => {
+  green('** getAuth0Client: initOptions', _initOptions)
+  
+  return new Promise(async (resolve, reject) => {
+    let client
+    if (!client)  {
+      try {
+        client = await createAuth0Client(_initOptions)
+        // green('client', client)
+        // console.log('client', client)
+        resolve(client)
+      } catch (e) {
+        reject(new Error('getAuth0Client Error', e))
+      }
     }
-  }
-  
-  
-  return client
+  })
 }
 
-export const getTokenSilently = (...p) => auth0Client.getTokenSilently(...p)
+// export const getTokenSilently = (...p) => getAuth0Client.getTokenSilently(...p)
+
+export const getTokenSilently = async (...p) => {
+  const client = await getAuth0Client()
+  return await client.getTokenSilently(...p)
+}
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -34,28 +60,27 @@ export const Auth0Provider = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState()
   const [user, setUser] = useState()
+  const [auth0Client, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [popupOpen, setPopupOpen] = useState(false)
 
   useEffect(() => {
     const initAuth0 = async () => {
-
-      await auth0Client(initOptions)
-
+      _initOptions = initOptions
+      const client = await getAuth0Client(initOptions)
+      setAuth0(client)
       if (window.location.search.includes('code=')) {
         // const { appState } = await auth0FromHook.handleRedirectCallback()
         const {
           appState
-        } = await auth0Client.handleRedirectCallback()
+        } = await client.handleRedirectCallback()
         onRedirectCallback(appState)
       }
-
-      const isAuthenticated = await auth0Client.isAuthenticated()
-
+      const isAuthenticated = await client.isAuthenticated()
       setIsAuthenticated(isAuthenticated)
 
       if (isAuthenticated) {
-        const user = await auth0Client.getUser()
+        const user = await client.getUser()
         setUser(user)
       }
 
