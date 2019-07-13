@@ -5,7 +5,6 @@ import {
   Route,
   BrowserRouter as Router /*, Link */
 } from 'react-router-dom'
-import { useAuth0 } from 'react-auth0-spa'
 import NavBar from 'ui/NavBar'
 import PrivateRoute from 'elements/PrivateRoute'
 import Todos from 'ui/Todos'

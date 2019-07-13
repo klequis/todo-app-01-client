@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
-import { useAuth0 } from 'react-auth0-spa'
 import { withRouter } from 'react-router-dom'
 
 // import { green } from 'logger'
 
+import { isAuthenticated, loginWithRedirect, loginWithPopup } from 'react-auth0-spa'
+
 const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
-  const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0()
+  // const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0()
 
   // green('PrivateRoute: isAuthenticated', isAuthenticated)
   // green('path', path)

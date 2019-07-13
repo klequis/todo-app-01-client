@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
-import { useAuth0 } from 'react-auth0-spa'
 
 // eslint-disable-next-line
 import { green } from 'logger'
 
+// import {
+//   getUser,
+//   isAuthenticated,
+//   logout,
+//   loginWithPopup
+// } from 'react-auth0-spa'
 
+import { useAuth0 } from 'react-auth0-spa'
 
 const styles = {
   wrapper: {
@@ -17,6 +23,8 @@ function NavBar(props) {
   const [isOpen, setIsOpen] = useState(false)
   const { user, isAuthenticated, /*loginWithRedirect, */ logout, loginWithPopup } = useAuth0()
   const toggle = () => setIsOpen(!isOpen)
+
+  green('isAuthenticated', isAuthenticated)
 
   const handleLogoutClick = () => {
     logout({
