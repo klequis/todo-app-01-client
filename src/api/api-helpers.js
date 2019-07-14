@@ -2,7 +2,7 @@ import fetch from 'cross-fetch'
 import { getTokenSilently } from 'react-auth0-spa'
 
 // eslint-disable-next-line
-import { orange } from 'logger'
+import { orange, red } from 'logger'
 
 // const logRequest = (url, options, headers) => {
 //   console.group('fetchJson')
@@ -13,9 +13,15 @@ import { orange } from 'logger'
 // }
 
 export const fetchJson = async (url, options = {}) => {
-
-  const token = await getTokenSilently()
-  orange('token', token)
+  let token
+  try {
+    token = await getTokenSilently()
+    orange('token', token)
+  } catch (e) {
+    red('fetchJson ERROR', e)
+    throw new Error('fetchJson ERROR', e)
+  }
+  
 
   let headers = {
     ...options.headers,

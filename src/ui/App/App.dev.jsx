@@ -5,26 +5,30 @@ import {
   Route,
   BrowserRouter as Router /*, Link */
 } from 'react-router-dom'
-import { useAuth0 } from 'react-auth0-spa'
 import NavBar from 'ui/NavBar'
 import PrivateRoute from 'elements/PrivateRoute'
 import Todos from 'ui/Todos'
+import Status from 'ui/Status'
 import Home from 'ui/Home'
+import DevTools from 'ui/DevTools'
 
 function App() {
   return (
     <div>
       <Router>
         <h1>Hi</h1>
+        <Status />
+        <hr />
         <NavBar />
-        <div>
-          <Link to="/todos">Todos</Link>
-        </div>
+        <hr />
+          
+        
         <Switch>
           <PrivateRoute exact path="/todos" component={Todos} />
           <Route exact path="/" component={Home} />
         </Switch>
       </Router>
+      <DevTools />
     </div>
   )
 }

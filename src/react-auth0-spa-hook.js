@@ -1,9 +1,7 @@
-/* eslint-disable */
-
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
-
-import { pink, blue, yellow } from 'logger'
+import { green } from 'logger'
+import { isEmpty } from 'ramda'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -12,50 +10,54 @@ export const Auth0Context = React.createContext()
 export const useAuth0 = () => useContext(Auth0Context)
 
 let _initOptions
-const setInitOptions = options => {
-  _initOptions = options
-}
-const getInitOptions = () => {
-  return _initOptions
-}
 
-const getAuth0Client = async () => {
-  let client
-  if (!client) {
-    try {
-      client = await createAuth0Client(getInitOptions())
-    } catch (e) {
-      throw new Error('auth0Client ERROR: could not create client', e)
+// THIS NEEDS TO BE A PROMISE !!
+// const auth0Client = async (initOptions) => {
+//   let client
+//   if (!client) {
+//     try {
+//       client = await createAuth0Client(initOptions)
+//       console.log('client', client)
+//     } catch (e) {
+//       throw new Error('Unable to connect to Auth0')
+//     }
+//   }
+  
+  
+//   return client
+// }
+
+
+
+const getAuth0Client = () => {
+  green('** getAuth0Client: initOptions', _initOptions)
+  
+  return new Promise(async (resolve, reject) => {
+    let client
+    if (!client)  {
+      try {
+        client = await createAuth0Client(_initOptions)
+        // green('client', client)
+        // console.log('client', client)
+        resolve(client)
+      } catch (e) {
+        reject(new Error('getAuth0Client Error', e))
+      }
     }
-  }
-
-  if (window.location.search.includes('code=')) {
-    const { appState } = await client.handleRedirectCallback()
-    getOnRedirectCallback()(appState)
-  }
-
-  return client
+  })
 }
+
+// export const getTokenSilently = (...p) => getAuth0Client.getTokenSilently(...p)
 
 export const getTokenSilently = async (...p) => {
   const client = await getAuth0Client()
   return await client.getTokenSilently(...p)
 }
-
-
-// ************
-// Entry point
-// ************
-
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  // yellow('Auth0Provider')
-
-  setInitOptions(initOptions)
-
   const [isAuthenticated, setIsAuthenticated] = useState()
   const [user, setUser] = useState()
   const [auth0Client, setAuth0] = useState()
@@ -63,14 +65,17 @@ export const Auth0Provider = ({
   const [popupOpen, setPopupOpen] = useState(false)
 
   useEffect(() => {
-    const init = async () => {
-      const client = await getAuth0Client('Auth0Provider')
+    const initAuth0 = async () => {
+      _initOptions = initOptions
+      const client = await getAuth0Client(initOptions)
       setAuth0(client)
       if (window.location.search.includes('code=')) {
-        const { appState } = await client.handleRedirectCallback()
+        // const { appState } = await auth0FromHook.handleRedirectCallback()
+        const {
+          appState
+        } = await client.handleRedirectCallback()
         onRedirectCallback(appState)
       }
-
       const isAuthenticated = await client.isAuthenticated()
       setIsAuthenticated(isAuthenticated)
 
@@ -81,7 +86,7 @@ export const Auth0Provider = ({
 
       setLoading(false)
     }
-    init()
+    initAuth0()
     // eslint-disable-next-line
   }, [])
 
@@ -107,7 +112,6 @@ export const Auth0Provider = ({
     setIsAuthenticated(true)
     setUser(user)
   }
-
   return (
     <Auth0Context.Provider
       value={{
@@ -119,7 +123,6 @@ export const Auth0Provider = ({
         handleRedirectCallback,
         getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
         loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-        // getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
         getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
         logout: (...p) => auth0Client.logout(...p)
       }}

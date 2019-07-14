@@ -7,9 +7,6 @@ import './index.css'
 import App from 'ui/App'
 import config from 'config'
 
-// eslint-disable-next-line
-// import { green } from 'logger'
-
 const store = configureStore()
 
 const onRedirectCallback = appState => {
@@ -22,7 +19,7 @@ const onRedirectCallback = appState => {
   )
 }
 
-const renderApp = () =>
+const renderApp = () => {
   render(
     <Auth0Provider
       domain={config.auth0.domain}
@@ -37,6 +34,7 @@ const renderApp = () =>
     </Auth0Provider>,
     document.getElementById('root')
   )
+}
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('ui/App', renderApp)
