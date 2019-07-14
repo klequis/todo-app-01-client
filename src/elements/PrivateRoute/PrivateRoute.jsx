@@ -14,8 +14,8 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
     isAuthenticated, loginWithRedirect, loginWithPopup
   } = useAuth0()
 
-  green('PrivateRoute: loginWithPopup', typeof loginWithPopup)
-  green('PrivateRoute: loginWithRedirect', typeof loginWithRedirect)
+  // green('PrivateRoute: loginWithPopup', typeof loginWithPopup)
+  // green('PrivateRoute: loginWithRedirect', typeof loginWithRedirect)
 
   useEffect(() => {
     const fn = async () => {
@@ -31,7 +31,7 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
     fn()
   }, [isAuthenticated, loginWithRedirect, path, loginWithPopup])
 
-  green('PrivateRoute: isAuthenticated', isAuthenticated)
+  // green('PrivateRoute: isAuthenticated', isAuthenticated)
   if (!isAuthenticated) return null
 
   const render = props => <Component {...props} />

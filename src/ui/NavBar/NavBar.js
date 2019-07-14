@@ -21,13 +21,12 @@ function NavBar(props) {
   const {
     isAuthenticated,
     logout,
-    isLoading,
     loginWithPopup
   } = useAuth0()
-  green('typeof loginWithPopup', typeof loginWithPopup)
-  green('typeof logout', typeof logout)
-  green('typeof isAuthenticated', typeof isAuthenticated)
-  green('typeof isLoading', typeof isLoading)
+  // green('typeof loginWithPopup', typeof loginWithPopup)
+  // green('typeof logout', typeof logout)
+  // green('typeof isAuthenticated', typeof isAuthenticated)
+  // green('typeof isLoading', typeof isLoading)
 
 
   const handleLogoutClick = () => {

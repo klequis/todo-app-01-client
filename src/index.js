@@ -7,9 +7,6 @@ import './index.css'
 import App from 'ui/App'
 import config from 'config'
 
-// eslint-disable-next-line
-import { yellow } from 'logger'
-
 const store = configureStore()
 
 const onRedirectCallback = appState => {
@@ -23,7 +20,6 @@ const onRedirectCallback = appState => {
 }
 
 const renderApp = () => {
-  yellow('1 - index.renderApp')
   render(
     <Auth0Provider
       domain={config.auth0.domain}
