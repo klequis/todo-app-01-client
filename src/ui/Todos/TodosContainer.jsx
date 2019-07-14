@@ -13,7 +13,6 @@ import { getAllTodos } from 'store/todo/selectors'
 import { green, red } from 'logger'
 
 const TodosContainer = props => {
-  // green('TodosContainer')
   const {
     todoCreateRequest,
     todoDeleteRequest,
@@ -41,7 +40,6 @@ const TodosContainer = props => {
   }
 
   const handleDeleteTodo = async id => {
-    // green('App.handleDeleteTodo: id', id)
     try {
       await todoDeleteRequest(id)
     } catch (e) {
@@ -50,7 +48,6 @@ const TodosContainer = props => {
   }
 
   const handleCompletedChange = async todo => {
-    // green('handleCompletedChange: todo', todo)
     try {
       await todoUpdateRequest(todo)
     } catch (e) {

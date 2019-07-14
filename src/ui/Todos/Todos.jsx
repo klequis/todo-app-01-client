@@ -1,4 +1,5 @@
 import React from 'react'
+import withStyles, { WithStyles } from 'react-jss'
 import Todo from './Todo'
 // eslint-disable-next-line
 import { green } from 'logger'
@@ -24,4 +25,10 @@ const TodoList = props => {
   )
 }
 
-export default TodoList
+const styles = {
+  wrapper: {
+    minWidth: 320
+  }
+}
+
+export default withStyles(styles)(TodoList)

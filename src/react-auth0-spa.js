@@ -84,7 +84,7 @@ export const Auth0Provider = ({
     init()
     // eslint-disable-next-line
   }, [])
-
+  blue('Auth0Provider: auth0Client', auth0Client)
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true)
     try {

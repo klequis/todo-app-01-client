@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import { Auth0Provider } from './react-auth0-spa'
 import './index.css'
-import App from 'ui/App'
+import Wrapper from './Wrapper'
 import config from 'config'
 
 const store = configureStore()
@@ -29,7 +29,7 @@ const renderApp = () => {
       onRedirectCallback={onRedirectCallback}
     >
       <Provider store={store}>
-        <App />
+        <Wrapper />
       </Provider>
     </Auth0Provider>,
     document.getElementById('root')
@@ -37,7 +37,7 @@ const renderApp = () => {
 }
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
-  module.hot.accept('ui/App', renderApp)
+  module.hot.accept('Wrapper', renderApp)
 }
 
 renderApp()
