@@ -5,8 +5,6 @@ import { orange, green } from 'logger'
 // const rootUrl = process.env.NODE_ENV === 'development' ? '' : 'https://api.klequis-todo.tk'
 // const rootUrl = 'https://api.klequis-todo.tk'
 const rootUrl = ''
-console.log('rootUrl (blank for dev):', rootUrl)
-
 
 // Errors are handled by fetchJson()
 export default {

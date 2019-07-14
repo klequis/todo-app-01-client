@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react'
+/* eslint-disable */
+
+import React, { useEffect, useState, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
 
-import { green } from 'logger'
+import { pink, blue, yellow } from 'logger'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -10,124 +12,172 @@ export const Auth0Context = React.createContext()
 export const useAuth0 = () => useContext(Auth0Context)
 
 let _initOptions
-let _onRedirectCallback
-let _isAuthenticated = false
-let _popupIsOpen = false
-let _loading = true
-
-const initAuth0 = async () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const client = await getAuth0Client()
-      if (window.location.search.includes('code=')) {
-        const { appState } = await client.handleRedirectCallback()
-        _onRedirectCallback(appState)
-      }
-      _isAuthenticated = await client.isAuthenticated()
-      green('_isAuthenticated', _isAuthenticated)
-      _loading = false
-      resolve(client)
-    } catch (e) {
-      throw new Error('initAuth0 ERROR', e)
-    }
-  })
+const setInitOptions = options => {
+  // blue('setInitOptions: options', options)
+  _initOptions = options
+}
+const getInitOptions = () => {
+  // blue('getInitOptions: _initOptions', _initOptions)
+  return _initOptions
 }
 
-const getAuth0Client = () => {
-  return new Promise(async (resolve, reject) => {
-    let client
-    if (!client) {
-      try {
-        client = await createAuth0Client(_initOptions)
-        resolve(client)
-      } catch (e) {
-        reject(new Error('getAuth0Client Error', e))
-      }
+const auth0Client = async caller => {
+  // setIsLoading(true)
+  let client
+  if (!client) {
+    try {
+      client = await createAuth0Client(getInitOptions())
+      // blue('auth0Client: client', client)
+    } catch (e) {
+      throw new Error('auth0Client ERROR: could not create client', e)
     }
-  })
+  }
+
+  if (window.location.search.includes('code=')) {
+    const { appState } = await client.handleRedirectCallback()
+    getOnRedirectCallback()(appState)
+  }
+
+  // const isAuth = await client.isAuthenticated()
+  // pink('isAuth', isAuth)
+  // setIsAuthenticated(isAuth, 'initAuth0')
+
+  // setIsLoading(false)
+
+  return client
+}
+
+let _onRedirectCallback
+const setOnRedirectCallback = fn => {
+  _onRedirectCallback = fn
+}
+const getOnRedirectCallback = () => {
+  return _onRedirectCallback
+}
+
+let _popupIsOpen = false
+const setPopupIsOpen = bool => {
+  _popupIsOpen = bool
+}
+const getPopupIsOpen = () => {
+  return _popupIsOpen
+}
+
+let _isLoading = false
+const setIsLoading = bool => {
+  _isLoading = bool
+}
+const getIsLoading = () => {
+  return _isLoading
+}
+
+let _isAuthenticated = false
+const setIsAuthenticated = (bool, caller) => {
+  blue(`(${caller}) setIsAuthenticated`, `${_isAuthenticated} --> ${bool}`)
+  // yellow('setIsAuthenticated')
+  _isAuthenticated = bool
+}
+const getIsAuthenticated = async caller => {
+  yellow('getIsAuthenticated')
+  // blue(`(${caller}) getIsAuthenticated`, _isAuthenticated)
+  const client = await auth0Client('getIsAuthenticated')
+  const isAuth = client.isAuthenticated()
+  return isAuth
 }
 
 export const getTokenSilently = async (...p) => {
-  const client = await getAuth0Client()
+  const client = await auth0Client('getTokenSilently')
   return await client.getTokenSilently(...p)
 }
 
 export const getUser = async () => {
-  const client = await getAuth0Client()
+  const client = await auth0Client('getUser')
   return await client.getUser()
 }
 
 export const loginWithPopup = async (params = {}) => {
-  _popupIsOpen = true
-  const client = await getAuth0Client()
+  setPopupIsOpen(true)
+  const client = await auth0Client('loginWithPopup')
   try {
     await client.loginWithPopup(params)
   } catch (error) {
     console.error(error)
   } finally {
-    _popupIsOpen = false
+    setPopupIsOpen(false)
   }
-  _isAuthenticated = true
+  setIsAuthenticated(true, 'loginWithPopup')
 }
 
 export const handleRedirectCallback = async () => {
-  _loading = true
-  const client = await getAuth0Client()
+  setIsLoading(true)
+  const client = await auth0Client('handleRedirectCallback')
   await client.handleRedirectCallback()
-  _loading = false
-  _isAuthenticated = true
+  setIsLoading(false)
+  setIsAuthenticated(true, 'handleRedirectCallback')
 }
 
 export const logout = async (...p) => {
-  const client = await getAuth0Client()
+  const client = await auth0Client('logout')
   client.logout(...p)
 }
 
 export const loginWithRedirect = async (...p) => {
-  const client = await getAuth0Client()
+  const client = await auth0Client('loginWithRedirect')
   client.loginWithRedirect(...p)
-}
-
-export const isAuthenticated = () => {
-  return _isAuthenticated
 }
 
 // ************
 // Entry point
 // ************
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  const [client, setClient] = useState()
-  _initOptions = initOptions
-  _onRedirectCallback = onRedirectCallback
+  yellow('Auth0Provider')
+  if (getIsLoading()) {
+    return
+  }
 
-  green(1)
+  
+
+  const [client, setClient] = useState()
+  const [itIsLoading, setItIsLoading] = useState()
+  
+  setItIsLoading(true)
+  setInitOptions(initOptions)
+
+  setOnRedirectCallback(onRedirectCallback)
   useEffect(() => {
-    (async () => {
-      const clientFromInit = await initAuth0()
+    const init = async () => {
+      const clientFromInit = await auth0Client('Auth0Provider')
+      blue('Auth0Provider typeof clientFromInit', typeof clientFromInit)
       setClient(clientFromInit)
-      green('** client **', client)
-    })()
+      blue('Auth0Provider: typeof client', typeof client)
+
+      const isAuth = await clientFromInit.isAuthenticated()
+      pink('isAuth', isAuth)
+      setIsAuthenticated(isAuth, 'useEffect')
+    }
+    init()
     // eslint-disable-next-line
   }, [])
-
-
   return (
     <Auth0Context.Provider
       value={{
-        isAuthenticated: _isAuthenticated,
+        animal: 'cat',
+        // isAuthenticated: getIsAuthenticated('Auth0ContextProvider'), // _isAuthenticated,
+        isAuthenticated: async () => await getIsAuthenticated(),
         // user,
-        user: getUser(),
-        loading: _loading,
-        popupOpen: _popupIsOpen,
-        loginWithPopup,
-        handleRedirectCallback,
-        getIdTokenClaims: (...p) => client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => client.loginWithRedirect(...p),
-        getTokenWithPopup: (...p) => client.getTokenWithPopup(...p),
+        // user: getUser(),
+        loading: getIsLoading(),
+        // popupOpen: _popupIsOpen,
+        loginWithPopup: loginWithPopup,
+        // handleRedirectCallback,
+        // getIdTokenClaims: (...p) => client.getIdTokenClaims(...p),
+        // loginWithRedirect: (...p) => client.loginWithRedirect(...p),
+        // getTokenWithPopup: (...p) => client.getTokenWithPopup(...p),
         logout: (...p) => client.logout(...p)
       }}
     >

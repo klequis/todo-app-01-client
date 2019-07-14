@@ -11,6 +11,7 @@ const TodoList = props => {
   const { handleCompletedChange, handleDeleteTodo, todos } = props
   return (
     <div style={todoListStyle}>
+      <h4>Your Todos</h4>
       {todos.map(t => (
         <Todo
           handleDeleteTodo={handleDeleteTodo}
