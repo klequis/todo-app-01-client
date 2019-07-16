@@ -2,10 +2,6 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
-
-import { green } from 'logger'
-
-// import { isAuthenticated, loginWithRedirect, loginWithPopup } from 'react-auth0-spa'
 import { useAuth0 } from 'react-auth0-spa'
 
 const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
@@ -13,9 +9,6 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
   const {
     isAuthenticated, loginWithRedirect, loginWithPopup
   } = useAuth0()
-
-  // green('PrivateRoute: loginWithPopup', typeof loginWithPopup)
-  // green('PrivateRoute: loginWithRedirect', typeof loginWithRedirect)
 
   useEffect(() => {
     const fn = async () => {
@@ -31,7 +24,6 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
     fn()
   }, [isAuthenticated, loginWithRedirect, path, loginWithPopup])
 
-  // green('PrivateRoute: isAuthenticated', isAuthenticated)
   if (!isAuthenticated) return null
 
   const render = props => <Component {...props} />
