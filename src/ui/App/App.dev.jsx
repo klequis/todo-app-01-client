@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Link,
   Switch,
   Route,
   BrowserRouter as Router /*, Link */
@@ -11,7 +10,7 @@ import Todos from 'ui/Todos'
 import Status from 'ui/Status'
 import Home from 'ui/Home'
 import DevTools from 'ui/DevTools'
-import withStyles, { WithStyles } from 'react-jss'
+import withStyles from 'react-jss'
 import { useAuth0 } from 'react-auth0-spa'
 
 function App(props) {
@@ -21,6 +20,7 @@ function App(props) {
     return <h1>Loading</h1>
   }
   const { classes } = props
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV)
   return (
     <div className={classes.wrapper}>
       <Status />
@@ -34,7 +34,7 @@ function App(props) {
           <Route exact path="/" component={Home} />
         </Switch>
       </Router>
-      {/* <DevTools /> */}
+      <DevTools />
     </div>
   )
 }

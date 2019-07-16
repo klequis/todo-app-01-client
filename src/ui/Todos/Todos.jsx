@@ -1,8 +1,6 @@
 import React from 'react'
-import withStyles, { WithStyles } from 'react-jss'
+import withStyles from 'react-jss'
 import Todo from './Todo'
-// eslint-disable-next-line
-import { green } from 'logger'
 
 const todoListStyle = {
   paddingTop: '1em'

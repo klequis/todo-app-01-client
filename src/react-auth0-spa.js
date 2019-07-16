@@ -1,9 +1,5 @@
-/* eslint-disable */
-
 import React, { useEffect, useState, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
-
-import { pink, blue, yellow } from 'logger'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -28,12 +24,6 @@ const getAuth0Client = async () => {
       throw new Error('auth0Client ERROR: could not create client', e)
     }
   }
-
-  if (window.location.search.includes('code=')) {
-    const { appState } = await client.handleRedirectCallback()
-    getOnRedirectCallback()(appState)
-  }
-
   return client
 }
 
@@ -42,17 +32,11 @@ export const getTokenSilently = async (...p) => {
   return await client.getTokenSilently(...p)
 }
 
-
-// ************
-// Entry point
-// ************
-
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  // yellow('Auth0Provider')
 
   setInitOptions(initOptions)
 
@@ -84,7 +68,6 @@ export const Auth0Provider = ({
     init()
     // eslint-disable-next-line
   }, [])
-  blue('Auth0Provider: auth0Client', auth0Client)
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true)
     try {

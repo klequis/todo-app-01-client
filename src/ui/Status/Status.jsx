@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAuth0 } from 'react-auth0-spa'
-import { green } from 'logger'
 
 const User = ({user}) => {
 
