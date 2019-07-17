@@ -9,6 +9,10 @@ const config = {
     redirectUri: 'http://localhost:3000/',
     responseType: 'id_token',
     scope: 'openid profile'
+  },
+  api: {
+    apiRootUriDev: '',
+    apiRootUrlProd: ''
   }
 }
 

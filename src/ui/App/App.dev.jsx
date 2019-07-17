@@ -20,7 +20,6 @@ function App(props) {
     return <h1>Loading</h1>
   }
   const { classes } = props
-  console.log('process.env.NODE_ENV', process.env.NODE_ENV)
   return (
     <div className={classes.wrapper}>
       <Status />

@@ -12,11 +12,22 @@ import { orange, red } from 'logger'
 //   console.groupEnd()
 // }
 
+const getFullUri = (nodeEnv, route) => {
+  let r
+  if (nodeEnv = 'production') {
+    r = `https://api.klequis-todo.tk/${route}`
+  } else {
+    r = ''
+  }
+  orange('r', r)
+  return r
+}
+
 export const fetchJson = async (url, options = {}) => {
   let token
   try {
     token = await getTokenSilently()
-    orange('token', token)
+    // orange('token', token)
   } catch (e) {
     red('fetchJson ERROR', e)
     throw new Error('fetchJson ERROR', e)
@@ -30,8 +41,8 @@ export const fetchJson = async (url, options = {}) => {
     Authorization: `Bearer ${token}`
   }
   // logRequest(url, options, headers)
-
-  const r1 = await fetch(url, {
+  const env = process.env.NODE_ENV
+  const r1 = await fetch(getFullUri(env, url), {
     ...options,
     headers,
   })
