@@ -12,14 +12,18 @@ import { orange, red } from 'logger'
 //   console.groupEnd()
 // }
 
+const stripLeadingForwardSlash = (path) => {
+  const r = path.startsWith('/') ? path.substring(1) : path
+  return r
+}
+
 const getFullUri = (nodeEnv, route) => {
   let r
-  if (nodeEnv = 'production') {
-    r = `https://api.klequis-todo.tk/${route}`
+  if (nodeEnv === 'production') {
+    r = `https://api.klequis-todo.tk/${stripLeadingForwardSlash(route)}`
   } else {
-    r = ''
+    r = route
   }
-  orange('r', r)
   return r
 }
 
