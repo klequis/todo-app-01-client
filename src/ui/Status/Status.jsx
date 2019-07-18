@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth0 } from 'react-auth0-spa'
+import { version } from '../../../package.json'
 
 const User = ({user}) => {
 
@@ -11,6 +12,9 @@ const User = ({user}) => {
       nickname: {user.nickname}
       <br />
       user updated: {user.updated_at}
+      <br />
+      app version: {version}
+      <br />
     </div>
   )
 }
