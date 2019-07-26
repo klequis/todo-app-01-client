@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch'
 import { getTokenSilently } from 'react-auth0-spa'
+import config from 'config'
 
 // eslint-disable-next-line
 import { orange, red } from 'logger'
@@ -20,10 +21,13 @@ const stripLeadingForwardSlash = (path) => {
 const getFullUri = (nodeEnv, route) => {
   let r
   if (nodeEnv === 'production') {
-    r = `https://api.klequis-todo.tk/${stripLeadingForwardSlash(route)}`
+    red('WARN next line not tested')
+    // Removed hard-coded apiRoot and replaced with value from config
+    r = `${config.api.apiRootUriDev}${stripLeadingForwardSlash(route)}`
   } else {
-    r = route
+    r = `${config.api.apiRootUriDev}${stripLeadingForwardSlash(route)}`
   }
+  orange('getFullUri: r' ,r)
   return r
 }
 
@@ -56,6 +60,7 @@ export const fetchJson = async (url, options = {}) => {
   if (status >= 200 && status < 300) {
     return await r1.json()
   } else {
+    orange('throwing error *****************')
     const err = {
       status: r1.status,
       statusText: r1.statusText,
