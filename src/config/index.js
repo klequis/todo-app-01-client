@@ -11,8 +11,8 @@ const config = {
     scope: 'openid profile'
   },
   api: {
-    apiRootUriDev: '',
-    apiRootUrlProd: ''
+    apiRootUriDev: 'http://localhost:3030/',
+    apiRootUrlProd: 'https://api.klequis-todo.tk/'
   }
 }
 
