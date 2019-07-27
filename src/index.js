@@ -10,6 +10,8 @@ import config from 'config'
 const store = configureStore()
 
 const onRedirectCallback = appState => {
+  // temporary work-around per [faq](https://github.com/auth0/auth0-spa-js/blob/master/FAQ.md#why-do-i-get-error-invalid-state-in-firefox-when-refreshing-the-page-immediately-after-a-login)
+  window.location.hash = window.location.hash // eslint-disable-line no-self-assign
   window.history.replaceState(
     {},
     document.title,
