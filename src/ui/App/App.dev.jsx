@@ -12,6 +12,7 @@ import Home from 'ui/Home'
 import DevTools from 'ui/DevTools'
 import withStyles from 'react-jss'
 import { useAuth0 } from 'react-auth0-spa'
+import Toasts from 'ui/Toasts'
 
 function App(props) {
   const { loading } = useAuth0()
@@ -21,8 +22,11 @@ function App(props) {
   }
   const { classes } = props
   return (
+    <>
+    <Toasts />
     <div className={classes.wrapper}>
       <Status />
+      
       <Router>
         <hr />
         <NavBar />
@@ -35,6 +39,7 @@ function App(props) {
       </Router>
       <DevTools />
     </div>
+    </>
   )
 }
 
