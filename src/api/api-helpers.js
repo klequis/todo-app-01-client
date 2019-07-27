@@ -27,7 +27,6 @@ const getFullUri = (nodeEnv, route) => {
   } else {
     r = `${config.api.apiRootUriDev}${stripLeadingForwardSlash(route)}`
   }
-  orange('getFullUri: r' ,r)
   return r
 }
 
@@ -60,7 +59,6 @@ export const fetchJson = async (url, options = {}) => {
   if (status >= 200 && status < 300) {
     return await r1.json()
   } else {
-    orange('throwing error *****************')
     const err = {
       status: r1.status,
       statusText: r1.statusText,
