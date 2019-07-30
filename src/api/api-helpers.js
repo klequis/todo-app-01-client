@@ -34,7 +34,6 @@ export const fetchJson = async (url, options = {}) => {
   let token
   try {
     token = await getTokenSilently()
-    // orange('token', token)
   } catch (e) {
     red('fetchJson ERROR', e)
     throw new Error('fetchJson ERROR', e)
@@ -54,15 +53,24 @@ export const fetchJson = async (url, options = {}) => {
     headers,
   })
 
+  orange('api-htlpers: r1', r1)
+
   const { status } = r1
 
   if (status >= 200 && status < 300) {
-    return await r1.json()
+    const successReturn = await r1.json()
+    orange('successReturn', successReturn)
+    return await successReturn
   } else {
+    const body = await r1.json()
+    const validationErrors = body.errors
+    orange('validationErrors', validationErrors)
+    orange('r1.status', r1.status)
     const err = {
       status: r1.status,
       statusText: r1.statusText,
       url: r1.url,
+      errors: validationErrors || []
     }
     throw err
   }

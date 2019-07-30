@@ -22,9 +22,6 @@ export function requestsReducer(state = {}, action) {
       return merge(state, {
         [action.requestKey]: { status: REQUEST_FAILURE, error: action.payload }
       })
-    case API_ERROR:
-      console.log('store.requests.reducers: API_ERROR: NOT IMPLEMENTED YET')
-      return state
     default:
       return state
   }

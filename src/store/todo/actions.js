@@ -7,9 +7,15 @@ import {
   TODOS_READ_REQUEST_KEY,
   TODOS_UPDATE_REQUEST_KEY
 } from './constants'
+
 import {
   setToast,
 } from 'store/toast/actions'
+
+import {
+  setValidationErrors
+} from 'store/validation/actions'
+
 import { createRequestThunk } from '../action-helpers'
 import api from 'api'
 import { TOAST_WARN, TOAST_INFO } from 'global-constants'
@@ -19,9 +25,11 @@ import { purple, green, red } from 'logger'
 
 
 const logApiError = (e) => {
-  purple('e', e)
+  purple('logApiError: e', e)
+
   return {
-    type: 'API_ERROR'
+    type: 'API_ERROR',
+    errors: e  
   }
 }
 
@@ -34,7 +42,6 @@ export const todoAdd = newTodo => {
 
 // Read
 export const todosRead = todos => {
-  purple('todo read **')
   return {
     type: TODOS_READ_KEY,
     payload: todos
@@ -60,7 +67,7 @@ export const todoCreateRequest = createRequestThunk({
   request: api.todos.create,
   key: TODOS_CREATE_REQUEST_KEY,
   success: [todosReadRequest],
-  failure: [logApiError]
+  failure: [setValidationErrors]
 })
 
 // Delete
