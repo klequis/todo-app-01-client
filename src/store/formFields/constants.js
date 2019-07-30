@@ -1,0 +1,2 @@
+export const SET_FIELD_VALUE = 'SET_FIELD_VALUE'
+export const CLEAR_FIELD_VALUE = 'GET_FIELD_VALUE'
