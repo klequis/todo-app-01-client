@@ -30,7 +30,9 @@ export const createRequestThunk = ({
   failure = []
 }) => {
   return (...args) => async dispatch => {
+    
     const requestKey = typeof key === 'function' ? key(...args) : key
+    pink('action-helpers.createRequestThunk', requestKey)
     start.map(async actionCreator => {
       await dispatch(actionCreator())
     })
@@ -40,7 +42,7 @@ export const createRequestThunk = ({
       const data = await request(...args)
       await dispatch(requestSuccess(requestKey))
       success.map(async actionCreator => {
-        pink('success.actionCreator', actionCreator)
+        // pink('success.actionCreator', actionCreator)
         dispatch(requestSuccess(requestKey))
         await dispatch(actionCreator(data))
         // pink('s', s)
@@ -49,7 +51,7 @@ export const createRequestThunk = ({
       await dispatch(requestFailed(e, requestKey))
       return failure.map(async actionCreator => {
 
-        pink('failure.actionCreator', actionCreator)
+        // pink('failure.actionCreator', actionCreator)
         dispatch(requestFailed(e, requestKey))
         await dispatch(actionCreator(e))
         // pink('f', f)

@@ -1,3 +1,6 @@
+// eslint-disable-next-line
+import { yellow } from 'logger'
+
 const noStatus = {
   status: 'none',
   error: null

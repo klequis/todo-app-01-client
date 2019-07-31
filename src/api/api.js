@@ -22,10 +22,12 @@ export default {
       return data
     },
     async create(todo) {
+      orange('api: create called')
       const data = await fetchJson(`${rootUrl}/api/todo`, {
         method: 'POST',
         body: JSON.stringify(todo)
       })
+      orange('api: create done')
       return data.data
     },
     async delete(_id) {
