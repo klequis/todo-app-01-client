@@ -1,1 +1,1 @@
-export { default } from './TodosContainer'
+export { default } from './Todos'

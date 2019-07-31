@@ -1,64 +1,59 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-import {
-  setValidationErrors,
-  clearValidationErrors
-} from 'store/validation/actions'
-
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { todoCreateRequest } from 'store/todo/actions'
 // eslint-disable-next-line
-import { green } from 'logger'
-import { validationErrorsReducer } from 'store/validation/reducers';
+import { green, red } from 'logger'
 
 const formStyle = {
-  margin: '20px 0 60px 0',
+  margin: '20px 0 60px 0'
 }
 
 const buttonStyle = {
-  margin: '0 5px 0 5px',
+  margin: '0 5px 0 5px'
 }
 
 const AddTodo = props => {
-  
   const [title, setTitle] = useState('')
-  // const [errors, setErrors] = useState([])
   const [validationError, setValidationError] = useState('')
-  
-  const { handleAddTodo } = props
+  const dispatch = useDispatch()
 
   const handleInputChange = e => {
     setTitle(e.target.value)
   }
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = e => {
     e.preventDefault()
-    handleAddTodo(title)
-    setTitle('')
+    try {
+      dispatch(todoCreateRequest({ title }))
+      setTitle('')
+    } catch (e) {
+      red('AddTodo.handleOnSubmit ERROR:', e)
+    }
   }
 
-  const handleOnBlur = (e) => {
-    // check the input
-    // green('e', e.target.value.trim() === '' ? 'yes' : 'no')
-    // green('typeof e', typeof e.target.value)
+  const handleOnBlur = e => {
     const val = e.target.value.trim()
     if (val.length < 3) {
       setValidationError('title must be at least 3 characters')
     }
-
-
   }
 
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
-        id='title'
+        id="title"
         onChange={handleInputChange}
-        type='text'
+        type="text"
         value={title}
         onBlur={handleOnBlur}
       />
       <label>{validationError}</label>
-      <button style={buttonStyle} type='submit'>Add</button>
-      <button style={buttonStyle} type='button'>Cancel</button>
+      <button style={buttonStyle} type="submit">
+        Add
+      </button>
+      <button style={buttonStyle} type="button">
+        Cancel
+      </button>
     </form>
   )
 }

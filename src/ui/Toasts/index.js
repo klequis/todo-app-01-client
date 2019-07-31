@@ -1,1 +1,1 @@
-export { default } from './ToastsContainer'
+export { default } from './Toast'
