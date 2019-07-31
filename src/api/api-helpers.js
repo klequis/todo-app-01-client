@@ -1,7 +1,6 @@
 import fetch from 'cross-fetch'
 import { getTokenSilently } from 'react-auth0-spa'
 import config from 'config'
-
 // eslint-disable-next-line
 import { orange, red } from 'logger'
 
@@ -31,14 +30,14 @@ const getFullUri = (nodeEnv, route) => {
 }
 
 export const fetchJson = async (url, options = {}) => {
+  orange('fetchJson called: url:', url)
   let token
   try {
     token = await getTokenSilently()
   } catch (e) {
-    red('fetchJson ERROR', e)
+    red('fetchJson ERROR: error fetching token', e)
     throw new Error('fetchJson ERROR', e)
   }
-  
 
   let headers = {
     ...options.headers,
@@ -53,24 +52,30 @@ export const fetchJson = async (url, options = {}) => {
     headers,
   })
 
-  orange('api-htlpers: r1', r1)
-
   const { status } = r1
 
+  let err
+  orange('fetchJson checking status')
   if (status >= 200 && status < 300) {
-    const successReturn = await r1.json()
-    orange('successReturn', successReturn)
-    return await successReturn
+    orange('api-helpers success', `status=${status}`)
+    return await r1.json()
   } else {
-    const body = await r1.json()
-    const validationErrors = body.errors
-    orange('validationErrors', validationErrors)
-    orange('r1.status', r1.status)
-    const err = {
-      status: r1.status,
-      statusText: r1.statusText,
-      url: r1.url,
-      errors: validationErrors || []
+    orange('api-helpers fail', `status=${status}`)
+    if (status === 500) {
+      err = {
+        status: status,
+        statusText: r1.statusText,
+        url: r1.url
+      }
+    } else if (status === 422) {
+      const body = await r1.json()
+      const validationErrors = body.errors
+      err = {
+        status: status,
+        statusText: r1.statusText,
+        url: r1.url,
+        errors: validationErrors || []
+      }
     }
     throw err
   }
