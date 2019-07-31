@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { todoCreateRequest } from 'store/todo/actions'
 // eslint-disable-next-line
@@ -12,7 +12,7 @@ const buttonStyle = {
   margin: '0 5px 0 5px'
 }
 
-const AddTodo = props => {
+const AddTodo = () => {
   const [title, setTitle] = useState('')
   const [validationError, setValidationError] = useState('')
   const dispatch = useDispatch()
@@ -32,12 +32,13 @@ const AddTodo = props => {
   }
 
   const handleOnBlur = e => {
-    const val = e.target.value.trim()
-    if (val.length < 3) {
-      setValidationError('title must be at least 3 characters')
-    }
+    // off for now
+    // const val = e.target.value.trim()
+    // if (val.length < 3) {
+    //   setValidationError('title must be at least 3 characters')
+    // }
   }
-
+  green('AddTodo rendering')
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
