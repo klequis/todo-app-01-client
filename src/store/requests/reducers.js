@@ -3,10 +3,8 @@ import {
   REQUEST_PENDING,
   REQUEST_FAILURE,
 } from 'global-constants'
-import {
-  API_ERROR
-} from './constants'
 import { merge } from 'ramda'
+import { blue } from 'logger'
 
 export function requestsReducer(state = {}, action) {
   switch (action.type) {
@@ -19,6 +17,7 @@ export function requestsReducer(state = {}, action) {
         [action.requestKey]: { status: REQUEST_SUCCESS, error: null }
       })
     case REQUEST_FAILURE:
+      blue('request_failure called', action)
       return merge(state, {
         [action.requestKey]: { status: REQUEST_FAILURE, error: action.payload }
       })

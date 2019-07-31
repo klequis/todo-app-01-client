@@ -1,6 +1,6 @@
 import { SET_TOAST, CLEAR_TOAST } from './constants'
 import shortid from 'shortid'
-import { TOAST_INFO } from 'global-constants'
+// import { TOAST_INFO } from 'global-constants'
 
 /**
  *

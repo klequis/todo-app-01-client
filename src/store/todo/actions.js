@@ -18,7 +18,7 @@ import {
 
 import { createRequestThunk } from '../action-helpers'
 import api from 'api'
-import { TOAST_WARN, TOAST_INFO } from 'global-constants'
+import { TOAST_WARN /*, TOAST_INFO */ } from 'global-constants'
 
 // eslint-disable-next-line
 import { purple, green, red } from 'logger'
