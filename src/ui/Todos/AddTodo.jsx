@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { todoCreateRequest } from 'store/todo/actions'
 import { getValidationErrors } from 'store/validation/selectors'
-import { append, remove } from 'ramda'
+import { useErrors } from './useErrors'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -17,32 +17,9 @@ const buttonStyle = {
 
 const AddTodo = () => {
   const [title, setTitle] = useState('')
-  const [validationErrors, setValidationErrors] = useState([])
   const dispatch = useDispatch()
-  const serverValidationErrors = useSelector(getValidationErrors)
 
-  const setError = (field, message = '') => {
-    const errs0 = validationErrors
-    const idx = errs0.findIndex(e => e.field === field)
-    let errs1
-    if (idx > -1) {
-      errs1 = remove(idx, 1, errs0)
-    }
-    if (message !== '') {
-      setValidationErrors(append({ field, message }, errs1))
-    } else {
-      setValidationErrors(errs1)
-    }
-  }
-
-  const getError = field => {
-    const err = validationErrors.find(e => e.field === field)
-    if (err) {
-      return err.message
-    } else {
-      return ''
-    }
-  }
+  const { getError, setError } = useErrors(getValidationErrors)
 
   const handleInputChange = e => {
     setTitle(e.target.value)
@@ -66,13 +43,7 @@ const AddTodo = () => {
       setError('title', '')
     }
   }
-
-  useEffect(
-    () => serverValidationErrors.forEach(e => setError(e.param, e.msg)),
-    [serverValidationErrors]
-  )
-
-  green('client validationErrors', validationErrors)
+  
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
