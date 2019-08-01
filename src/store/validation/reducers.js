@@ -15,7 +15,7 @@ export function validationErrorsReducer(state = [], action) {
       // return merge(state, {
       //   [action.requestKey]: { status: REQUEST_SUCCESS, error: null }
       // })
-      const o = merge(state, { validationErrors: action.payload.errors })
+      const o = action.payload.errors
       return o
     default:
       return state
