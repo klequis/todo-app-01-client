@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { todoCreateRequest } from 'store/todo/actions'
+import { getValidationErrors } from 'store/validation/selectors'
+import { append } from 'ramda'
+
 // eslint-disable-next-line
 import { green, red } from 'logger'
 
@@ -14,7 +17,7 @@ const buttonStyle = {
 
 const AddTodo = () => {
   const [title, setTitle] = useState('')
-  const [validationError, setValidationError] = useState('')
+  const [validationErrors, setValidationErrors] = useState([])
   const dispatch = useDispatch()
 
   const handleInputChange = e => {
@@ -32,13 +35,35 @@ const AddTodo = () => {
   }
 
   const handleOnBlur = e => {
-    // off for now
-    // const val = e.target.value.trim()
-    // if (val.length < 3) {
-    //   setValidationError('title must be at least 3 characters')
-    // }
+    const val = e.target.value.trim()
+    if (val.length < 3) {
+      const err = {
+        param: 'title',
+        msg: 'title must be at least 3 characters'
+      }
+      const errs = append(err, validationErrors)
+      green('errs', errs)
+      setValidationErrors(errs)
+      green('validationErrors', validationErrors)
+    }
   }
-  green('AddTodo rendering')
+
+  const serverErrs = useSelector(getValidationErrors)
+  const getServerValidationError = (paramName) => {
+    return serverErrs.find(e => e.param === paramName)
+  }
+
+  const errs = useSelector(getValidationErrors)
+
+  useEffect(() => setValidationErrors(errs), [errs, setValidationErrors])
+  // green('err', serverErrors)
+
+
+  // So I have introduced a rule that I'm not fond of
+  // id === nameOfTodoField === nameOfParamSentToServer
+  // I could create a mapping to make it explicit but 
+  // that is going further than I want to right now
+
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
@@ -48,7 +73,12 @@ const AddTodo = () => {
         value={title}
         onBlur={handleOnBlur}
       />
-      <label>{validationError}</label>
+      <div>
+        {
+          validationErrors.map(e => <div>{e.msg}</div>)
+        }
+      </div>
+      {/* <label>{validationError}</label> */}
       <button style={buttonStyle} type="submit">
         Add
       </button>
