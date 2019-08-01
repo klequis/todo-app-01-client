@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { todoCreateRequest } from 'store/todo/actions'
 import { getValidationErrors } from 'store/validation/selectors'
-import { append } from 'ramda'
+import { append, remove } from 'ramda'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -19,6 +19,30 @@ const AddTodo = () => {
   const [title, setTitle] = useState('')
   const [validationErrors, setValidationErrors] = useState([])
   const dispatch = useDispatch()
+  const serverValidationErrors = useSelector(getValidationErrors)
+
+  const setError = (field, message = '') => {
+    const errs0 = validationErrors
+    const idx = errs0.findIndex(e => e.field === field)
+    let errs1
+    if (idx > -1) {
+      errs1 = remove(idx, 1, errs0)
+    }
+    if (message !== '') {
+      setValidationErrors(append({ field, message }, errs1))
+    } else {
+      setValidationErrors(errs1)
+    }
+  }
+
+  const getError = field => {
+    const err = validationErrors.find(e => e.field === field)
+    if (err) {
+      return err.message
+    } else {
+      return ''
+    }
+  }
 
   const handleInputChange = e => {
     setTitle(e.target.value)
@@ -37,33 +61,18 @@ const AddTodo = () => {
   const handleOnBlur = e => {
     const val = e.target.value.trim()
     if (val.length < 3) {
-      const err = {
-        param: 'title',
-        msg: 'title must be at least 3 characters'
-      }
-      const errs = append(err, validationErrors)
-      green('errs', errs)
-      setValidationErrors(errs)
-      green('validationErrors', validationErrors)
+      setError('title', 'CLIENT: Title must be at least 3 characters')
+    } else {
+      setError('title', '')
     }
   }
 
-  const serverErrs = useSelector(getValidationErrors)
-  const getServerValidationError = (paramName) => {
-    return serverErrs.find(e => e.param === paramName)
-  }
+  useEffect(
+    () => serverValidationErrors.forEach(e => setError(e.param, e.msg)),
+    [serverValidationErrors]
+  )
 
-  const errs = useSelector(getValidationErrors)
-
-  useEffect(() => setValidationErrors(errs), [errs, setValidationErrors])
-  // green('err', serverErrors)
-
-
-  // So I have introduced a rule that I'm not fond of
-  // id === nameOfTodoField === nameOfParamSentToServer
-  // I could create a mapping to make it explicit but 
-  // that is going further than I want to right now
-
+  green('client validationErrors', validationErrors)
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
@@ -73,12 +82,9 @@ const AddTodo = () => {
         value={title}
         onBlur={handleOnBlur}
       />
-      <div>
-        {
-          validationErrors.map(e => <div>{e.msg}</div>)
-        }
-      </div>
-      {/* <label>{validationError}</label> */}
+      <br />
+      <label>{getError('title')}</label>
+      <br />
       <button style={buttonStyle} type="submit">
         Add
       </button>
