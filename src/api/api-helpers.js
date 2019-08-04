@@ -22,6 +22,15 @@ const logResponse = res => {
   console.groupEnd()
 }
 
+const formatError = (status, statusText, url = '', validationErrors = []) => {
+  return {
+    status,
+    statusText,
+    url,
+    validationErrors: validationErrors || []
+  }
+}
+
 const stripLeadingForwardSlash = path => {
   const r = path.startsWith('/') ? path.substring(1) : path
   return r
@@ -62,21 +71,13 @@ const checkErrors = async res => {
     validationErrors = body.errors
   }
 
-  let err = {
-    status,
-    statusText,
-    url,
-    validationErrors
-  }
+  let err = formatError(status, statusText, url, validationErrors)
 
   throw err
 }
 
-
-export const fetchJson = async (url, options = {}) => {
-
+const fetchJson = async (url, options = {}) => {
   try {
-
     const token = await getToken()
 
     const headers = {
@@ -98,11 +99,19 @@ export const fetchJson = async (url, options = {}) => {
 
     const chkErr = checkErrors(res)
     return chkErr
-    
   } catch (e) {
-    redf('fetchJson: fetch failed', e)
-    return e
+    let err
+
+    if (e.message === 'Network request failed') {
+      // A network error doesn't have the same format as an error from 
+      // the api. However, the action & reducer is expecting the api
+      // error format so format it as such
+      err = formatError(503, 'Network request failed')
+    } else {
+      err = e
+    }
+    throw err
   }
 }
 
-export default { fetchJson }
+export default fetchJson

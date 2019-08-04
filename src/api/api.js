@@ -1,4 +1,4 @@
-import { fetchJson } from './api-helpers'
+import fetchJson from './api-helpers'
 // eslint-disable-next-line
 import { orange, green } from 'logger'
 
