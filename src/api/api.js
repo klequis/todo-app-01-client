@@ -2,8 +2,6 @@ import { fetchJson } from './api-helpers'
 // eslint-disable-next-line
 import { orange, green } from 'logger'
 
-// const rootUrl = process.env.NODE_ENV === 'development' ? '' : 'https://api.klequis-todo.tk'
-// const rootUrl = 'https://api.klequis-todo.tk'
 const rootUrl = ''
 
 // Errors are handled by fetchJson()
