@@ -40,7 +40,7 @@ const getFullUri = (nodeEnv, route) => {
   let r
   if (nodeEnv === 'production') {
     red('WARN next line not tested')
-    r = `${config.api.apiRootUriDev}${stripLeadingForwardSlash(route)}`
+    r = `${config.api.apiRootUrlProd}${stripLeadingForwardSlash(route)}`
   } else {
     r = `${config.api.apiRootUriDev}${stripLeadingForwardSlash(route)}`
   }
