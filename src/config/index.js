@@ -8,7 +8,7 @@ const config = {
     clientId: 'Hav4pitWXpDGkMaAxpj7rxHYuwAZovyI',
     redirectUri: 'http://localhost:3000/',
     responseType: 'id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email'
   },
   api: {
     apiRootUriDev: 'http://localhost:3030/',

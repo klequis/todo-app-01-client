@@ -1,11 +1,6 @@
 import React from 'react'
-import { useAuth0 } from 'react-auth0-spa'
 import { Link } from 'react-router-dom'
-
-// eslint-disable-next-line
-import { green } from 'logger'
-
-
+import SignInUpOut from 'ui/SignInUpOut'
 
 const styles = {
   wrapper: {
@@ -17,30 +12,6 @@ const styles = {
 }
 
 function NavBar(props) {
-
-  const {
-    isAuthenticated,
-    logout,
-    loginWithPopup
-  } = useAuth0()
-  // green('typeof loginWithPopup', typeof loginWithPopup)
-  // green('typeof logout', typeof logout)
-  // green('typeof isAuthenticated', typeof isAuthenticated)
-  // green('typeof isLoading', typeof isLoading)
-
-
-  const handleLogoutClick = () => {
-    logout({
-      returnTo: window.location.origin
-    })
-  }
-
-  const handleLoginClick = () => {
-    // loginWithRedirect({})
-    loginWithPopup({})
-  }
-
-
   return (
     <nav style={styles.wrapper}>
       <Link to="/">
@@ -49,18 +20,7 @@ function NavBar(props) {
       <Link to="/todos">
         <button>Todos</button>
       </Link>
-      {!isAuthenticated && (
-        <button style={styles.button} onClick={handleLoginClick}>
-          Sign In
-        </button>
-      )}
-      {isAuthenticated && (
-        <div>
-          <button style={styles.button} onClick={handleLogoutClick}>
-            Sign Out
-          </button>
-        </div>
-      )}
+      <SignInUpOut />
     </nav>
   )
 }

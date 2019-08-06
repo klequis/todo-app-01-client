@@ -1,9 +1,11 @@
 import React from 'react'
 import { useAuth0 } from 'react-auth0-spa'
 import { version } from '../../../package.json'
+import { green } from 'logger'
 
 const User = ({user}) => {
 
+  green('user', user)
   if (!user) {
     return null
   }

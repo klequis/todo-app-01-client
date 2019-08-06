@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
+import { green } from 'logger';
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -79,6 +80,7 @@ export const Auth0Provider = ({
     }
     const user = await auth0Client.getUser()
     setUser(user)
+    green('auth0: user', user)
     setIsAuthenticated(true)
   }
 
