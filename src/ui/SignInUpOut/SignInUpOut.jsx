@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuth0 } from 'react-auth0-spa'
 // eslint-disable-next-line
 import { green } from 'logger'
@@ -13,7 +13,7 @@ const styles = {
 }
 
 const SignInUpOut = () => {
-  const { isAuthenticated, logout, loginWithRedirect } = useAuth0()
+  const { isAuthenticated, logout, loginWithRedirect, user } = useAuth0()
 
   // green('typeof loginWithPopup', typeof loginWithPopup)
   // green('typeof logout', typeof logout)
@@ -28,9 +28,16 @@ const SignInUpOut = () => {
 
   const handleLoginClick = () => {
     loginWithRedirect({})
-    // loginWithPopup({})
   }
 
+  useEffect(() => {
+    const validateUser = async () => {
+
+    }
+    validateUser()
+  }, user)
+  
+  green('SignInUpOut: user', user)
   return (
     <div>
       {!isAuthenticated && (

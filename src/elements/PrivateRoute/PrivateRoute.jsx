@@ -13,12 +13,12 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated) {
-        // await loginWithRedirect({
-        //   appState: { targetUrl: path }
-        // })
-        await loginWithPopup({
+        await loginWithRedirect({
           appState: { targetUrl: path }
         })
+        // await loginWithPopup({
+        //   appState: { targetUrl: path }
+        // })
       }
     }
     fn()
