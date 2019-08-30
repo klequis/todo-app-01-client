@@ -8,6 +8,7 @@ const rootUrl = ''
 export default {
   todos: {
     async read() {
+      orange('api.todos.read()')
       const data = await fetchJson(`${rootUrl}/api/todo`, {
         method: 'GET'
       })

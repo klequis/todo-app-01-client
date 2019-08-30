@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { todoCreateRequest } from 'store/todo/actions'
 import { getValidationErrors } from 'store/validation/selectors'
+import { getUserId } from 'store/user/selectors'
 import { useErrors } from './useErrors'
 
 // eslint-disable-next-line
@@ -15,11 +16,12 @@ const buttonStyle = {
   margin: '0 5px 0 5px'
 }
 
-const AddTodo = () => {
+const AddTodo = props => {
   const [title, setTitle] = useState('')
-  const dispatch = useDispatch()
 
   const { getError, setError } = useErrors(getValidationErrors)
+
+  const { userId } = props
 
   const handleInputChange = e => {
     setTitle(e.target.value)
@@ -27,8 +29,9 @@ const AddTodo = () => {
 
   const handleOnSubmit = e => {
     e.preventDefault()
+    // TODO: send all paramaters for the todo, not just 'title'
     try {
-      dispatch(todoCreateRequest({ title }))
+      todoCreateRequest(userId, { title })
       setTitle('')
     } catch (e) {
       red('AddTodo.handleOnSubmit ERROR:', e)
@@ -66,4 +69,11 @@ const AddTodo = () => {
   )
 }
 
-export default AddTodo
+const actions = { todoCreateRequest }
+
+const mstp = state => {
+  return {
+    userId: getUserId(state)
+  }
+}
+export default connect(mstp, actions)(AddTodo)

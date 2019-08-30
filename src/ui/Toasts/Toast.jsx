@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 import withStyles from 'react-jss'
 import classNames from 'classnames'
 import { clearToast } from 'store/toast/actions'
@@ -9,15 +10,13 @@ import { TOAST_WARN, TOAST_INFO } from 'global-constants'
 import { green } from 'logger'
 
 
-const Toast = ({ classes }) => {
+const Toast = ({ classes, toast }) => {
 
-  const dispatch = useDispatch()
 
   useEffect(() => {
-    const timerId = setTimeout(() => dispatch(clearToast()), 3000)
+    const timerId = setTimeout(() => clearToast(), 3000)
     return () => clearTimeout(timerId)
   })
-  const toast = useSelector(getToast)
 
   if (!toast) { return null }
   
@@ -58,4 +57,15 @@ const styles = {
   }
 }
 
-export default withStyles(styles)(Toast)
+const actions = { clearToast }
+
+const mstp = state => {
+  return {
+    toast: getToast(state)
+  }
+}
+
+export default compose(
+  withStyles(styles),
+  connect(mstp, actions)
+)(Toast)

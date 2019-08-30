@@ -23,6 +23,7 @@ const onRedirectCallback = appState => {
 
 const renderApp = () => {
   render(
+
     <Auth0Provider
       domain={config.auth0.domain}
       client_id={config.auth0.clientId}

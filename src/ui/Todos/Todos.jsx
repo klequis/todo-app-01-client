@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 import withStyles from 'react-jss'
 import {
   todoDeleteRequest,
@@ -7,6 +8,7 @@ import {
   todoUpdateRequest
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
+import { getUserId } from 'store/user/selectors'
 import AddTodo from './AddTodo'
 import Todo from './Todo'
 // eslint-disable-next-line
@@ -18,15 +20,14 @@ const todoListStyle = {
 
 const TodoList = props => {
 
-  const dispatch = useDispatch()
-
+  const { userId, todos } = props
   useEffect(() => {
-    dispatch(todosReadRequest())
-  }, [dispatch])
+    todosReadRequest(userId)
+  }, [userId])
 
   const handleDeleteTodo = async id => {
     try {
-      dispatch(todoDeleteRequest(id))
+      todoDeleteRequest(userId, id)
     } catch (e) {
       red('App.handleDeleteTodo ERROR:', e)
     }
@@ -34,13 +35,12 @@ const TodoList = props => {
 
   const handleCompletedChange = async todo => {
     try {
-      dispatch(todoUpdateRequest(todo))
+      todoUpdateRequest(userId, todo._id, todo)
     } catch (e) {
       red('App.handleCompletedChange ERROR:', e)
     }
   }
 
-  const todos = useSelector(getAllTodos)
 
   return (
     <>
@@ -66,4 +66,20 @@ const styles = {
   }
 }
 
-export default withStyles(styles)(TodoList)
+const actions = {
+  todoDeleteRequest,
+  todosReadRequest,
+  todoUpdateRequest
+}
+
+const mstp = state => {
+  return {
+    userId: getUserId(state),
+    todos: getAllTodos(state)
+  }
+}
+
+export default compose(
+  withStyles(styles),
+  connect(mstp, actions)
+)(TodoList)

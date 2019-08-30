@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { append, remove } from 'ramda'
+// eslint-disable-next-line
 import { green } from 'logger'
 
 export const useErrors = selector => {

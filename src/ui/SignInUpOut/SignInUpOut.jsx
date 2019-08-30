@@ -31,11 +31,12 @@ const SignInUpOut = () => {
   }
 
   useEffect(() => {
+    // TODO: this does nothing?
     const validateUser = async () => {
 
     }
     validateUser()
-  }, user)
+  }, [user])
   
   green('SignInUpOut: user', user)
   return (

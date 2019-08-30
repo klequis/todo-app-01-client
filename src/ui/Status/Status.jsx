@@ -1,19 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { useAuth0 } from 'react-auth0-spa'
 import { version } from '../../../package.json'
+import { setUser } from 'store/user/actions'
 import { green } from 'logger'
+import { getUserId } from 'store/user/selectors.js'
 
 const User = ({user}) => {
+  
+  useEffect(() => {
+    const fn = () => {
+      if (user) {
+        const { 'https://klequis-todo.tk/uuid': userId } = user
+        green('userId', userId)
+        setUser(userId)
+      }
+    }
+    fn()
+  })
 
-  green('user', user)
   if (!user) {
     return null
   }
+  const { nickname, updated_at } = user
+
   return (
     <div>
-      nickname: {user.nickname}
+      nickname: {nickname}
       <br />
-      user updated: {user.updated_at}
+      user updated: {updated_at}
       <br />
       app version: {version}
       <br />
@@ -37,4 +52,12 @@ const Status = () => {
   )
 }
 
-export default Status
+const actions = { setUser }
+
+const mstp = state => {
+  return {
+    userId: getUserId(state)
+  }
+}
+
+export default connect(mstp, actions)(Status)
