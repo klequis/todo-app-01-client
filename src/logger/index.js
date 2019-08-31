@@ -74,6 +74,9 @@ const getStyle = (styleName) => {
 }
 
 const makeMessage = (message = '', value = '', color = '', indent = 0) => {
+  if (process.env.NODE_ENV === 'production') {
+    return
+  }
   const nMessage = `%c[${message}]`
   const style = getStyle(color)
   const padding = ''.padStart(indent, ' ')

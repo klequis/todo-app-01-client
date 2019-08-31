@@ -10,7 +10,11 @@ const config = {
     audience: "https://klequis-todo.tk",
     redirectUri: 'http://localhost:3000/',
     responseType: 'id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email'
+  },
+  api: {
+    apiRootUriDev: 'http://localhost:3030/',
+    apiRootUrlProd: 'https://api.klequis-todo.tk/'
   }
 }
 
