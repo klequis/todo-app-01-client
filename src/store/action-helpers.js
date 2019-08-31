@@ -12,7 +12,6 @@ export const logError = (err, key) => {
   red(`actions.logError(key:${key})`, err)
 }
 
-
 // console.group()
 // pink('request', request)
 // pink('key', key)
@@ -29,9 +28,7 @@ export const createRequestThunk = ({
   success = [],
   failure = []
 }) => {
-  
   return (...args) => async dispatch => {
-    pink(`${key}`)  
     const requestKey = typeof key === 'function' ? key(...args) : key
     start.map(async actionCreator => {
       await dispatch(actionCreator())
