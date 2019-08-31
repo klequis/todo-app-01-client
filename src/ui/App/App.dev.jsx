@@ -8,37 +8,51 @@ import {
 import NavBar from 'ui/NavBar'
 import PrivateRoute from 'elements/PrivateRoute'
 import Todos from 'ui/Todos'
+import Status from 'ui/Status'
 import Home from 'ui/Home'
 import DevTools from 'ui/DevTools'
 import withStyles from 'react-jss'
 import { useAuth0 } from 'react-auth0-spa'
 import Toasts from 'ui/Toasts'
-import { green } from 'logger'
 
-function App() {
-  const { loading } = useAuth0
-  green('App')
+function App({ classes }) {
+  const { loading } = useAuth0()
   if (loading) {
-    green('App loading')
-    return null
+    return <h1>Loading</h1>
   } else {
     return (
-      <div>
+      <>
+        <Toasts />
+        <div className={classes.wrapper}>
         <Router>
-          <h1>Hi</h1>
+          <Status />
           <NavBar />
           <div>
             <Link to="/todos">Todos</Link>
           </div>
           <Switch>
             <PrivateRoute exact path="/todos" component={Todos} />
-            {/* <Todos /> */}
-            {/* <Route exact path="/" component={Home} /> */}
+            <Route exact path="/" component={Home} />
           </Switch>
         </Router>
-      </div>
+      <DevTools />
+    </div>
+    </>
     )
   }
 }
 
-export default App
+const styles = {
+  wrapper: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    alignItems: 'center',
+    marginTop: 50
+  },
+  add: {
+    marginBottom: 50
+  }
+}
+
+export default withStyles(styles)(App)

@@ -9,6 +9,7 @@ import {
   todoUpdateRequest
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
+import config from 'config'
 // eslint-disable-next-line
 import { green, red } from 'logger'
 
@@ -21,11 +22,13 @@ const TodosContainer = props => {
     todos,
     todoUpdateRequest
   } = props
-
+  
   useEffect(() => {
     ;(async () => {
       try {
-        await todosReadRequest('6a14dbf6-12f7-4c95-a155-374c844260f8')
+        const { testUserId } = config.auth0
+        green('testUserId', testUserId)
+        await todosReadRequest(testUserId)
       } catch (e) {
         console.log('TheError', e)
       }
