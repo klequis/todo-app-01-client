@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Link,
   Switch,
   Route,
   BrowserRouter as Router /*, Link */
@@ -14,33 +15,31 @@ import withStyles from 'react-jss'
 import { useAuth0 } from 'react-auth0-spa'
 import Toasts from 'ui/Toasts'
 
-function App(props) {
+function App({ classes }) {
   const { loading } = useAuth0()
-
   if (loading) {
     return <h1>Loading</h1>
-  }
-  const { classes } = props
-  return (
-    <>
-    <Toasts />
-    <div className={classes.wrapper}>
-      <Status />
-      
-      <Router>
-        <hr />
-        <NavBar />
-        <hr />
-
-        <Switch>
-          <PrivateRoute exact path="/todos" component={Todos} />
-          <Route exact path="/" component={Home} />
-        </Switch>
-      </Router>
+  } else {
+    return (
+      <>
+        <Toasts />
+        <div className={classes.wrapper}>
+        <Router>
+          <Status />
+          <NavBar />
+          <div>
+            <Link to="/todos">Todos</Link>
+          </div>
+          <Switch>
+            <PrivateRoute exact path="/todos" component={Todos} />
+            <Route exact path="/" component={Home} />
+          </Switch>
+        </Router>
       <DevTools />
     </div>
     </>
-  )
+    )
+  }
 }
 
 const styles = {

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import SignInUpOut from 'ui/SignInUpOut'
+// eslint-disable-next-line
+import { green } from 'logger'
 
 const styles = {
   wrapper: {
