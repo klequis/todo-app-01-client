@@ -5,24 +5,20 @@ import { withRouter } from 'react-router-dom'
 import { useAuth0 } from 'react-auth0-spa'
 
 const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
-
   const {
-    isAuthenticated, loginWithRedirect, loginWithPopup
+    isAuthenticated, loginWithRedirect
   } = useAuth0()
 
   useEffect(() => {
     const fn = async () => {
       if (!isAuthenticated) {
         await loginWithRedirect({
-          appState: { targetUrl: path }
+          // appState: { targetUrl: path }
         })
-        // await loginWithPopup({
-        //   appState: { targetUrl: path }
-        // })
       }
     }
     fn()
-  }, [isAuthenticated, loginWithRedirect, path, loginWithPopup])
+  }, [isAuthenticated, loginWithRedirect, path])
 
   if (!isAuthenticated) return null
 

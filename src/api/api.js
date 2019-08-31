@@ -7,11 +7,12 @@ const rootUrl = ''
 // Errors are handled by fetchJson()
 export default {
   todos: {
-    async read() {
+    async read(userId) {
       orange('api.todos.read()')
-      const data = await fetchJson(`${rootUrl}/api/todo`, {
+      const data = await fetchJson(`${rootUrl}/api/todo/${userId}`, {
         method: 'GET'
       })
+      orange('todos.read: data', data)
       return data
     },
     async readById(id) {
