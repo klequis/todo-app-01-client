@@ -1,4 +1,4 @@
-const domain = 'klequis-todo.auth0.com'
+// const domain = 'klequis-todo.auth0.com'
 
 const config = {
   auth0: {

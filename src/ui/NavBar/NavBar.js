@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React /*, { useState }*/ from 'react'
 import { useAuth0 } from 'react-auth0-spa'
 
 // eslint-disable-next-line
@@ -14,9 +14,13 @@ const styles = {
 
 function NavBar(props) {
 
-  const [isOpen, setIsOpen] = useState(false)
-  const { user, isAuthenticated, /*loginWithRedirect, */ logout, loginWithPopup } = useAuth0()
-  const toggle = () => setIsOpen(!isOpen)
+  green('NavBar')
+  
+  // const [isOpen, setIsOpen] = useState(false)
+  const { /*user,*/ isAuthenticated, loginWithRedirect, logout } = useAuth0()
+  // const toggle = () => setIsOpen(!isOpen)
+
+  
 
   const handleLogoutClick = () => {
     logout({
@@ -25,8 +29,7 @@ function NavBar(props) {
   }
 
   const handleLoginClick = () => {
-    // loginWithRedirect({})
-    loginWithPopup({})
+    loginWithRedirect({})
   }
 
   return (

@@ -1,5 +1,7 @@
 /*
 
+THIS COMPONENT IS NOT USED YET
+
 going to create a login component that has the log in effect from PrivateRoute in it 
 and the in PrivateRoute, wrap the call to this component in an if(path === location.path)
 

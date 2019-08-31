@@ -11,8 +11,8 @@ console.log('rootUrl (blank for dev):', rootUrl)
 // Errors are handled by fetchJson()
 export default {
   todos: {
-    async read() {
-      const data = await fetchJson(`${rootUrl}/api/todo`, {
+    async read(userId) {
+      const data = await fetchJson(`${rootUrl}/api/todo/${userId}`, {
         method: 'GET'
       })
       return data

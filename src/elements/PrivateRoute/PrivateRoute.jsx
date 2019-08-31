@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom'
 // import { green } from 'logger'
 
 const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
-  const { isAuthenticated, loginWithRedirect, loginWithPopup } = useAuth0()
+  const { isAuthenticated, loginWithRedirect } = useAuth0()
 
   // green('PrivateRoute: isAuthenticated', isAuthenticated)
   // green('path', path)
@@ -22,11 +22,8 @@ const PrivateRoute = ({ component: Component, path, location, ...rest }) => {
     const fn = async () => {
       // if (pathsMatch && !isAuthenticated) {
       if (!isAuthenticated) {
-        // await loginWithRedirect({
-        //   appState: { targetUrl: path }
-        // })
-        await loginWithPopup({
-          appState: { targetUrl: path }
+        await loginWithRedirect({
+          // appState: { targetUrl: path }
         })
       }
     }

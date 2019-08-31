@@ -1,73 +1,132 @@
-import React, { useState, useEffect, useContext } from "react";
-import createAuth0Client from "@auth0/auth0-spa-js";
+import React, { useEffect, useState, useContext } from 'react'
+import createAuth0Client from '@auth0/auth0-spa-js'
+import { blue } from 'logger'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
-  window.history.replaceState({}, document.title, window.location.pathname);
+  window.history.replaceState({}, document.title, window.location.pathname)
 
-export const Auth0Context = React.createContext();
-export const useAuth0 = () => useContext(Auth0Context);
+export const Auth0Context = React.createContext()
+export const useAuth0 = () => useContext(Auth0Context)
 
-let auth0Client = undefined;
-export const getTokenSilently = (...p) => auth0Client.getTokenSilently(...p);
+let _initOptions
+const setInitOptions = options => {
+  _initOptions = options
+}
+const getInitOptions = () => {
+  return _initOptions
+}
+
+const getAuth0Client = async () => {
+  let client
+  if (!client) {
+    try {
+      client = await createAuth0Client(getInitOptions())
+    } catch (e) {
+      // throw new Error('auth0Client ERROR: could not create client', e)
+    }
+  }
+  return client
+}
+
+export const getTokenSilently = async params => {
+  const client = await getAuth0Client()
+  try {
+    return await client.getTokenSilently(params)
+  } catch (e) {
+    // console.error('react-auth0-spa.getTokenSilently', e)
+  }
+}
+
 export const Auth0Provider = ({
   children,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState();
-  const [user, setUser] = useState();
-  // const [auth0Client, setAuth0] = useState()
-  const [loading, setLoading] = useState(true);
-  const [popupOpen, setPopupOpen] = useState(false);
+  setInitOptions(initOptions)
+
+  const [isAuthenticated, setIsAuthenticated] = useState()
+  const [user, setUser] = useState()
+  const [loading, setLoading] = useState(true)
+  const [popupOpen, setPopupOpen] = useState(false)
 
   useEffect(() => {
-    const initAuth0 = async () => {
-      const auth0FromHook = await createAuth0Client(initOptions);
-      // setAuth0(auth0FromHook)
-      auth0Client = auth0FromHook;
-
-      if (window.location.search.includes("code=")) {
-        const { appState } = await auth0FromHook.handleRedirectCallback();
-        onRedirectCallback(appState);
+    const init = async () => {
+      const client = await getAuth0Client()
+      if (window.location.search.includes('code=')) {
+        const { appState } = await client.handleRedirectCallback()
+        onRedirectCallback(appState)
       }
-
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
-
-      setIsAuthenticated(isAuthenticated);
-
+      const isAuthenticated = await client.isAuthenticated()
+      setIsAuthenticated(isAuthenticated)
       if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setUser(user);
+        const user = await client.getUser()
+        setUser(user)
       }
-
-      setLoading(false);
-    };
-    initAuth0();
+      setLoading(false)
+    }
+    init()
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   const loginWithPopup = async (params = {}) => {
-    setPopupOpen(true);
+    blue('loginWithPopup()')
+    setPopupOpen(true)
+    const client = getAuth0Client()
     try {
-      await auth0Client.loginWithPopup(params);
+      await client.loginWithPopup(...params)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     } finally {
-      setPopupOpen(false);
+      setPopupOpen(false)
     }
-    const user = await auth0Client.getUser();
-    setUser(user);
-    setIsAuthenticated(true);
-  };
+    const user = await client.getUser()
+    setUser(user)
+    blue('auth0: user', user)
+    setIsAuthenticated(true)
+  }
 
   const handleRedirectCallback = async () => {
-    setLoading(true);
-    await auth0Client.handleRedirectCallback();
-    const user = await auth0Client.getUser();
-    setLoading(false);
-    setIsAuthenticated(true);
-    setUser(user);
-  };
+    blue('handleRedirectCallback()')
+    try {
+      setLoading(true)
+      const client = getAuth0Client()
+      await client.handleRedirectCallback()
+      const user = await client.getUser()
+      setIsAuthenticated(true)
+      setUser(user)
+    } catch (e) {
+      // console.error('react-auth0-spa.loginWithRedirect', e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loginWithRedirect = async params => {
+    blue('loginWithRedirect()')
+    blue('params', params)
+    try {
+      const client = await getAuth0Client()
+      await client.loginWithRedirect(...params)
+    } catch (e) {
+      /*
+        you could switch to the sample code and see if you wrap it in a try/catch
+        if the same error is reported.
+        I really don't think it is coming from my code
+      */
+      // // console.error('react-auth0-spa.loginWithRedirect', e)
+    }
+  }
+
+  const logout = async (params = {}) => {
+    blue('logout')
+    try {
+      const client = await getAuth0Client()
+      await client.logout(...params)
+    } catch (e) {
+      // console.error('react-auth0-spa.logout', e)
+    }
+  }
+
   return (
     <Auth0Context.Provider
       value={{
@@ -77,13 +136,20 @@ export const Auth0Provider = ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
-        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        logout: (...p) => auth0Client.logout(...p)
+        // new
+        loginWithRedirect,
+        logout
+        // old
+        // loginWithRedirect: (...p) => auth0.loginWithRedirect(...p),
+        // loginWithRedirect: (...p) => getAuth0Client.loginWithRedirect(...p),
+        // getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
+        // logout: (...p) => auth0Client.logout(...p)
+        // unused
+        // getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
+        // getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
       }}
     >
       {children}
     </Auth0Context.Provider>
-  );
-};
+  )
+}
