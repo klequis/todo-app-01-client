@@ -2,14 +2,17 @@ import React from 'react'
 import {
   Link,
   Switch,
-  // Route,
+  Route,
   BrowserRouter as Router /*, Link */
 } from 'react-router-dom'
-import { useAuth0 } from 'react-auth0-spa'
 import NavBar from 'ui/NavBar'
 import PrivateRoute from 'elements/PrivateRoute'
 import Todos from 'ui/Todos'
 import Home from 'ui/Home'
+import DevTools from 'ui/DevTools'
+import withStyles from 'react-jss'
+import { useAuth0 } from 'react-auth0-spa'
+import Toasts from 'ui/Toasts'
 import { green } from 'logger'
 
 function App() {

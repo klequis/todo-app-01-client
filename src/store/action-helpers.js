@@ -12,9 +12,6 @@ export const logError = (err, key) => {
   red(`actions.logError(key:${key})`, err)
 }
 
-// // if (requestKey === 'TODOS_CREATE_REQUEST_KEY') {
-// //   pink('createRequestThunk: calling create')
-// // }
 // console.group()
 // pink('request', request)
 // pink('key', key)
