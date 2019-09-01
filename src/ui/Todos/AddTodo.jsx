@@ -15,7 +15,7 @@ const buttonStyle = {
 
 const AddTodo = props => {
   const [title, setTitle] = useState('')
-  const { setError } = useErrors()
+  const { getError, setError } = useErrors(state => state.validationErrors)
   const { handleAddTodo } = props
 
   const handleInputChange = e => {
@@ -33,17 +33,34 @@ const AddTodo = props => {
     setTitle('')
   }
 
+  const handleTitleOnBlur = (e)  => {
+
+    const { id, value } = e.target
+    green('id', id)
+    green('value', value)
+    if (value.length <= 3) {
+      setError(id, 'client - Title must be at least 3 charters long')
+    }
+  }
+
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
-      <input
-        id='title'
-        onChange={handleInputChange}
-        onBlur={}
-        type='text'
-        value={title}
-      />
-      <button style={buttonStyle} type='submit'>Add</button>
-      <button style={buttonStyle} onClick={handleCancelClick} type='button'>Cancel</button>
+      
+        <input
+          id="title"
+          onChange={handleInputChange}
+          onBlur={handleTitleOnBlur}
+          type="text"
+          value={title}
+        />
+        <div>{getError('title')}</div>
+      
+      <button style={buttonStyle} type="submit">
+        Add
+      </button>
+      <button style={buttonStyle} onClick={handleCancelClick} type="button">
+        Cancel
+      </button>
     </form>
   )
 }
