@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { useAuth0 } from 'react-auth0-spa'
+import { setUser } from 'store/user/actions'
+import { getUserId } from 'store/user/selectors'
+
 // eslint-disable-next-line
 import { green } from 'logger'
 
@@ -12,13 +16,24 @@ const styles = {
   }
 }
 
-const SignInUpOut = () => {
+const SignInUpOut = (props) => {
   const { isAuthenticated, logout, loginWithRedirect, user } = useAuth0()
-
+  green('props', props)
+  const { setUser } = props
   // green('typeof loginWithPopup', typeof loginWithPopup)
   // green('typeof logout', typeof logout)
   // green('typeof isAuthenticated', typeof isAuthenticated)
   // green('typeof isLoading', typeof isLoading)
+
+
+  useEffect(() => {
+    // TODO: this does nothing?
+    const validateUser = async () => {
+      const uid = user['https://klequis-todo.tk/uuid']
+      setUser(uid)
+    }
+    validateUser()
+  }, [user, setUser])
 
   const handleLogoutClick = () => {
     logout({
@@ -30,13 +45,7 @@ const SignInUpOut = () => {
     loginWithRedirect({})
   }
 
-  useEffect(() => {
-    // TODO: this does nothing?
-    const validateUser = async () => {
-
-    }
-    validateUser()
-  }, [user])
+  
   
   green('SignInUpOut: user', user)
   return (
@@ -57,4 +66,11 @@ const SignInUpOut = () => {
   )
 }
 
-export default SignInUpOut
+const mstp = state => {
+  return {
+    userId: getUserId(state)
+  }
+}
+
+const actions = { setUser }
+export default connect(mstp, actions)(SignInUpOut)

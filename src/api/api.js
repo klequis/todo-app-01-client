@@ -1,18 +1,20 @@
-import fetchJson from './api-helpers'
+import { fetchJson } from './api-helpers'
 // eslint-disable-next-line
 import { orange, green } from 'logger'
 
+// const rootUrl = process.env.NODE_ENV === 'development' ? '' : 'https://api.klequis-todo.tk'
+// const rootUrl = 'https://api.klequis-todo.tk'
 const rootUrl = ''
+console.log('rootUrl (blank for dev):', rootUrl)
+
 
 // Errors are handled by fetchJson()
 export default {
   todos: {
     async read(userId) {
-      orange('api.todos.read()')
       const data = await fetchJson(`${rootUrl}/api/todo/${userId}`, {
         method: 'GET'
       })
-      orange('todos.read: data', data)
       return data
     },
     async readById(id) {
@@ -22,12 +24,10 @@ export default {
       return data
     },
     async create(todo) {
-      orange('api: create called')
       const data = await fetchJson(`${rootUrl}/api/todo`, {
         method: 'POST',
         body: JSON.stringify(todo)
       })
-      orange('api: create done')
       return data.data
     },
     async delete(_id) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import createAuth0Client from '@auth0/auth0-spa-js'
-import { green } from 'logger';
+import { blue } from 'logger'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState({}, document.title, window.location.pathname)
@@ -22,15 +22,20 @@ const getAuth0Client = async () => {
     try {
       client = await createAuth0Client(getInitOptions())
     } catch (e) {
-      throw new Error('auth0Client ERROR: could not create client', e)
+      // throw new Error('auth0Client ERROR: could not create client', e)
     }
   }
   return client
 }
 
-export const getTokenSilently = async (...p) => {
+// TODO: remove try catch before code complete
+export const getTokenSilently = async params => {
   const client = await getAuth0Client()
-  return await client.getTokenSilently(...p)
+  try {
+    return await client.getTokenSilently(params)
+  } catch (e) {
+    // console.error('react-auth0-spa.getTokenSilently', e)
+  }
 }
 
 export const Auth0Provider = ({
@@ -38,59 +43,89 @@ export const Auth0Provider = ({
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-
   setInitOptions(initOptions)
 
   const [isAuthenticated, setIsAuthenticated] = useState()
   const [user, setUser] = useState()
-  const [auth0Client, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [popupOpen, setPopupOpen] = useState(false)
 
   useEffect(() => {
     const init = async () => {
-      const client = await getAuth0Client('Auth0Provider')
-      setAuth0(client)
+      const client = await getAuth0Client()
       if (window.location.search.includes('code=')) {
         const { appState } = await client.handleRedirectCallback()
         onRedirectCallback(appState)
       }
-
       const isAuthenticated = await client.isAuthenticated()
       setIsAuthenticated(isAuthenticated)
-
       if (isAuthenticated) {
         const user = await client.getUser()
         setUser(user)
       }
-
       setLoading(false)
     }
     init()
     // eslint-disable-next-line
   }, [])
+
   const loginWithPopup = async (params = {}) => {
+    blue('loginWithPopup()')
     setPopupOpen(true)
+    const client = getAuth0Client()
     try {
-      await auth0Client.loginWithPopup(params)
+      await client.loginWithPopup(...params)
     } catch (error) {
       console.error(error)
     } finally {
       setPopupOpen(false)
     }
-    const user = await auth0Client.getUser()
+    const user = await client.getUser()
     setUser(user)
-    green('auth0: user', user)
+    blue('auth0: user', user)
     setIsAuthenticated(true)
   }
 
   const handleRedirectCallback = async () => {
-    setLoading(true)
-    await auth0Client.handleRedirectCallback()
-    const user = await auth0Client.getUser()
-    setLoading(false)
-    setIsAuthenticated(true)
-    setUser(user)
+    blue('handleRedirectCallback()')
+    try {
+      setLoading(true)
+      const client = getAuth0Client()
+      await client.handleRedirectCallback()
+      const user = await client.getUser()
+      setIsAuthenticated(true)
+      setUser(user)
+    } catch (e) {
+      // console.error('react-auth0-spa.loginWithRedirect', e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loginWithRedirect = async (...params) => {
+    blue('loginWithRedirect()')
+    blue('params', params)
+    try {
+      const client = await getAuth0Client()
+      await client.loginWithRedirect(...params)
+    } catch (e) {
+      /*
+        you could switch to the sample code and see if you wrap it in a try/catch
+        if the same error is reported.
+        I really don't think it is coming from my code
+      */
+      // // console.error('react-auth0-spa.loginWithRedirect', e)
+    }
+  }
+
+  const logout = async (...params) => {
+    blue('logout')
+    try {
+      const client = await getAuth0Client()
+      await client.logout(...params)
+    } catch (e) {
+      // console.error('react-auth0-spa.logout', e)
+    }
   }
 
   return (
@@ -102,11 +137,17 @@ export const Auth0Provider = ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
-        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
+        // new
+        loginWithRedirect,
+        logout
+        // old
+        // loginWithRedirect: (...p) => auth0.loginWithRedirect(...p),
+        // loginWithRedirect: (...p) => getAuth0Client.loginWithRedirect(...p),
         // getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        logout: (...p) => auth0Client.logout(...p)
+        // logout: (...p) => auth0Client.logout(...p)
+        // unused
+        // getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
+        // getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
       }}
     >
       {children}

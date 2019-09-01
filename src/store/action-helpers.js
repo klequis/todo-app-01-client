@@ -12,15 +12,6 @@ export const logError = (err, key) => {
   red(`actions.logError(key:${key})`, err)
 }
 
-// console.group()
-// pink('request', request)
-// pink('key', key)
-// pink('start', start)
-// pink('success', success)
-// pink('failure', failure)
-// console.groupEnd()
-
-// ACTIVE
 export const createRequestThunk = ({
   request,
   key,
@@ -37,21 +28,53 @@ export const createRequestThunk = ({
     
     try {
       const data = await request(...args)
-      // await dispatch(requestSuccess(requestKey))
+      await dispatch(requestSuccess(requestKey))
       success.map(async actionCreator => {
+        pink('success.actionCreator', actionCreator)
         dispatch(requestSuccess(requestKey))
         await dispatch(actionCreator(data))
+        // pink('s', s)
       })
     } catch (e) {
-      // await dispatch(requestFailed(e, requestKey))
+      await dispatch(requestFailed(e, requestKey))
       return failure.map(async actionCreator => {
+
+        pink('failure.actionCreator', actionCreator)
         dispatch(requestFailed(e, requestKey))
         await dispatch(actionCreator(e))
+        // pink('f', f)
       })
     }
   }
 }
 
+// Promise
+// export const createRequestThunk = ({
+//   request,
+//   key,
+//   start = [],
+//   success = [],
+//   failure = []
+// }) => {
+//   return (...args) => dispatch => {
+//     const requestKey = typeof key === 'function' ? key(...args) : key
+//     start.forEach(actionCreator => dispatch(actionCreator()))
+//     dispatch(requestPending(requestKey))
+
+//     return request(...args)
+//       .then(data => {
+//         success.forEach(actionCreator => dispatch(actionCreator(data)))
+//         dispatch(requestSuccess(requestKey))
+//       })
+//       .catch(reason => {
+//         failure.forEach(actionCreator => {
+//           pink('failure.actionCreator', actionCreator)
+//           dispatch(actionCreator(reason))
+//         })
+//         dispatch(requestFailed(reason, requestKey))
+//       })
+//   }
+// }
 
 // ORIG
 // export const createRequestThunk = ({
