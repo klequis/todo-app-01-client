@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useErrors } from './useErrors'
 // eslint-disable-next-line
 import { green } from 'logger'
+
+
 
 const formStyle = {
   margin: '20px 0 60px 0'
@@ -12,7 +15,7 @@ const buttonStyle = {
 
 const AddTodo = props => {
   const [title, setTitle] = useState('')
-
+  const { setError } = useErrors()
   const { handleAddTodo } = props
 
   const handleInputChange = e => {
@@ -35,6 +38,7 @@ const AddTodo = props => {
       <input
         id='title'
         onChange={handleInputChange}
+        onBlur={}
         type='text'
         value={title}
       />

@@ -4,16 +4,18 @@ import { append, remove } from 'ramda'
 // eslint-disable-next-line
 import { green } from 'logger'
 
+
 export const useErrors = selector => {
   const [validationErrors, setValidationErrors] = useState([])
 
   const setError = (field, message = '') => {
-    const errs0 = validationErrors
-    const idx = errs0.findIndex(e => e.field === field)
+    // If an error for the/this field already exists, remove it
+    const idx = validationErrors.findIndex(e => e.field === field)
     let errs1
     if (idx > -1) {
-      errs1 = remove(idx, 1, errs0)
+      errs1 = remove(idx, 1, validationErrors)
     }
+    // TODO: (why?) if there is a message append the error
     if (message !== '') {
       setValidationErrors(
         append(
@@ -25,10 +27,12 @@ export const useErrors = selector => {
         )
       )
     } else {
+      // TODO: (makes no sense)  Otherwise, replace all errors with the current one
       setValidationErrors(errs1)
     }
   }
 
+  // get an error from the existing errors or return ''
   const getError = field => {
     const err = validationErrors.find(e => e.field === field)
     if (err) {
@@ -38,6 +42,7 @@ export const useErrors = selector => {
     }
   }
 
+  // Any server validation errors will be in redux
   const serverValidationErrors = useSelector(selector)
 
   /*
@@ -47,7 +52,8 @@ export const useErrors = selector => {
   */
   useEffect(
     () => serverValidationErrors.forEach(e => setError(e.param, e.msg)),
-    [serverValidationErrors]
+    // eslint-disable-next-line
+    [serverValidationErrors] // don't include setError
   )
 
   // green('validationErrors', validationErrors)
