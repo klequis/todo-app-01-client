@@ -27,7 +27,6 @@ const TodosContainer = props => {
     ;(async () => {
       try {
         const { testUserId } = config.auth0
-        green('testUserId', testUserId)
         await todosReadRequest(testUserId)
       } catch (e) {
         console.log('TheError', e)
