@@ -16,15 +16,13 @@ const styles = {
   }
 }
 
-const SignInUpOut = (props) => {
+const SignInUpOut = props => {
   const { isAuthenticated, logout, loginWithRedirect, user } = useAuth0()
-  green('props', props)
   const { setUser } = props
   // green('typeof loginWithPopup', typeof loginWithPopup)
   // green('typeof logout', typeof logout)
   // green('typeof isAuthenticated', typeof isAuthenticated)
   // green('typeof isLoading', typeof isLoading)
-
 
   useEffect(() => {
     // TODO: this does nothing?
@@ -45,9 +43,6 @@ const SignInUpOut = (props) => {
     loginWithRedirect({})
   }
 
-  
-  
-  green('SignInUpOut: user', user)
   return (
     <div>
       {!isAuthenticated && (
@@ -73,4 +68,7 @@ const mstp = state => {
 }
 
 const actions = { setUser }
-export default connect(mstp, actions)(SignInUpOut)
+export default connect(
+  mstp,
+  actions
+)(SignInUpOut)

@@ -12,7 +12,6 @@ const User = ({user}) => {
     const fn = () => {
       if (user) {
         const { 'https://klequis-todo.tk/uuid': userId } = user
-        green('userId', userId)
         setUser(userId)
       }
     }
