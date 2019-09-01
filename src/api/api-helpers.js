@@ -56,26 +56,6 @@ const getToken = async () => {
   }
 }
 
-const checkErrors = async res => {
-  logResponse(res)
-  const { errors } = res
-  const { status, statusText, url } = res
-  if (status >= 200 && status < 300) {
-    return []
-  } else if (status === 422) {
-    return {
-      status,
-      statusText,
-      url,
-      validationErrors: errors || []
-    }
-  } else {
-    // TODO: what needs to be covered here
-    // If error is >=300 && error !== 422
-    return []
-  }
-}
-
 export const fetchJson = async (url, options = {}) => {
   try {
     const token = await getToken()
