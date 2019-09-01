@@ -26,6 +26,10 @@ const AddTodo = props => {
     setTitle('')
   }
 
+  const handleCancelClick = ()  => {
+    setTitle('')
+  }
+
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
@@ -35,8 +39,7 @@ const AddTodo = props => {
         value={title}
       />
       <button style={buttonStyle} type='submit'>Add</button>
-      // TODO: cancel button doesn't do anything. Remove it?
-      <button style={buttonStyle} type='button'>Cancel</button>
+      <button style={buttonStyle} onClick={handleCancelClick} type='button'>Cancel</button>
     </form>
   )
 }
