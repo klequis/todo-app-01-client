@@ -50,9 +50,9 @@ const AddTodo = props => {
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
-        id="title"
+        id='title'
         onChange={handleInputChange}
-        type="text"
+        type='text'
         value={title}
         onBlur={handleOnBlur}
       />
