@@ -20,14 +20,13 @@ const AddTodo = props => {
   }
 
   const handleOnSubmit = e => {
-    green('handleOnSubmit')
     e.preventDefault()
     // TODO: send all paramaters for the todo, not just 'title'
     handleAddTodo(title)
     setTitle('')
   }
 
-  const handleCancelClick = () => {
+  const handleCancelClick = ()  => {
     setTitle('')
   }
 
@@ -40,13 +39,7 @@ const AddTodo = props => {
         value={title}
       />
       <button style={buttonStyle} type='submit'>Add</button>
-      <button 
-        style={buttonStyle} 
-        onClick={handleOnSubmit}
-        type='button
-      '>
-        Cancel
-      </button>
+      <button style={buttonStyle} onClick={handleCancelClick} type='button'>Cancel</button>
     </form>
   )
 }
