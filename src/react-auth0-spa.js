@@ -28,6 +28,7 @@ const getAuth0Client = async () => {
   return client
 }
 
+// TODO: remove try catch before code complete
 export const getTokenSilently = async params => {
   const client = await getAuth0Client()
   try {
@@ -101,7 +102,7 @@ export const Auth0Provider = ({
     }
   }
 
-  const loginWithRedirect = async params => {
+  const loginWithRedirect = async (...params) => {
     blue('loginWithRedirect()')
     blue('params', params)
     try {

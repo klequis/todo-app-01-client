@@ -3,25 +3,25 @@ import React, { useState } from 'react'
 import { green } from 'logger'
 
 const formStyle = {
-  margin: '20px 0 60px 0',
+  margin: '20px 0 60px 0'
 }
 
 const buttonStyle = {
-  margin: '0 5px 0 5px',
+  margin: '0 5px 0 5px'
 }
 
 const AddTodo = props => {
-  
   const [title, setTitle] = useState('')
-  
+
   const { handleAddTodo } = props
 
   const handleInputChange = e => {
     setTitle(e.target.value)
   }
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = e => {
     e.preventDefault()
+    // TODO: send all paramaters for the todo, not just 'title'
     handleAddTodo(title)
     setTitle('')
   }
@@ -29,11 +29,13 @@ const AddTodo = props => {
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
       <input
+        id='title'
         onChange={handleInputChange}
         type='text'
         value={title}
       />
       <button style={buttonStyle} type='submit'>Add</button>
+      // TODO: cancel button doesn't do anything. Remove it?
       <button style={buttonStyle} type='button'>Cancel</button>
     </form>
   )
