@@ -2,12 +2,7 @@ import fetch from 'cross-fetch'
 import { getTokenSilently } from 'react-auth0-spa'
 import config from 'config'
 // eslint-disable-next-line
-<<<<<<< HEAD
-import { orange, red } from 'logger'
-import { redf } from 'logger'
-=======
 import { orange, red, redf } from 'logger'
->>>>>>> dev
 
 const logRequest = (url, options, headers) => {
   console.group('fetchJson.logRequest')
@@ -34,21 +29,12 @@ const formatError = (status, statusText, url = '', validationErrors = []) => {
     validationErrors: validationErrors || []
   }
 }
-<<<<<<< HEAD
 
 const stripLeadingForwardSlash = path => {
   const r = path.startsWith('/') ? path.substring(1) : path
   return r
 }
 
-=======
-
-const stripLeadingForwardSlash = path => {
-  const r = path.startsWith('/') ? path.substring(1) : path
-  return r
-}
-
->>>>>>> dev
 const getFullUri = (nodeEnv, route) => {
   let r
   if (nodeEnv === 'production') {
@@ -59,7 +45,6 @@ const getFullUri = (nodeEnv, route) => {
   }
   return r
 }
-<<<<<<< HEAD
 
 const getToken = async () => {
   try {
@@ -70,49 +55,12 @@ const getToken = async () => {
     throw new Error(msg, e)
   }
 }
-
-const checkErrors = async res => {
-  logResponse(res)
-  const { status, statusText, url } = res
-=======
-
-const getToken = async () => {
-  try {
-    return await getTokenSilently()
-  } catch (e) {
-    const msg = '[api-helpers.getToken] ERROR: error fetching token'
-    redf(msg, e)
-    throw new Error(msg, e)
-  }
-}
->>>>>>> dev
 
 const checkErrors = async res => {
   logResponse(res)
   const { errors } = res
   const { status, statusText, url } = res
   if (status >= 200 && status < 300) {
-<<<<<<< HEAD
-    return res.json()
-  }
-
-  let validationErrors = []
-  if (status === 422) {
-    const body = await res.json()
-    validationErrors = body.errors
-  }
-
-  let err = formatError(status, statusText, url, validationErrors)
-
-  throw err
-}
-
-const fetchJson = async (url, options = {}) => {
-  try {
-    const token = await getToken()
-
-    const headers = {
-=======
     return []
   } else if (status === 422) {
     return {
@@ -133,7 +81,6 @@ export const fetchJson = async (url, options = {}) => {
     const token = await getToken()
 
     let headers = {
->>>>>>> dev
       ...options.headers,
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -145,15 +92,6 @@ export const fetchJson = async (url, options = {}) => {
 
     logRequest(fullUrl, options, headers)
 
-<<<<<<< HEAD
-    const res = await fetch(fullUrl, {
-      ...options,
-      headers
-    })
-
-    const chkErr = checkErrors(res)
-    return chkErr
-=======
     const r1 = await fetch(fullUrl, {
       ...options,
       headers
@@ -169,16 +107,11 @@ export const fetchJson = async (url, options = {}) => {
     } else {
       // TODO: not sure what to do here
     }
->>>>>>> dev
   } catch (e) {
     let err
 
     if (e.message === 'Network request failed') {
-<<<<<<< HEAD
-      // A network error doesn't have the same format as an error from 
-=======
       // A network error doesn't have the same format as an error from
->>>>>>> dev
       // the api. However, the action & reducer is expecting the api
       // error format so format it as such
       err = formatError(503, 'Network request failed')
@@ -189,8 +122,4 @@ export const fetchJson = async (url, options = {}) => {
   }
 }
 
-<<<<<<< HEAD
-export default fetchJson
-=======
 export default { fetchJson }
->>>>>>> dev

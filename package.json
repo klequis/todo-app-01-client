@@ -1,8 +1,7 @@
 {
   "name": "client-hooks-1",
-  "version": "0.1.4",
+  "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3030",
   "scripts": {
     "start": "node scripts/start.js",
     "start-prod": "NODE_ENV=production node scripts/start.js",
@@ -10,11 +9,7 @@
     "test": "node scripts/test.js"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@auth0/auth0-spa-js": "^1.1.1",
-=======
     "@auth0/auth0-spa-js": "^1.2.2",
->>>>>>> dev
     "@babel/core": "7.4.3",
     "@svgr/webpack": "4.1.0",
     "@typescript-eslint/eslint-plugin": "1.6.0",
