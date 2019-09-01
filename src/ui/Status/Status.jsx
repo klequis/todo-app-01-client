@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { useAuth0 } from 'react-auth0-spa'
 import { version } from '../../../package.json'
 import { setUser } from 'store/user/actions'
-import { green } from 'logger'
 import { getUserId } from 'store/user/selectors.js'
 
 const User = ({user}) => {
