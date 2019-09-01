@@ -12,15 +12,6 @@ export const logError = (err, key) => {
   red(`actions.logError(key:${key})`, err)
 }
 
-// console.group()
-// pink('request', request)
-// pink('key', key)
-// pink('start', start)
-// pink('success', success)
-// pink('failure', failure)
-// console.groupEnd()
-
-// ACTIVE
 export const createRequestThunk = ({
   request,
   key,

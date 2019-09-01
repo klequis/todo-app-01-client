@@ -118,7 +118,7 @@ export const Auth0Provider = ({
     }
   }
 
-  const logout = async (params = {}) => {
+  const logout = async (...params) => {
     blue('logout')
     try {
       const client = await getAuth0Client()

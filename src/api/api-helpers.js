@@ -2,14 +2,32 @@ import fetch from 'cross-fetch'
 import { getTokenSilently } from 'react-auth0-spa'
 import config from 'config'
 // eslint-disable-next-line
-import { orange, red } from 'logger'
+import { orange, red, redf } from 'logger'
 
 const logRequest = (url, options, headers) => {
-  console.group('fetchJson')
+  console.group('fetchJson.logRequest')
   orange('url', url)
   orange('options', options)
   orange('headers', headers)
   console.groupEnd()
+}
+
+const logResponse = res => {
+  const { status, statusText, url } = res
+  console.group('fetchJson.logResponse')
+  orange('status', status)
+  orange('statusText', statusText)
+  orange('url', url)
+  console.groupEnd()
+}
+
+const formatError = (status, statusText, url = '', validationErrors = []) => {
+  return {
+    status,
+    statusText,
+    url,
+    validationErrors: validationErrors || []
+  }
 }
 
 const stripLeadingForwardSlash = path => {
@@ -28,41 +46,80 @@ const getFullUri = (nodeEnv, route) => {
   return r
 }
 
-export const fetchJson = async (url, options = {}) => {
-
-  const token = await getTokenSilently()
-  // orange('token', token)
-
-  let headers = {
-    ...options.headers,
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`
+const getToken = async () => {
+  try {
+    return await getTokenSilently()
+  } catch (e) {
+    const msg = '[api-helpers.getToken] ERROR: error fetching token'
+    redf(msg, e)
+    throw new Error(msg, e)
   }
+}
 
-  const env = process.env.NODE_ENV
-  const fullUrl = getFullUri(env, url)
-
-  logRequest(fullUrl, options, headers)
-
-  const r1 = await fetch(fullUrl, {
-    ...options,
-    headers,
-  })
-
-  const { status } = r1
-
+const checkErrors = async res => {
+  logResponse(res)
+  const { errors } = res
+  const { status, statusText, url } = res
   if (status >= 200 && status < 300) {
-    return await r1.json()
+    return []
+  } else if (status === 422) {
+    return {
+      status,
+      statusText,
+      url,
+      validationErrors: errors || []
+    }
   } else {
-    const err = {
-      status: r1.status,
-      statusText: r1.statusText,
-      url: r1.url,
+    // TODO: what needs to be covered here
+    // If error is >=300 && error !== 422
+    return []
+  }
+}
+
+export const fetchJson = async (url, options = {}) => {
+  try {
+    const token = await getToken()
+
+    let headers = {
+      ...options.headers,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+
+    const env = process.env.NODE_ENV
+    const fullUrl = getFullUri(env, url)
+
+    logRequest(fullUrl, options, headers)
+
+    const r1 = await fetch(fullUrl, {
+      ...options,
+      headers
+    })
+    logResponse(r1)
+    const { errors, status, statusText, url: resUrl } = r1
+    if (status >= 200 && status < 300) {
+      orange('status OK')
+      return await r1.json()
+    }
+    if (status === 422) {
+      return formatError(status, statusText, resUrl, errors)
+    } else {
+      // TODO: not sure what to do here
+    }
+  } catch (e) {
+    let err
+
+    if (e.message === 'Network request failed') {
+      // A network error doesn't have the same format as an error from
+      // the api. However, the action & reducer is expecting the api
+      // error format so format it as such
+      err = formatError(503, 'Network request failed')
+    } else {
+      err = e
     }
     throw err
   }
-    
 }
 
 export default { fetchJson }
