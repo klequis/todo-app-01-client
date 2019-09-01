@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Link,
   Switch,
   Route,
   BrowserRouter as Router /*, Link */
@@ -14,6 +13,51 @@ import DevTools from 'ui/DevTools'
 import withStyles from 'react-jss'
 import { useAuth0 } from 'react-auth0-spa'
 import Toasts from 'ui/Toasts'
+<<<<<<< HEAD
+
+function App(props) {
+  const { loading } = useAuth0()
+
+  if (loading) {
+    return <h1>Loading</h1>
+  }
+  const { classes } = props
+  return (
+    <>
+    <Toasts />
+    <div className={classes.wrapper}>
+      <Status />
+      
+      <Router>
+        <hr />
+        <NavBar />
+        <hr />
+
+        <Switch>
+          <PrivateRoute exact path="/todos" component={Todos} />
+          <Route exact path="/" component={Home} />
+        </Switch>
+      </Router>
+      <DevTools />
+    </div>
+    </>
+  )
+}
+
+const styles = {
+  wrapper: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    alignItems: 'center',
+    marginTop: 50
+  },
+  add: {
+    marginBottom: 50
+  }
+}
+
+=======
 
 function App({ classes }) {
   const { loading } = useAuth0()
@@ -55,4 +99,5 @@ const styles = {
   }
 }
 
+>>>>>>> dev
 export default withStyles(styles)(App)
