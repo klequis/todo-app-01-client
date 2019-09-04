@@ -59,7 +59,8 @@ export const todosReadByIdRequest = createRequestThunk({
   request: api.todos.readById,
   key: TODOS_READ_BY_ID_REQUEST_KEY,
   success: [todosRead],
-  failure: [logApiError]
+  // failure: [logApiError]
+  failure: [e => setToast({error: e, message: 'Could not get todos', level: TOAST_WARN})]
 })
 
 // Create
@@ -67,7 +68,7 @@ export const todoCreateRequest = createRequestThunk({
   request: api.todos.create,
   key: TODOS_CREATE_REQUEST_KEY,
   success: [todosReadRequest],
-  failure: [setValidationErrors]
+  failure: [setValidationErrors /*, e => setToast({error: e, message: 'Some fields need attention', level: TOAST_WARN})*/]
 })
 
 // Delete
