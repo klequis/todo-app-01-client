@@ -3,8 +3,6 @@ import { useErrors } from './useErrors'
 // eslint-disable-next-line
 import { green } from 'logger'
 
-
-
 const formStyle = {
   margin: '20px 0 60px 0'
 }
@@ -29,32 +27,28 @@ const AddTodo = props => {
     setTitle('')
   }
 
-  const handleCancelClick = ()  => {
+  const handleCancelClick = () => {
     setTitle('')
   }
 
-  const handleTitleOnBlur = (e)  => {
-
+  const handleTitleOnBlur = e => {
     const { id, value } = e.target
-    green('id', id)
-    green('value', value)
-    if (value.length <= 3) {
+    if (value.length <= 2) {
       setError(id, 'client - Title must be at least 3 charters long')
     }
   }
 
   return (
     <form style={formStyle} onSubmit={handleOnSubmit}>
-      
-        <input
-          id="title"
-          onChange={handleInputChange}
-          onBlur={handleTitleOnBlur}
-          type="text"
-          value={title}
-        />
-        <div>{getError('title')}</div>
-      
+      <input
+        id="title"
+        onChange={handleInputChange}
+        onBlur={handleTitleOnBlur}
+        type="text"
+        value={title}
+      />
+      <div>{getError('title')}</div>
+
       <button style={buttonStyle} type="submit">
         Add
       </button>
