@@ -17,6 +17,7 @@ const getInitOptions = () => {
 }
 
 const getAuth0Client = async () => {
+  // blue('getting client')
   let client
   if (!client) {
     try {
@@ -25,6 +26,7 @@ const getAuth0Client = async () => {
       // throw new Error('auth0Client ERROR: could not create client', e)
     }
   }
+  // blue('returning client')
   return client
 }
 
@@ -70,7 +72,7 @@ export const Auth0Provider = ({
   }, [])
 
   const loginWithPopup = async (params = {}) => {
-    blue('loginWithPopup()')
+    // blue('loginWithPopup()')
     setPopupOpen(true)
     const client = getAuth0Client()
     try {
@@ -87,12 +89,13 @@ export const Auth0Provider = ({
   }
 
   const handleRedirectCallback = async () => {
-    blue('handleRedirectCallback()')
+    // blue('handleRedirectCallback()')
     try {
       setLoading(true)
       const client = getAuth0Client()
       await client.handleRedirectCallback()
       const user = await client.getUser()
+      // blue('user', user)
       setIsAuthenticated(true)
       setUser(user)
     } catch (e) {
@@ -103,8 +106,8 @@ export const Auth0Provider = ({
   }
 
   const loginWithRedirect = async (...params) => {
-    blue('loginWithRedirect()')
-    blue('params', params)
+    // blue('loginWithRedirect()')
+    // blue('params', params)
     try {
       const client = await getAuth0Client()
       await client.loginWithRedirect(...params)
@@ -119,7 +122,7 @@ export const Auth0Provider = ({
   }
 
   const logout = async (...params) => {
-    blue('logout')
+    // blue('logout')
     try {
       const client = await getAuth0Client()
       await client.logout(...params)
