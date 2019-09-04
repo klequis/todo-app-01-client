@@ -9,41 +9,39 @@ import {
   todoUpdateRequest
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
-import config from 'config'
+import { getUserId } from 'store/user/selectors'
 // eslint-disable-next-line
 import { green, red } from 'logger'
 
 const TodosContainer = props => {
-  // green('TodosContainer')
   const {
     todoCreateRequest,
     todoDeleteRequest,
     todosReadRequest,
     todos,
-    todoUpdateRequest
+    todoUpdateRequest,
+    userId
   } = props
   
   useEffect(() => {
     ;(async () => {
       try {
-        const { testUserId } = config.auth0
-        await todosReadRequest(testUserId)
+        await todosReadRequest(userId)
       } catch (e) {
         console.log('TheError', e)
       }
     })()
-  }, [todosReadRequest])
+  }, [todosReadRequest, userId])
 
   const handleAddTodo = async title => {
     try {
-      await todoCreateRequest({ title })
+      await todoCreateRequest(userId, { title })
     } catch (e) {
       red('App.handleAddTodo ERROR:', e)
     }
   }
 
   const handleDeleteTodo = async id => {
-    // green('App.handleDeleteTodo: id', id)
     try {
       await todoDeleteRequest(id)
     } catch (e) {
@@ -52,7 +50,6 @@ const TodosContainer = props => {
   }
 
   const handleCompletedChange = async todo => {
-    // green('handleCompletedChange: todo', todo)
     try {
       await todoUpdateRequest(todo)
     } catch (e) {
@@ -77,7 +74,8 @@ const actions = { todoCreateRequest, todoDeleteRequest, todosReadRequest, todoUp
 
 const mapStateToProps = state => {
   return {
-    todos: getAllTodos(state)
+    todos: getAllTodos(state),
+    userId: getUserId(state)
   }
 }
 

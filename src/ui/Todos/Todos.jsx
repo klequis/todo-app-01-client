@@ -9,6 +9,7 @@ const todoListStyle = {
 
 const TodoList = props => {
   const { handleCompletedChange, handleDeleteTodo, todos } = props
+  // green('TodoList: todos', todos)
   return (
     <div style={todoListStyle}>
       {todos.map(t => (
