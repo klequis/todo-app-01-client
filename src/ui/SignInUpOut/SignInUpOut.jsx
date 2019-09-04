@@ -17,7 +17,13 @@ const styles = {
 }
 
 const SignInUpOut = props => {
-  const { isAuthenticated, logout, loginWithRedirect, user } = useAuth0()
+  const {
+    isAuthenticated,
+    logout,
+    loginWithRedirect,
+    user
+  } = useAuth0()
+  green('user', user)
   const { setUser } = props
   // green('typeof loginWithPopup', typeof loginWithPopup)
   // green('typeof logout', typeof logout)
@@ -27,28 +33,35 @@ const SignInUpOut = props => {
   useEffect(() => {
     // TODO: this does nothing?
     const validateUser = async () => {
-      const uid = user['https://klequis-todo.tk/uuid']
-      setUser(uid)
+      // if (user) {
+      //   green('is not loading')
+      //   const { 'https://klequis-todo.tk/uuid': uid } = user
+      //   setUser(uid)
+      // } else {
+      //   loginWithRedirect({})
+      // }
+      if (isAuthenticated) {
+        const { 'https://klequis-todo.tk/uuid': uid } = user
+        setUser(uid)
+      }
     }
     validateUser()
   }, [user, setUser])
 
-  const handleLogoutClick = () => {
-    logout({
-      returnTo: window.location.origin
-    })
-  }
+  
 
-  const handleLoginClick = () => {
-    loginWithRedirect({})
-  }
+  
 
   return (
     <div>
       {!isAuthenticated && (
-        <button style={styles.button} onClick={handleLoginClick}>
-          Sign In
-        </button>
+        <div>
+          <h1>Welcome to your todos</h1>
+          <h2>To see your todos ...</h2>
+          <button style={styles.button} onClick={handleLoginClick}>
+            Sign In
+          </button>
+        </div>
       )}
       {isAuthenticated && (
         <div>
