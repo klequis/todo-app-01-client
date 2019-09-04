@@ -2,43 +2,38 @@ import { fetchJson } from './api-helpers'
 // eslint-disable-next-line
 import { orange, green } from 'logger'
 
-// const rootUrl = process.env.NODE_ENV === 'development' ? '' : 'https://api.klequis-todo.tk'
-// const rootUrl = 'https://api.klequis-todo.tk'
-const rootUrl = ''
-console.log('rootUrl (blank for dev):', rootUrl)
-
-
 // Errors are handled by fetchJson()
 export default {
   todos: {
     async read(userId) {
-      const data = await fetchJson(`${rootUrl}/api/todo/${userId}`, {
+      const data = await fetchJson(`api/todo/${userId}`, {
         method: 'GET'
       })
       return data
     },
-    async readById(id) {
-      const data = await fetchJson(`${rootUrl}/api/todo/${id}`, {
+    async readById(userId, todoId) {
+      const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'GET'
       })
       return data
     },
-    async create(todo) {
-      const data = await fetchJson(`${rootUrl}/api/todo`, {
+    async create(userId, todo) {
+      const data = await fetchJson(`api/todo/${userId}`, {
         method: 'POST',
         body: JSON.stringify(todo)
       })
-      return data.data
+      orange('api.todos.create: data', data)
+      return data
     },
-    async delete(_id) {
-      orange('api.todos.delete: _id', _id)
-      const data = await fetchJson(`${rootUrl}/api/todo/${_id}`, {
+    async delete(userId, todoId) {
+      orange('api.todos.delete: todoId', todoId)
+      const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'DELETE'
       })
       return data
     },
-    async update(todo) {
-      const data = await fetchJson(`${rootUrl}/api/todo`, {
+    async update(userId, todoId, todo) {
+      const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'PATCH',
         body: JSON.stringify(todo)
       })
