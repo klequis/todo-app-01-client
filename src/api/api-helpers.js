@@ -3,6 +3,7 @@ import { getTokenSilently } from 'react-auth0-spa'
 import config from 'config'
 // eslint-disable-next-line
 import { orange, red, redf } from 'logger'
+import { green } from 'logger';
 
 const logRequest = (url, options, headers) => {
   console.group('fetchJson.logRequest')
@@ -22,6 +23,8 @@ const logResponse = res => {
 }
 
 const formatError = (status, statusText, url = '', validationErrors = []) => {
+  // orange(`status: ${status}, statusText: ${statusText}, url: ${url}, validationErrors: ${validationErrors}`)
+  orange('formatError: validationErrors ', validationErrors)
   return {
     status,
     statusText,
@@ -77,13 +80,19 @@ export const fetchJson = async (url, options = {}) => {
       headers
     })
     logResponse(r1)
-    const { errors, status, statusText, url: resUrl } = r1
+    const { status, statusText, url: resUrl } = r1
     if (status >= 200 && status < 300) {
-      orange('status OK')
+      // orange('status OK')
       return await r1.json()
     }
     if (status === 422) {
-      return formatError(status, statusText, resUrl, errors)
+      // orange('fetchJson: errors', errors)
+      const body = await r1.json()
+      orange('fetchJson 422: body', body)
+      const { errors } = body
+      throw new Error(formatError(status, statusText, resUrl, errors))
+
+
     } else {
       // TODO: not sure what to do here
     }
@@ -94,7 +103,8 @@ export const fetchJson = async (url, options = {}) => {
       // A network error doesn't have the same format as an error from
       // the api. However, the action & reducer is expecting the api
       // error format so format it as such
-      err = formatError(503, 'Network request failed')
+      // err = formatError(503, 'Network request failed')
+      err = e
     } else {
       err = e
     }
