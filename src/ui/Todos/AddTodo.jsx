@@ -3,13 +3,13 @@ import { useErrors } from './useErrors'
 // eslint-disable-next-line
 import { green } from 'logger'
 
-const formStyle = {
-  margin: '20px 0 60px 0'
-}
+// const formStyle = {
+//   margin: '20px 0 60px 0'
+// }
 
-const buttonStyle = {
-  margin: '0 5px 0 5px'
-}
+// const buttonStyle = {
+//   margin: '0 5px 0 5px'
+// }
 
 const AddTodo = props => {
   const [title, setTitle] = useState('')
@@ -39,7 +39,7 @@ const AddTodo = props => {
   }
 
   return (
-    <form style={formStyle} onSubmit={handleOnSubmit}>
+    <form onSubmit={handleOnSubmit}>
       <input
         id="title"
         onChange={handleInputChange}
@@ -49,10 +49,10 @@ const AddTodo = props => {
       />
       <div>{getError('title')}</div>
 
-      <button style={buttonStyle} type="submit">
+      <button type="submit">
         Add
       </button>
-      <button style={buttonStyle} onClick={handleCancelClick} type="button">
+      <button onClick={handleCancelClick} type="button">
         Cancel
       </button>
     </form>

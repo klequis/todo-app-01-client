@@ -25,40 +25,40 @@ const Toast = ({ classes, toast }) => {
 
   const { level, id, message, error } = toast
   green('toast: error', error)
-  const wrapperStyle = classNames({
-    [classes.wrapper]: true,
-    [classes.info]: level === TOAST_INFO,
-    [classes.warn]: level === TOAST_WARN
-  })
+  // const wrapperStyle = classNames({
+  //   [classes.wrapper]: true,
+  //   [classes.info]: level === TOAST_INFO,
+  //   [classes.warn]: level === TOAST_WARN
+  // })
 
   return (
-    <div key={id} className={wrapperStyle}>
+    <div key={id}>
       <h1>{message}</h1>
       <b>{error.statusText}</b>
     </div>
   )
 }
 
-const styles = {
-  wrapper: {
-    position: 'fixed',
-    left: '2rem',
-    top: '4.75rem',
-    boxShadow: '0 .2rem .4rem rgba(0,0,0,.1)',
-    borderRadius: '.2rem',
-    padding: '1rem',
-    animationName: 'slideIn',
-    animationDuration: '.2s'
-  },
-  info: {
-    backgroundColor: 'black',
-    color: 'white'
-  },
-  warn: {
-    backgroundColor: '#b93f55',
-    color: 'white'
-  }
-}
+// const styles = {
+//   wrapper: {
+//     position: 'fixed',
+//     left: '2rem',
+//     top: '4.75rem',
+//     boxShadow: '0 .2rem .4rem rgba(0,0,0,.1)',
+//     borderRadius: '.2rem',
+//     padding: '1rem',
+//     animationName: 'slideIn',
+//     animationDuration: '.2s'
+//   },
+//   info: {
+//     backgroundColor: 'black',
+//     color: 'white'
+//   },
+//   warn: {
+//     backgroundColor: '#b93f55',
+//     color: 'white'
+//   }
+// }
 
 const actions = { clearToast }
 
@@ -69,6 +69,5 @@ const mstp = state => {
 }
 
 export default compose(
-  withStyles(styles),
   connect(mstp, actions)
 )(Toast)

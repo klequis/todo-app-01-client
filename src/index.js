@@ -3,9 +3,9 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import { Auth0Provider } from './react-auth0-spa'
-import './index.css'
 import App from './ui/App'
 import config from 'config'
+import GlobalStyle from './globalStyles'
 
 // eslint-disable-next-line
 // import { green } from 'logger'
@@ -34,6 +34,7 @@ const renderApp = () =>
       onRedirectCallback={onRedirectCallback}
     >
       <Provider store={store}>
+        <GlobalStyle />
         <App />
       </Provider>
     </Auth0Provider>,

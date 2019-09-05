@@ -11,7 +11,6 @@ import {
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
 import { getUserId } from 'store/user/selectors'
-import { withStyles } from 'react-jss'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -91,12 +90,6 @@ const mapStateToProps = state => {
   }
 }
 
-const styles = {
-  
-  backgroundColor: 'green'
-}
-// withStyles(styles),
 export default compose(
-  
   connect(mapStateToProps, actions)
 )(TodosContainer)

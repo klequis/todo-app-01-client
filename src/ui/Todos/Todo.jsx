@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import withStyles from 'react-jss'
 import { mergeRight } from 'ramda'
 import { format } from 'date-fns'
 
@@ -81,41 +80,37 @@ const Todo = props => {
   )
 }
 
-const styles = {
-  field: {
+// const styles = {
+//   field: {
 
-  },
-  todo: {
-    marginBottom: '1em',
-    display: 'flex',
-    // flexFlow: 'column nowrap',
-    backgroundColor: 'blue'
-  },
-  row: {
-    display: 'flex',
-    // flexFlow: 'column nowrap',
-    flexFlow: 'row nowrap',
-    backgroundColor: 'green'
-    // justifyContent: 'flex-start',
-    // alignItems: 'flex-start'
-  },
-  label: {
-    flexBasis: '15%',
-    textAlign: 'right'
-  },
-  data: {
-    flexBasis: '70%',
-    paddingLeft: '10px'
-  },
-  button: {
-    backgroundColor: 'green',
-    '&disabled': {
-      backgroundColor: 'red'
-    }
-  }
-}
+//   },
+//   todo: {
+//     marginBottom: '1em',
+//     display: 'flex',
+//     backgroundColor: 'blue'
+//   },
+//   row: {
+//     display: 'flex',
+//     flexFlow: 'row nowrap',
+//     backgroundColor: 'green'
+//   },
+//   label: {
+//     flexBasis: '15%',
+//     textAlign: 'right'
+//   },
+//   data: {
+//     flexBasis: '70%',
+//     paddingLeft: '10px'
+//   },
+//   button: {
+//     backgroundColor: 'green',
+//     '&disabled': {
+//       backgroundColor: 'red'
+//     }
+//   }
+// }
 
-export default withStyles(styles)(Todo)
+export default Todo
 
 // const fields = [
 //   {
