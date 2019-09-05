@@ -6,7 +6,6 @@ import {
 } from './constants'
 
 export const setValidationErrors = (e) => {
-  purple('setValidationErrors.errors: e', e.errors)
   return {
     type: SET_VALIDATION_ERRORS,
     payload: { errors: e.errors }

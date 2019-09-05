@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import { Auth0Provider } from './react-auth0-spa'
 import './index.css'
-import Wrapper from './Wrapper'
+import App from './ui/App'
 import config from 'config'
 
 // eslint-disable-next-line
@@ -34,7 +34,7 @@ const renderApp = () =>
       onRedirectCallback={onRedirectCallback}
     >
       <Provider store={store}>
-        <Wrapper />
+        <App />
       </Provider>
     </Auth0Provider>,
     document.getElementById('root')

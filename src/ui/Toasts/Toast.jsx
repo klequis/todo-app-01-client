@@ -12,16 +12,19 @@ import { green } from 'logger'
 
 const Toast = ({ classes, toast }) => {
 
-
   useEffect(() => {
     const timerId = setTimeout(() => clearToast(), 3000)
     return () => clearTimeout(timerId)
   })
 
   if (!toast) { return null }
-  
-  const { level, id, message, error } = toast
 
+  green('toast', toast)
+  // green('toast', toast.validationErrors)
+
+
+  const { level, id, message, error } = toast
+  green('toast: error', error)
   const wrapperStyle = classNames({
     [classes.wrapper]: true,
     [classes.info]: level === TOAST_INFO,

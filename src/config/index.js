@@ -13,6 +13,10 @@ const config = {
     scope: 'openid profile email',
     testUserId: testUserId,
   },
+  dev: {
+    logRequest: false,
+    logResponse: false,
+  },
   api: {
     apiRootUriDev: 'http://localhost:3030/',
     apiRootUrlProd: 'https://api.klequis-todo.tk/'

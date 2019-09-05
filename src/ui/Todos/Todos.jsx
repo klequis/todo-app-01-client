@@ -8,18 +8,22 @@ const todoListStyle = {
 }
 
 const TodoList = props => {
-  const { handleCompletedChange, handleDeleteTodo, todos } = props
+  const { busy, handleCompletedChange, handleDeleteTodo, todos } = props
   // green('TodoList: todos', todos)
   return (
-    <div style={todoListStyle}>
-      {todos.map(t => (
-        <Todo
-          handleDeleteTodo={handleDeleteTodo}
-          handleCompletedChange={handleCompletedChange}
-          key={t._id}
-          todo={t}
-        />
-      ))}
+    <div id="TodoList">
+      <div id="numTodos">Number of Todos: ({todos.length})</div>
+      <div id="todos-map" style={todoListStyle}>
+        {todos.map(t => (
+          <Todo
+            key={t._id}
+            busy={busy}
+            handleDeleteTodo={handleDeleteTodo}
+            handleCompletedChange={handleCompletedChange}
+            todo={t}
+          />
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
 import Todos from './Todos'
 import AddTodo from './AddTodo'
 import {
@@ -10,6 +11,8 @@ import {
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
 import { getUserId } from 'store/user/selectors'
+import { withStyles } from 'react-jss'
+
 // eslint-disable-next-line
 import { green, red } from 'logger'
 
@@ -22,45 +25,49 @@ const TodosContainer = props => {
     todoUpdateRequest,
     userId
   } = props
-  
   useEffect(() => {
     ;(async () => {
       try {
-        await todosReadRequest(userId)
+        // green('userId', userId)
+        if (userId) {
+          await todosReadRequest(userId)
+        }
       } catch (e) {
         console.log('TheError', e)
       }
     })()
-  }, [todosReadRequest, userId])
+  }, [userId])
 
   const handleAddTodo = async title => {
     try {
-      await todoCreateRequest(userId, { title })
+      // TODO: Temp code re dueDate
+      const dueDate = new Date().toISOString()
+      await todoCreateRequest(userId, { title, dueDate, userId })
     } catch (e) {
       red('App.handleAddTodo ERROR:', e)
     }
   }
 
-  const handleDeleteTodo = async id => {
+  const handleDeleteTodo = async todoId => {
     try {
-      await todoDeleteRequest(id)
+      await todoDeleteRequest(userId, todoId)
     } catch (e) {
       red('App.handleDeleteTodo ERROR:', e)
     }
   }
 
   const handleCompletedChange = async todo => {
+    
     try {
-      await todoUpdateRequest(todo)
+      const todoId = todo._id
+      await todoUpdateRequest(userId, todoId, todo)
     } catch (e) {
       red('App.handleCompletedChange ERROR:', e)
     }
   }
   return (
-    <div>
-      <AddTodo
-        handleAddTodo={handleAddTodo}
-      />
+    <div id='todosContainer'>
+      <AddTodo handleAddTodo={handleAddTodo} />
       <Todos
         todos={todos}
         handleCompletedChange={handleCompletedChange}
@@ -70,7 +77,12 @@ const TodosContainer = props => {
   )
 }
 
-const actions = { todoCreateRequest, todoDeleteRequest, todosReadRequest, todoUpdateRequest }
+const actions = {
+  todoCreateRequest,
+  todoDeleteRequest,
+  todosReadRequest,
+  todoUpdateRequest
+}
 
 const mapStateToProps = state => {
   return {
@@ -79,8 +91,12 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  actions
+const styles = {
+  
+  backgroundColor: 'green'
+}
+// withStyles(styles),
+export default compose(
+  
+  connect(mapStateToProps, actions)
 )(TodosContainer)
-

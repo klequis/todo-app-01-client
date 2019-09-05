@@ -22,11 +22,9 @@ export default {
         method: 'POST',
         body: JSON.stringify(todo)
       })
-      orange('api.todos.create: data', data)
       return data
     },
     async delete(userId, todoId) {
-      orange('api.todos.delete: todoId', todoId)
       const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'DELETE'
       })
@@ -37,7 +35,7 @@ export default {
         method: 'PATCH',
         body: JSON.stringify(todo)
       })
-      return data.data
+      return data
     }
   }
 }

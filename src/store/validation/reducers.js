@@ -1,6 +1,6 @@
 import { CLEAR_VALIDATION_ERRORS, SET_VALIDATION_ERRORS } from './constants'
 // import { merge } from 'ramda'
-import { blue } from 'logger'
+// import { blue } from 'logger'
 
 export function validationErrorsReducer(state = [], action) {
   switch (action.type) {
