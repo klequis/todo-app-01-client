@@ -6,31 +6,29 @@ import Login from 'ui/Login'
 import DevTools from 'ui/DevTools'
 import { useAuth0 } from 'react-auth0-spa'
 import Toasts from 'ui/Toasts'
+import styled from 'styled-components'
 
+const AppWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: blue;
+`
 
+const Nav = styled.div`
+  display: flex;
+  justify-content: center;
+  background-color: red;
+`;
 
-// body {
-//     background-color: red;
-//     font-family: "Lato", sans-serif;
-//     margin: 0;
-//     font-size: 1rem;
-//     font-weight: 300;
-//   }
+// const Content = styled.div`
+//   flex: 1 0 auto;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   align-content: center;
+//   margin: 0;
+// `;
 
-//   body: {
-//       
-//       
-//       
-//       
-//       line-height: 1.65;
-//       -webkit-text-size-adjust: none;
-//       -ms-overflow-style: scrollbar;
-//       background-color: '#232c35';
-//       color: 'red',
-//       '@media print': {
-//         backgroundColor: 'white',
-//         minWidth: 320
-//       }
 
 
 
@@ -41,13 +39,17 @@ function App({ classes }) {
   }
 
   return (
-    <div id="App">
+    <AppWrapper>
       <Toasts />
-      <Login />
-      <Status />
-      {isAuthenticated ? <Todos /> : null}
-      <DevTools />
-    </div>
+      <Nav>
+        <Login />
+      </Nav>
+      {/* <Content> */}
+        <Status />
+        {isAuthenticated ? <Todos /> : null}
+      {/* </Content> */}
+      {/* <DevTools /> */}
+    </AppWrapper>
   )
 }
 

@@ -9,7 +9,8 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-    color: hsla(0,0%,0%,0.87);
+    color: hsla(0,0%,255%,0.87);
+    background-color: #232c35;
     font-family: 'Cabin Condensed','georgia',sans-serif;
     font-weight: 400;
     word-wrap: break-word;

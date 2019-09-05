@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { mergeRight } from 'ramda'
 import { format } from 'date-fns'
-
+import { styled } from 'styled-components'
 // eslint-disable-next-line
 import { green } from 'logger'
 
 const Todo = props => {
   // green('props', props)
-  const { classes } = props
   const {
     completed,
     _id,
@@ -55,22 +54,22 @@ const Todo = props => {
   ]
 
   return (
-    <div className={classes.todo}>
+    <div>
       <input
         type="checkbox"
         checked={_completed}
         onChange={handleCompletedClick}
       />
-      <div className={classes.field}>
+      <div>
         {fields.map(f => (
-          <div className={classes.row} key={f.label}>
-            <b className={classes.label}>{f.label}:</b>
-            <div className={classes.data}> {f.field}</div>
+          <div key={f.label}>
+            <b>{f.label}:</b>
+            <div> {f.field}</div>
           </div>
         ))}
       </div>
       <button
-        className={classes.button}
+        
         onClick={handleDeleteClick}
         disabled={disabled}
       >
