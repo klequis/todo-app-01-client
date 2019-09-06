@@ -1,9 +1,32 @@
 import React, { useState } from 'react'
 import { mergeRight } from 'ramda'
 import { format } from 'date-fns'
-import { styled } from 'styled-components'
+import styled from 'styled-components'
 // eslint-disable-next-line
 import { green } from 'logger'
+
+const TodoWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+`
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: orange;
+  padding: 0 10px;
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 5px 10px;
+`
+
+const Cell = styled.div`
+  text-align: center;
+  padding: 0 10px;
+`
 
 const Todo = props => {
   // green('props', props)
@@ -12,7 +35,7 @@ const Todo = props => {
     _id,
     title,
     // createdAt,
-    dueDate,
+    dueDate
     // lastUpdatedAt,
     // userId
   } = props.todo
@@ -20,7 +43,6 @@ const Todo = props => {
   const [_completed, _setCompleted] = useState(completed)
 
   const [disabled, setDisabled] = useState(false)
-  // green('completed', completed)
 
   const handleDeleteClick = () => {
     // are you sure?
@@ -30,7 +52,6 @@ const Todo = props => {
   }
 
   const handleCompletedClick = e => {
-    // green('e', e.target)
     const checked = e.target.checked
     _setCompleted(checked)
     const { todo } = props
@@ -44,40 +65,34 @@ const Todo = props => {
       field: title
     },
     {
-      label: 'Completed',
-      field: completed ? 'yes' : 'no'
-    },
-    {
       label: 'Due Date',
       field: format(new Date(dueDate), 'MMM d, yyyy')
-    },
+    }
   ]
 
   return (
-    <div>
-      <input
-        type="checkbox"
-        checked={_completed}
-        onChange={handleCompletedClick}
-      />
-      <div>
+    <TodoWrapper>
+      <InputWrapper>
+        <input
+          type="checkbox"
+          checked={_completed}
+          onChange={handleCompletedClick}
+        />
+      </InputWrapper>
+
+      <Row>
         {fields.map(f => (
-          <div key={f.label}>
-            <b>{f.label}:</b>
-            <div> {f.field}</div>
-          </div>
+          <Cell key={f.label}>{f.field}</Cell>
         ))}
-      </div>
-      <button
-        
-        onClick={handleDeleteClick}
-        disabled={disabled}
-      >
+      </Row>
+      <button onClick={handleDeleteClick} disabled={disabled}>
         Del
       </button>
-    </div>
+    </TodoWrapper>
   )
 }
+
+export default Todo
 
 // const styles = {
 //   field: {
@@ -109,7 +124,7 @@ const Todo = props => {
 //   }
 // }
 
-export default Todo
+
 
 // const fields = [
 //   {

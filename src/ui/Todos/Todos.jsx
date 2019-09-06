@@ -2,10 +2,19 @@ import React from 'react'
 import Todo from './Todo'
 // eslint-disable-next-line
 import { green } from 'logger'
+import styled from 'styled-components'
 
-const todoListStyle = {
-  paddingTop: '1em'
-}
+const ColumnLabels = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 10px 10px 5px 10px
+`;
+
+const ColumnLabel = styled.div`
+  text-align: center;
+  padding: 5px;
+`;
+
 
 const TodoList = props => {
   const { busy, handleCompletedChange, handleDeleteTodo, todos } = props
@@ -13,7 +22,12 @@ const TodoList = props => {
   return (
     <div id="TodoList">
       <div id="numTodos">Number of Todos: ({todos.length})</div>
-      <div id="todos-map" style={todoListStyle}>
+      <ColumnLabels>
+        <ColumnLabel>Completed</ColumnLabel>
+        <ColumnLabel>Title</ColumnLabel>
+        <ColumnLabel>Due</ColumnLabel>
+      </ColumnLabels>
+      <div id="todos-map">
         {todos.map(t => (
           <Todo
             key={t._id}
