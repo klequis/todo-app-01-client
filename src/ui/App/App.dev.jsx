@@ -45,7 +45,7 @@ function App({ classes }) {
         <Login />
       </Nav>
       {/* <Content> */}
-        <Status />
+        {/* <Status /> */}
         {isAuthenticated ? <Todos /> : null}
       {/* </Content> */}
       {/* <DevTools /> */}

@@ -64,10 +64,14 @@ const TodosContainer = props => {
       red('App.handleCompletedChange ERROR:', e)
     }
   }
+  if (todos.length === 0) {
+    return null
+  }
   return (
     <div id='todosContainer'>
-      <AddTodo handleAddTodo={handleAddTodo} />
+      {/* <AddTodo handleAddTodo={handleAddTodo} /> */}
       <Todos
+        // todos={[{ title: 'one' }, { title: 'two' }]}
         todos={todos}
         handleCompletedChange={handleCompletedChange}
         handleDeleteTodo={handleDeleteTodo}

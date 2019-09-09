@@ -1,45 +1,55 @@
-import React from 'react'
-import Todo from './Todo'
-// eslint-disable-next-line
-import { green } from 'logger'
+import React, { useState } from 'react'
+import { sortableContainer, sortableElement } from 'react-sortable-hoc'
+import arrayMove from 'array-move'
 import styled from 'styled-components'
-
-const ColumnLabels = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  padding: 10px 10px 5px 10px
-`;
-
-const ColumnLabel = styled.div`
-  text-align: center;
-  padding: 5px;
-`;
+import ItemContent from './ItemContent'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import { mergeRight } from 'ramda'
+import { green } from 'logger'
 
 
-const TodoList = props => {
-  const { busy, handleCompletedChange, handleDeleteTodo, todos } = props
-  // green('TodoList: todos', todos)
+const TodoList = styled(List)`
+  background-color: #f3f3fe;
+  width: 100%;
+`
+
+const TodoListItem = styled(ListItem)`
+`
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <TodoList id="TodoList">{children}</TodoList>
+})
+
+const SortableItem = sortableElement(value => (
+  <TodoListItem>
+    <ItemContent value={value} />
+  </TodoListItem>
+))
+
+const Todos = ({ todos }) => {
+  const [_todos, _setTodos] = useState(todos)
+
+  const onSortEnd = async ({ oldIndex, newIndex }) => {
+    green('oldIndex', oldIndex)
+    green('newIndex', newIndex)
+    const newOrder = arrayMove(_todos, oldIndex, newIndex).map((t, index) => 
+      mergeRight(t, { orderIndex: index })
+    )
+    green('newOrder', newOrder)
+    _setTodos(newOrder)
+  }
+
   return (
-    <div id="TodoList">
-      <div id="numTodos">Number of Todos: ({todos.length})</div>
-      <ColumnLabels>
-        <ColumnLabel>Completed</ColumnLabel>
-        <ColumnLabel>Title</ColumnLabel>
-        <ColumnLabel>Due</ColumnLabel>
-      </ColumnLabels>
-      <div id="todos-map">
-        {todos.map(t => (
-          <Todo
-            key={t._id}
-            busy={busy}
-            handleDeleteTodo={handleDeleteTodo}
-            handleCompletedChange={handleCompletedChange}
-            todo={t}
-          />
+    <div>
+      <SortableContainer onSortEnd={onSortEnd} useDragHandle>
+        {_todos.map((t, index) => (
+          <SortableItem key={t._id} index={index} value={t} />
         ))}
-      </div>
+      </SortableContainer>
     </div>
   )
 }
 
-export default TodoList
+export default Todos
+
