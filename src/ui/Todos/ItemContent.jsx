@@ -6,8 +6,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { sortableHandle } from 'react-sortable-hoc'
-import DragHandleIcon from '@material-ui/icons/DragHandle'
 import DueDate from './DueDate'
 
 import { green } from 'logger'
@@ -57,11 +55,6 @@ const Title = styled(TextField)`
   /* background-color: orange; */
 `
 
-
-
-const DragHandle = sortableHandle(() => <Handle><DragHandleIcon /></Handle>)
-
-
 // Right side
 const Right = styled.div`
   /* background-color: blue; */
@@ -72,14 +65,14 @@ const More = styled(Menu)`
 `
 
 
-const ItemContent = ({ value }) => {
+const ItemContent = ({ todo }) => {
   // Seems odd the way this is sent by react-sortable-hoc
   // Am receiving a prop named 'value' which has a property 'value'
   // and that contains the passed in data, in this case a todo
   // const { value } = value
   // green('props', value.value)
-
-  const { value: todo } = value
+  green('todo', todo)
+  // const { value: todo } = value
 
   const { completed, title } = todo
   
@@ -87,12 +80,6 @@ const ItemContent = ({ value }) => {
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
   const open = Boolean(anchorEl)
-
-  const handleValueChange = e => {
-    const val = e.target.value
-    console.log('val', val)
-    // _setValue(e.target.value)
-  }
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
@@ -111,12 +98,10 @@ const ItemContent = ({ value }) => {
     const t = e.target.value
     _setTitle(t)
   }
-
   
   return (
     <ItemContentWrapper>
       <Left>
-        <DragHandle />
         <Completed
           checked={_completed}
           onChange={handleCompleteClick}
