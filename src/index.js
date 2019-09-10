@@ -1,17 +1,13 @@
-import React from 'react'
+import React from 'react';
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import { Auth0Provider } from './react-auth0-spa'
-import App from './ui/App'
+import App from 'ui/App';
 import config from 'config'
-import GlobalStyle from './globalStyles'
-import { ThemeProvider } from '@material-ui/styles'
-import theme from './theme'
-import CssBaseline from '@material-ui/core/CssBaseline'
-
-// eslint-disable-next-line
-// import { green } from 'logger'
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/styles";
+import theme from "./theme";
 
 const store = configureStore()
 
@@ -27,7 +23,7 @@ const onRedirectCallback = appState => {
   )
 }
 
-const renderApp = () =>
+const renderApp = () => {
   render(
     <Auth0Provider
       domain={config.auth0.domain}
@@ -37,15 +33,15 @@ const renderApp = () =>
       onRedirectCallback={onRedirectCallback}
     >
       <Provider store={store}>
-        {/* <GlobalStyle /> */}
         <ThemeProvider theme={theme}>
-          {/* <CssBaseline /> */}
+          <CssBaseline />
           <App />
         </ThemeProvider>
       </Provider>
     </Auth0Provider>,
     document.getElementById('root')
   )
+}
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('ui/App', renderApp)
