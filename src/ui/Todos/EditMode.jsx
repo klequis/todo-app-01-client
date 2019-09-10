@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-// import TextField from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-// import DueDate from './DueDate'
-import { format } from 'date-fns'
+import DueDate from './DueDate'
 
 import { green } from 'logger'
-
-
 
 const options = [
   {
@@ -42,21 +39,14 @@ const Left = styled.div`
   /* background-color: red; */
 `
 const Completed = styled(Checkbox)`
+  /* background-color: blue; */
   flex-basis: 5%;
-  &&:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
 `
 
-const Title = styled.div`
+const Title = styled(TextField)`
   flex-basis: 100%;
   /* background-color: orange; */
 `
-
-const DueDate = styled.div`
-  background-color: green;
-  white-space: nowrap;
-`;
 
 // Right side
 const Right = styled.div`
@@ -67,27 +57,29 @@ const More = styled(Menu)`
   /* background-color: yellow; */
 `
 
-
-const ItemContent = ({ todo, mode='read' }) => {
+const ItemContent = ({ todo, mode = 'read' }) => {
+  // Seems odd the way this is sent by react-sortable-hoc
+  // Am receiving a prop named 'value' which has a property 'value'
+  // and that contains the passed in data, in this case a todo
+  // const { value } = value
+  // green('props', value.value)
   green('todo', todo)
+  // const { value: todo } = value
 
-  const { completed, title, dueDate } = todo
-  
+  const { completed, title } = todo
+
   const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
   const open = Boolean(anchorEl)
-
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
   }
 
   const handleClose = () => {
-    
     setAnchorEl(null)
   }
-
 
   /*
     - id
@@ -103,16 +95,16 @@ const ItemContent = ({ todo, mode='read' }) => {
     green('action', action)
   }
 
-  const handleCompleteClick = (e) => {
+  const handleCompleteClick = e => {
     const b = e.target.checked
     _setCompleted(b)
   }
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = e => {
     const t = e.target.value
     _setTitle(t)
   }
-  
+
   return (
     <ItemContentWrapper>
       <Left>
@@ -120,20 +112,25 @@ const ItemContent = ({ todo, mode='read' }) => {
           checked={_completed}
           onChange={handleCompleteClick}
           value="checkedA"
-          // iconStyle={{ color: 'white' }}
-          // iconStyle={{ fill: 'white' }}
           inputProps={{
             'aria-label': 'primary checkbox'
           }}
-          // , backgroundColor: 'blue'
-          style={{ color: 'white' }}
+          // new
+          // disabled={true}
         />
         <Title
-        // variant="filled"
-        >
-          {_title}
-        </Title>
-        <DueDate>{format(new Date(dueDate), 'MMM d, yyyy')}</DueDate>
+          // variant="filled"
+
+          multiline={true}
+          value={_title}
+          onChange={handleTitleChange}
+          // changes
+          // label="Title"
+          // disabled={true}
+          placeholder="Title / description"
+          required={true}
+        />
+        <DueDate />
       </Left>
       <Right>
         <IconButton

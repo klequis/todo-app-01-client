@@ -11,13 +11,13 @@ import styled from 'styled-components'
 const AppWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: blue;
+  /* background-color: blue; */
 `
 
 const Nav = styled.div`
   display: flex;
   justify-content: center;
-  background-color: red;
+  /* background-color: red; */
 `;
 
 // const Content = styled.div`

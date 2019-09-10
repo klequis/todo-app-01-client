@@ -6,6 +6,9 @@ import { Auth0Provider } from './react-auth0-spa'
 import App from './ui/App'
 import config from 'config'
 import GlobalStyle from './globalStyles'
+import { ThemeProvider } from '@material-ui/styles'
+import theme from './theme'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 // eslint-disable-next-line
 // import { green } from 'logger'
@@ -34,8 +37,11 @@ const renderApp = () =>
       onRedirectCallback={onRedirectCallback}
     >
       <Provider store={store}>
-        <GlobalStyle />
-        <App />
+        {/* <GlobalStyle /> */}
+        <ThemeProvider theme={theme}>
+          {/* <CssBaseline /> */}
+          <App />
+        </ThemeProvider>
       </Provider>
     </Auth0Provider>,
     document.getElementById('root')

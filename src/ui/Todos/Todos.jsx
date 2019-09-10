@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem'
 import { green } from 'logger'
 
 const TodoList = styled(List)`
-  background-color: #f3f3fe;
+  /* background-color: #f3f3fe; */
   width: 100%;
 `
 
