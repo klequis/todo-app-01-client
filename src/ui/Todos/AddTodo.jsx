@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { useErrors } from './useErrors'
+import Add from '@material-ui/icons/Add'
+import Clear from '@material-ui/icons/Clear'
+import Button from '@material-ui/core/Button'
 // eslint-disable-next-line
 import { green } from 'logger'
 
@@ -49,12 +52,12 @@ const AddTodo = props => {
       />
       <div>{getError('title')}</div>
 
-      <button type="submit">
-        Add
-      </button>
-      <button onClick={handleCancelClick} type="button">
-        Cancel
-      </button>
+      <Button type="submit">
+        <Add />
+      </Button>
+      <Button onClick={handleCancelClick} type="button">
+        <Clear />
+      </Button>
     </form>
   )
 }

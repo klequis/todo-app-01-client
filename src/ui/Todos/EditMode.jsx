@@ -63,7 +63,7 @@ const ItemContent = ({ todo, mode = 'read' }) => {
   // and that contains the passed in data, in this case a todo
   // const { value } = value
   // green('props', value.value)
-  green('todo', todo)
+  // green('todo', todo)
   // const { value: todo } = value
 
   const { completed, title } = todo

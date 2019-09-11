@@ -1,13 +1,15 @@
-import React from 'react';
+import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import { Auth0Provider } from './react-auth0-spa'
-import App from 'ui/App';
+import App from 'ui/App'
 import config from 'config'
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/styles";
-import theme from "./theme";
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { ThemeProvider } from '@material-ui/styles'
+import theme from './theme'
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 const store = configureStore()
 
@@ -35,7 +37,9 @@ const renderApp = () => {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <App />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <App />
+          </MuiPickersUtilsProvider>
         </ThemeProvider>
       </Provider>
     </Auth0Provider>,

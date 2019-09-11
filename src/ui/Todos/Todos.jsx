@@ -13,6 +13,7 @@ const TodoList = styled(List)`
 const TodoListItem = styled(ListItem)``
 
 const Todos = ({ todos }) => {
+  green('todos - rendering')
   return (
     <TodoList>
       {todos.map((t, index) => (

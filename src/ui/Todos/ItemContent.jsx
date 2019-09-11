@@ -6,12 +6,16 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-// import DueDate from './DueDate'
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
+import TextField from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+
+// import DueDateView from './DueDateView'
+// import DueDateEdit from './DueDateEdit'
+import DueDate from './DueDate'
+
 
 import { green } from 'logger'
-
-
 
 const options = [
   {
@@ -26,7 +30,7 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
-const ItemContentWrapper = styled.div`
+const ItemContentWrapper = styled(Paper)`
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
@@ -48,14 +52,24 @@ const Completed = styled(Checkbox)`
   }
 `
 
-const Title = styled.div`
+const TitleView = styled.div`
+  flex-basis: 80%;
+  /* background-color: orange; */
+`
+
+const TitleEdit = styled(TextField)`
   flex-basis: 100%;
   /* background-color: orange; */
 `
 
-const DueDate = styled.div`
-  background-color: green;
-  white-space: nowrap;
+const DueDateWrapper = styled.div`
+  flex-basis: 20%;
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  
+  /* background-color: green; */
+
 `;
 
 // Right side
@@ -67,52 +81,49 @@ const More = styled(Menu)`
   /* background-color: yellow; */
 `
 
+const ItemContent = ({ handleDateChange, todo }) => {
+  // green('todo', todo)
 
-const ItemContent = ({ todo, mode='read' }) => {
-  green('todo', todo)
+  const { _id, completed, title, dueDate } = todo
 
-  const { completed, title, dueDate } = todo
-  
   const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
+  const [_dueDate, _setDueDate] = useState(dueDate)
   const open = Boolean(anchorEl)
-
+  const [mode, setMode] = useState('view')
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
   }
 
   const handleClose = () => {
-    
     setAnchorEl(null)
   }
 
-
-  /*
-    - id
-    - itemid
-    - title
-
-  */
   const handleMenuItemClick = (e, action) => {
-    // green('id', e.target.id)
-    // green('itemid', e.target.itemid)
-    // green('title', e.target.title)
     setAnchorEl(null)
     green('action', action)
+    if (action === 'edit') {
+      setMode('edit')
+    }
   }
 
-  const handleCompleteClick = (e) => {
+  const handleCompleteClick = e => {
     const b = e.target.checked
     _setCompleted(b)
   }
 
-  const handleTitleChange = (e) => {
+  const handleTitleChange = e => {
     const t = e.target.value
     _setTitle(t)
   }
-  
+
+  // const handleDateChange = newDate => {
+  //   green('newDate', newDate)
+  //   _setDueDate(_id, newDate)
+  // }
+
   return (
     <ItemContentWrapper>
       <Left>
@@ -120,20 +131,37 @@ const ItemContent = ({ todo, mode='read' }) => {
           checked={_completed}
           onChange={handleCompleteClick}
           value="checkedA"
-          // iconStyle={{ color: 'white' }}
-          // iconStyle={{ fill: 'white' }}
           inputProps={{
             'aria-label': 'primary checkbox'
           }}
           // , backgroundColor: 'blue'
           style={{ color: 'white' }}
         />
-        <Title
-        // variant="filled"
-        >
-          {_title}
-        </Title>
-        <DueDate>{format(new Date(dueDate), 'MMM d, yyyy')}</DueDate>
+
+        {mode === 'view' ? (
+          <TitleView>{_title}</TitleView>
+        ) : (
+          <TitleEdit
+            multiline={true}
+            value={_title}
+            onChange={handleTitleChange}
+            placeholder="Title / description"
+            required={true}
+          />
+        )}
+
+        {/* {mode === 'view' ? (
+          <DueDateView dueDate={_dueDate} />
+        ) : (
+          <DueDateEdit handleDateChange={handleDateChange} dueDate={_dueDate} />
+        )} */}
+        <DueDateWrapper>
+          <DueDate
+            _id={_id}
+            handleDateChange={handleDateChange}
+            dueDate={_dueDate}
+          />
+        </DueDateWrapper>
       </Left>
       <Right>
         <IconButton
