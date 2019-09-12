@@ -1,19 +1,14 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-// import TextField from '@material-ui/core/TextField'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-// import { format } from 'date-fns'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
-
-// import DueDateView from './DueDateView'
-// import DueDateEdit from './DueDateEdit'
 import DueDate from './DueDate'
-
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/styles'
 
 import { green } from 'logger'
 
@@ -30,56 +25,45 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
-const ItemContentWrapper = styled(Paper)`
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  /* background-color: lightblue; */
-`
-
-// Left side
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-  flex-basis: 100%;
-  /* background-color: red; */
-`
-const Completed = styled(Checkbox)`
-  flex-basis: 5%;
-  &&:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+const useStyles = makeStyles({
+  contentWrapper: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    /* background-color: lightblue; */  
+  },
+  left: {
+    display: 'flex',
+    alignItems: 'center',
+    flexBasis: '100%',
+    /* background-color: red; */
+  },
+  completed: {
+    flexBasis: '5%',
+    '&&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)'
+    }
+  },
+  titleView: {
+    flexBasis: '80%'
+  },
+  titleEdit: {
+    flexBasis: '100%',
+  },
+  dueDateWrapper: {
+    flexBasis: '20%',
+    display: 'flex',
+    justifyContent: 'center'
   }
-`
+})
 
-const TitleView = styled.div`
-  flex-basis: 80%;
-  /* background-color: orange; */
-`
 
-const TitleEdit = styled(TextField)`
-  flex-basis: 100%;
-  /* background-color: orange; */
-`
 
-const DueDateWrapper = styled.div`
-  flex-basis: 20%;
-  /* text-align: center; */
-  display: flex;
-  justify-content: center;
-  
-  /* background-color: green; */
 
-`;
 
-// Right side
-const Right = styled.div`
-  /* background-color: blue; */
-`
 
-const More = styled(Menu)`
-  /* background-color: yellow; */
-`
 
 const ItemContent = ({ handleDateChange, todo }) => {
   // green('todo', todo)
@@ -118,24 +102,29 @@ const ItemContent = ({ handleDateChange, todo }) => {
     _setTitle(t)
   }
 
+  const classes = useStyles()
+
   return (
-    <ItemContentWrapper>
-      <Left>
-        <Completed
+    <Paper className={classes.contentWrapper}>
+      <div className={classes.left}>
+        <Checkbox
           checked={_completed}
+          className={classes.completed}
           onChange={handleCompleteClick}
           value="checkedA"
           inputProps={{
             'aria-label': 'primary checkbox'
           }}
-          // , backgroundColor: 'blue'
           style={{ color: 'white' }}
         />
 
         {mode === 'view' ? (
-          <TitleView>{_title}</TitleView>
+          <div className={classes.titleView}>
+            <Typography variant="body1">{_title}</Typography>
+          </div>
         ) : (
-          <TitleEdit
+          <TextField
+            className={classes.titleEdit}
             multiline={true}
             value={_title}
             onChange={handleTitleChange}
@@ -143,15 +132,15 @@ const ItemContent = ({ handleDateChange, todo }) => {
             required={true}
           />
         )}
-        <DueDateWrapper>
+        <div className={classes.dueDateWrapper}>
           <DueDate
             _id={_id}
             handleDateChange={handleDateChange}
             dueDate={dueDate}
           />
-        </DueDateWrapper>
-      </Left>
-      <Right>
+        </div>
+      </div>
+      <div /*className={classes.right}*/>
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
@@ -160,7 +149,7 @@ const ItemContent = ({ handleDateChange, todo }) => {
         >
           <MoreVertIcon />
         </IconButton>
-        <More
+        <Menu
           id="more-menu"
           anchorEl={anchorEl}
           keepMounted
@@ -183,9 +172,9 @@ const ItemContent = ({ handleDateChange, todo }) => {
               {o.label}
             </MenuItem>
           ))}
-        </More>
-      </Right>
-    </ItemContentWrapper>
+        </Menu>
+      </div>
+    </Paper>
   )
 }
 
