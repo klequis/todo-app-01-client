@@ -89,7 +89,6 @@ const ItemContent = ({ handleDateChange, todo }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
-  const [_dueDate, _setDueDate] = useState(dueDate)
   const open = Boolean(anchorEl)
   const [mode, setMode] = useState('view')
 
@@ -119,11 +118,6 @@ const ItemContent = ({ handleDateChange, todo }) => {
     _setTitle(t)
   }
 
-  // const handleDateChange = newDate => {
-  //   green('newDate', newDate)
-  //   _setDueDate(_id, newDate)
-  // }
-
   return (
     <ItemContentWrapper>
       <Left>
@@ -149,17 +143,11 @@ const ItemContent = ({ handleDateChange, todo }) => {
             required={true}
           />
         )}
-
-        {/* {mode === 'view' ? (
-          <DueDateView dueDate={_dueDate} />
-        ) : (
-          <DueDateEdit handleDateChange={handleDateChange} dueDate={_dueDate} />
-        )} */}
         <DueDateWrapper>
           <DueDate
             _id={_id}
             handleDateChange={handleDateChange}
-            dueDate={_dueDate}
+            dueDate={dueDate}
           />
         </DueDateWrapper>
       </Left>
