@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { DatePicker } from '@material-ui/pickers'
 import { isISO8601 } from 'validator'
 import DateRange from '@material-ui/icons/DateRange'
-import styled from 'styled-components'
 import { makeStyles } from '@material-ui/styles'
+import IconButton from '@material-ui/core/IconButton'
 
 import { green } from 'logger'
 
@@ -47,8 +47,14 @@ const DueDate = ({ _id, handleDateChange, dueDate }) => {
         open={pickerOpen}
         onOpen={() => setPickerOpen(true)}
         onClose={() => setPickerOpen(false)}
+        style={{ backgroundColor: 'orange' }}
       />
-      <DateRange onClick={() => setPickerOpen(true)} />
+      <IconButton size="small">
+        <DateRange
+          style={{ backgroundColor: 'purple' }}
+          onClick={() => setPickerOpen(true)}
+        />
+      </IconButton>
     </div>
   )
   

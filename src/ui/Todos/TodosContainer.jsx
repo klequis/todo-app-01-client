@@ -11,26 +11,28 @@ import {
 } from 'store/todo/actions'
 import { getAllTodos } from 'store/todo/selectors'
 import { getUserId } from 'store/user/selectors'
-
-
-// new
-import styled from 'styled-components'
 import ItemContent from './ItemContent'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import { makeStyles } from '@material-ui/styles'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
 
-
-const TodoList = styled(List)`
-  /* background-color: #f3f3fe; */
-  width: 100%;
-`
-
-const TodoListItem = styled(ListItem)``
+const useStyles = makeStyles({
+  wrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minWidth: 130
+  },
+  todoList: {
+    width: '100%'
+  }
+})
 
 const TodosContainer = props => {
+  const classes = useStyles()
   const {
     todoCreateRequest,
     // todoDeleteRequest,
@@ -42,7 +44,6 @@ const TodosContainer = props => {
   useEffect(() => {
     ;(async () => {
       try {
-        // green('userId', userId)
         if (userId) {
           await todosReadRequest(userId)
         }
@@ -50,7 +51,6 @@ const TodosContainer = props => {
         console.log('TheError', e)
       }
     })()
-    // eslint-disable-next-line
   }, [userId])
 
   const handleAddTodo = async title => {
@@ -99,14 +99,13 @@ const TodosContainer = props => {
   return (
     <div id="todosContainer">
       <AddTodo handleAddTodo={handleAddTodo} />
-      <TodoList>
+      <List className={classes.todoList}>
         {todos.map((t, index) => (
-          <TodoListItem key={t._id}>
-            {/* {t.mode === 'view' ? <ItemContent todo={t} /> : null} */}
+          <ListItem /*className={classes.todoListItem}*/ key={t._id}>
             <ItemContent handleDateChange={handleDateChange} todo={t} />
-          </TodoListItem>
+          </ListItem>
         ))}
-      </TodoList>
+      </List>
     </div>
   )
 }
