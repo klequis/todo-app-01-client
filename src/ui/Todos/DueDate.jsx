@@ -4,7 +4,7 @@ import { isISO8601 } from 'validator'
 import DateRange from '@material-ui/icons/DateRange'
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
-
+import { toString } from 'lib/toString'
 import { green } from 'logger'
 
 const useStyles = makeStyles({
@@ -16,9 +16,9 @@ const useStyles = makeStyles({
   }
 })
 
-const DueDate = ({ _id, handleDateChange, dueDate }) => {
+const DueDate = ({ handleDueDateChange, dueDate }) => {
   const [selectedDate, setSelectedDate] = useState(
-    isISO8601(dueDate + '') ? dueDate : null
+    isISO8601(toString(dueDate)) ? dueDate : null
   )
   const [pickerOpen, setPickerOpen] = useState(false)
 
@@ -27,7 +27,7 @@ const DueDate = ({ _id, handleDateChange, dueDate }) => {
 
     setSelectedDate(newDate)
     setPickerOpen(false)
-    handleDateChange(_id, newDate)
+    handleDueDateChange(newDate)
   }
 
   const classes = useStyles()

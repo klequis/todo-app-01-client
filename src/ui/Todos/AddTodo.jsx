@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useErrors } from './useErrors'
 import Add from '@material-ui/icons/Add'
 import Clear from '@material-ui/icons/Clear'
-import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/styles'
 import { Paper } from '@material-ui/core'
@@ -11,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton'
 
 // eslint-disable-next-line
 import { green } from 'logger'
-import { flexbox } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
   wrapper: {

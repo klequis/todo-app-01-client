@@ -28,6 +28,7 @@ export default {
       return data
     },
     async delete(userId, todoId) {
+      orange('delete: todoId', todoId)
       const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'DELETE'
       })

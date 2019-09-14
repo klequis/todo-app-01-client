@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-// import Todos from './Todos'
 import AddTodo from './AddTodo'
 import {
   todoCreateRequest,
@@ -35,7 +34,7 @@ const TodosContainer = props => {
   const classes = useStyles()
   const {
     todoCreateRequest,
-    // todoDeleteRequest,
+    todoDeleteRequest,
     todosReadRequest,
     todos,
     todoUpdateRequest,
@@ -51,52 +50,45 @@ const TodosContainer = props => {
         console.log('TheError', e)
       }
     })()
+    // eslint-disable-next-line
   }, [userId])
 
-  const handleAddTodo = async title => {
+  const createTodo = async title => {
     try {
       // TODO: Temp code re dueDate
       const dueDate = new Date().toISOString()
       await todoCreateRequest(userId, { title, dueDate, userId })
     } catch (e) {
-      red('App.handleAddTodo ERROR:', e)
+      red('App.createTodo ERROR:', e)
     }
   }
 
-  // const handleDeleteTodo = async todoId => {
-  //   try {
-  //     await todoDeleteRequest(userId, todoId)
-  //   } catch (e) {
-  //     red('App.handleDeleteTodo ERROR:', e)
-  //   }
-  // }
+  const deleteTodo = async ({ todoId }) => {
+    green('deleteTodo: todoId', todoId)
+    try {
+      green('trying')
+      await todoDeleteRequest(userId, todoId)
+    } catch (e) {
+      red('App.deleteTodo ERROR:', e)
+    }
+  }
 
-  const handleCompletedChange = async ({ todoId, completed }) => {
-    // const { todoUpdateRequest } = props
-    green('handleCompletedChange: todoId', todoId)
-    green('handleCompletedChange: completed', completed)
-    
+
+  const updateTodo = async ({ todoId, completed, title, dueDate }) => {
+    green('updateTodo', `todoId=${todoId}, completed=${completed}, title=${title}, dueDate=${dueDate}`)
     try {
       await todoUpdateRequest({
         userId,
         todoId,
-        completed
+        completed,
+        title,
+        dueDate
       })
     } catch (e) {
-      red('App.handleCompletedChange ERROR:', e)
+      red('App.updateCompleted ERROR:', e)
     }
   }
 
-  const handleDateChange = (_id, newDate) => {
-    green('handleDateChange: _id', _id)
-    green('handleDateChange: newDate', newDate)
-    const isoDate = new Date(newDate).toISOString()
-    green('isoDate', isoDate)
-
-    // 1. get the todo
-    // 2. merge in new date
-    // 3. send request
-  }
 
   if (todos.length === 0) {
     return null
@@ -104,13 +96,13 @@ const TodosContainer = props => {
 
   return (
     <div id="todosContainer">
-      <AddTodo handleAddTodo={handleAddTodo} />
+      <AddTodo handleAddTodo={createTodo} />
       <List className={classes.todoList}>
         {todos.map((t, index) => (
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>
             <ItemContent
-              handleCompletedChange={handleCompletedChange}
-              handleDateChange={handleDateChange}
+              deleteTodo={deleteTodo}
+              updateTodo={updateTodo}
               todo={t}
             />
           </ListItem>
