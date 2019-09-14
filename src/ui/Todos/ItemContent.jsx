@@ -7,7 +7,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
 
 import { green } from 'logger'
@@ -31,13 +31,13 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'nowrap',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    /* background-color: lightblue; */  
+    alignItems: 'center'
+    /* background-color: lightblue; */
   },
   left: {
     display: 'flex',
     alignItems: 'center',
-    flexBasis: '100%',
+    flexBasis: '100%'
     /* background-color: red; */
   },
   completed: {
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
     flexBasis: '80%'
   },
   titleEdit: {
-    flexBasis: '100%',
+    flexBasis: '100%'
   },
   dueDateWrapper: {
     flexBasis: '20%',
@@ -59,14 +59,7 @@ const useStyles = makeStyles({
   }
 })
 
-
-
-
-
-
-
-const ItemContent = ({ handleDateChange, todo }) => {
-  // green('todo', todo)
+const ItemContent = ({ handleCompletedChange, handleDateChange, todo }) => {
 
   const { _id, completed, title, dueDate } = todo
 
@@ -75,6 +68,8 @@ const ItemContent = ({ handleDateChange, todo }) => {
   const [_title, _setTitle] = useState(title)
   const open = Boolean(anchorEl)
   const [mode, setMode] = useState('view')
+
+
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
@@ -93,8 +88,12 @@ const ItemContent = ({ handleDateChange, todo }) => {
   }
 
   const handleCompleteClick = e => {
+    green('handleCompletedClick')
     const b = e.target.checked
     _setCompleted(b)
+    green('b', b)
+    green('_id', _id)
+    handleCompletedChange({ todoId: _id, completed: b })
   }
 
   const handleTitleChange = e => {

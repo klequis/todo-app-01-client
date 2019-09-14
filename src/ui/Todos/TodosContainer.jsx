@@ -38,7 +38,7 @@ const TodosContainer = props => {
     // todoDeleteRequest,
     todosReadRequest,
     todos,
-    // todoUpdateRequest,
+    todoUpdateRequest,
     userId
   } = props
   useEffect(() => {
@@ -71,15 +71,21 @@ const TodosContainer = props => {
   //   }
   // }
 
-  // const handleCompletedChange = async todo => {
+  const handleCompletedChange = async ({ todoId, completed }) => {
+    // const { todoUpdateRequest } = props
+    green('handleCompletedChange: todoId', todoId)
+    green('handleCompletedChange: completed', completed)
     
-  //   try {
-  //     const todoId = todo._id
-  //     await todoUpdateRequest(userId, todoId, todo)
-  //   } catch (e) {
-  //     red('App.handleCompletedChange ERROR:', e)
-  //   }
-  // }
+    try {
+      await todoUpdateRequest({
+        userId,
+        todoId,
+        completed
+      })
+    } catch (e) {
+      red('App.handleCompletedChange ERROR:', e)
+    }
+  }
 
   const handleDateChange = (_id, newDate) => {
     green('handleDateChange: _id', _id)
@@ -102,7 +108,11 @@ const TodosContainer = props => {
       <List className={classes.todoList}>
         {todos.map((t, index) => (
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>
-            <ItemContent handleDateChange={handleDateChange} todo={t} />
+            <ItemContent
+              handleCompletedChange={handleCompletedChange}
+              handleDateChange={handleDateChange}
+              todo={t}
+            />
           </ListItem>
         ))}
       </List>
@@ -125,5 +135,8 @@ const mapStateToProps = state => {
 }
 
 export default compose(
-  connect(mapStateToProps, actions)
+  connect(
+    mapStateToProps,
+    actions
+  )
 )(TodosContainer)

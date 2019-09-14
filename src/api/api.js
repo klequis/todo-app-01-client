@@ -1,6 +1,9 @@
 import { fetchJson } from './api-helpers'
+import { filter, mergeRight } from 'ramda'
 // eslint-disable-next-line
 import { orange, green } from 'logger'
+
+const notUndefined = obj => obj !== undefined
 
 // Errors are handled by fetchJson()
 export default {
@@ -30,10 +33,21 @@ export default {
       })
       return data
     },
-    async update(userId, todoId, todo) {
+    async update({
+      userId,
+      todoId,
+      title = undefined,
+      completed = undefined,
+      dueDate = undefined
+    }) {
+      const fieldsToUpdate = filter(notUndefined, { title, completed, dueDate })
+      orange('fieldsToUpdate', fieldsToUpdate)
+      const fieldsToSend = mergeRight(fieldsToUpdate, { _id: todoId, userId })
+      orange('fieldsToSend', fieldsToSend)
+
       const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'PATCH',
-        body: JSON.stringify(todo)
+        body: JSON.stringify(fieldsToSend)
       })
       return data
     }

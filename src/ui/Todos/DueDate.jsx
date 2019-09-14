@@ -7,21 +7,21 @@ import IconButton from '@material-ui/core/IconButton'
 
 import { green } from 'logger'
 
-
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minWidth: 130,
+    minWidth: 130
   }
-  
 })
 
 const DueDate = ({ _id, handleDateChange, dueDate }) => {
-  const [selectedDate, setSelectedDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
+  const [selectedDate, setSelectedDate] = useState(
+    isISO8601(dueDate + '') ? dueDate : null
+  )
   const [pickerOpen, setPickerOpen] = useState(false)
-  
+
   const handlePickerOnChange = newDate => {
     green('DueDate: newDate', newDate)
 
@@ -49,15 +49,11 @@ const DueDate = ({ _id, handleDateChange, dueDate }) => {
         onClose={() => setPickerOpen(false)}
         style={{ backgroundColor: 'orange' }}
       />
-      <IconButton size="small">
-        <DateRange
-          style={{ backgroundColor: 'purple' }}
-          onClick={() => setPickerOpen(true)}
-        />
+      <IconButton size="small" onClick={() => setPickerOpen(true)}>
+        <DateRange style={{ backgroundColor: 'purple' }} />
       </IconButton>
     </div>
   )
-  
 }
 
 export default DueDate
