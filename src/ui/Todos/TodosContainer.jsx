@@ -53,11 +53,12 @@ const TodosContainer = props => {
     // eslint-disable-next-line
   }, [userId])
 
-  const createTodo = async title => {
+  const createTodo = async ({ title, dueDate }) => {
+    green('createTodo', `title=${title}, dueDate=${dueDate}`)
     try {
-      // TODO: Temp code re dueDate
-      const dueDate = new Date().toISOString()
-      await todoCreateRequest(userId, { title, dueDate, userId })
+      const d = new Date(dueDate).toISOString()
+
+      await todoCreateRequest(userId, { title, dueDate: d, userId })
     } catch (e) {
       red('App.createTodo ERROR:', e)
     }
@@ -96,7 +97,7 @@ const TodosContainer = props => {
 
   return (
     <div id="todosContainer">
-      <AddTodo handleAddTodo={createTodo} />
+      <AddTodo createTodo={createTodo} />
       <List className={classes.todoList}>
         {todos.map((t, index) => (
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>
