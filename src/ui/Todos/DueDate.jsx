@@ -16,20 +16,9 @@ const useStyles = makeStyles({
   }
 })
 
-const DueDate = ({ handleDueDateChange, dueDate }) => {
-  const [selectedDate, setSelectedDate] = useState(
-    isISO8601(toString(dueDate)) ? dueDate : null
-  )
+const DueDate = ({ handleDueDateChange, dueDate, className: userClasses }) => {
+  
   const [pickerOpen, setPickerOpen] = useState(false)
-
-  const handlePickerOnChange = newDate => {
-    green('DueDate: newDate', newDate)
-
-    setSelectedDate(newDate)
-    setPickerOpen(false)
-    handleDueDateChange(newDate)
-  }
-
   const classes = useStyles()
 
   return (
@@ -38,12 +27,12 @@ const DueDate = ({ handleDueDateChange, dueDate }) => {
         autoOk
         format="MMM d, yyyy"
         variant="inline"
-        value={selectedDate}
-        onChange={handlePickerOnChange}
+        value={isISO8601(toString(dueDate)) ? dueDate : null}
+        onChange={handleDueDateChange}
+        className={userClasses}
         InputProps={{
           disableUnderline: true
         }}
-        //
         open={pickerOpen}
         onOpen={() => setPickerOpen(true)}
         onClose={() => setPickerOpen(false)}
