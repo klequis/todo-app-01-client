@@ -14,29 +14,33 @@ import { green } from 'logger'
 const useStyles = makeStyles(theme => ({
   wrapper: {
     margin: '8px 16px',
-    backgroundColor: 'red'
+    // backgroundColor: 'red'
   },
   form: {
     display: 'flex',
     padding: '8px 16px',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'green'
+    // backgroundColor: 'green'
   },
   title: {
-    backgroundColor: 'blue'
+    width: '100%',
+    // backgroundColor: 'blue',
   },
   left: {
     // display: 'flex',
-    flexBasis: '60%',
-    backgroundColor: 'lightblue'
+    flexBasis: '80%',
+    // backgroundColor: 'lightblue'
   },
   right: {
-    flexBasis: '40%',
+    flexBasis: '20%',
     display: 'flex',
     flexWrap: 'nowrap',
     justifyContent: 'flex-end',
-    backgroundColor: 'lightgreen'
+    // backgroundColor: 'lightgreen'
+  },
+  dueDate: {
+    maxWidth: 125,
   },
   button: {
     // paddingLeft: 0,
@@ -57,7 +61,7 @@ const AddTodo = props => {
   const classes = useStyles()
 
 
-  const { handleAddTodo } = props
+  const { createTodo } = props
 
   const handleInputChange = e => {
     setTitle(e.target.value)
@@ -65,9 +69,9 @@ const AddTodo = props => {
 
   const handleOnSubmit = e => {
     e.preventDefault()
-    // TODO: send all paramaters for the todo, not just 'title'
-    handleAddTodo(title)
+    createTodo({ title, dueDate })
     setTitle('')
+    setDueDate(null)
   }
 
   const handleCancelClick = () => {
@@ -81,8 +85,9 @@ const AddTodo = props => {
     }
   }
 
-  const handleDateChange = (_id, dueDate) => {
-    // don't need the _id for POST
+  const handleDueDateChange = newDate => {
+    
+    setDueDate(newDate)
 
   }
 
@@ -93,6 +98,7 @@ const AddTodo = props => {
           <TextField
             className={classes.title}
             id="title"
+            multiline
             onChange={handleInputChange}
             onBlur={handleTitleOnBlur}
             type="text"
@@ -104,7 +110,8 @@ const AddTodo = props => {
         <div className={classes.right}>
           <DueDate
             _id=""
-            hendleDateChange={handleDateChange}
+            handleDueDateChange={handleDueDateChange}
+            className={classes.dueDate}
             dueDate={dueDate}
           />
 
