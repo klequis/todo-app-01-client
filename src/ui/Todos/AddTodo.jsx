@@ -12,8 +12,14 @@ import IconButton from '@material-ui/core/IconButton'
 import { green } from 'logger'
 
 const useStyles = makeStyles(theme => ({
-  wrapper: {
-    margin: '8px 16px',
+  paper: {
+    // margin: '8px 16px',
+    // paddingLeft: 16,
+    // paddingRight: 16,
+    padding: '8px 16px',
+    width: '100%',
+    marginTop: '20px',
+    marginBottom: '8px',
     // backgroundColor: 'red'
   },
   form: {
@@ -92,7 +98,7 @@ const AddTodo = props => {
   }
 
   return (
-    <Paper className={classes.wrapper}>
+    <Paper className={classes.paper}>
       <form className={classes.form} onSubmit={handleOnSubmit}>
         <div className={classes.left}>
           <TextField
@@ -101,6 +107,7 @@ const AddTodo = props => {
             multiline
             onChange={handleInputChange}
             onBlur={handleTitleOnBlur}
+            placeholder='New todo title'
             type="text"
             value={title}
             fullWidth

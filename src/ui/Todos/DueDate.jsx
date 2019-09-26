@@ -36,10 +36,10 @@ const DueDate = ({ handleDueDateChange, dueDate, className: userClasses }) => {
         open={pickerOpen}
         onOpen={() => setPickerOpen(true)}
         onClose={() => setPickerOpen(false)}
-        style={{ backgroundColor: 'orange' }}
+        // style={{ backgroundColor: 'orange' }}
       />
       <IconButton size="small" onClick={() => setPickerOpen(true)}>
-        <DateRange style={{ backgroundColor: 'purple' }} />
+        <DateRange /* style={{ backgroundColor: 'purple' }} *//>
       </IconButton>
     </div>
   )

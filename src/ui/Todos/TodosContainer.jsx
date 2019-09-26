@@ -19,11 +19,16 @@ import { makeStyles } from '@material-ui/styles'
 import { green, red } from 'logger'
 
 const useStyles = makeStyles({
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    minWidth: 130
+  // wrapper: {
+  //   display: 'flex',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   minWidth: 130
+  // },
+  addTodo: {
+    width: '100%',
+    // marginTop: '50px',
+    // marginBotton: '50px'
   },
   todoList: {
     width: '100%'
@@ -97,7 +102,7 @@ const TodosContainer = props => {
 
   return (
     <div id="todosContainer">
-      <AddTodo createTodo={createTodo} />
+      <AddTodo className={classes.addTodo} createTodo={createTodo} />
       <List className={classes.todoList}>
         {todos.map((t, index) => (
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>

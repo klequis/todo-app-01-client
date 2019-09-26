@@ -17,7 +17,7 @@ import AreYouSure from 'ui/AreYouSure'
 import { green } from 'logger'
 
 const useStyles = makeStyles({
-  contentWrapper: {
+  paper: {
     width: '100%',
     display: 'flex',
     flexWrap: 'nowrap',
@@ -57,7 +57,6 @@ const ItemContent = ({ updateTodo, deleteTodo, todo }) => {
 
   const { _id, completed, title, dueDate } = todo
 
-  // const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
   const [titleMode, setTitleMode] = useState('view')
@@ -118,7 +117,7 @@ const ItemContent = ({ updateTodo, deleteTodo, todo }) => {
   const classes = useStyles()
 
   return (
-    <Paper className={classes.contentWrapper}>
+    <Paper className={classes.paper}>
       <AreYouSure isOpen={yesNoOpen} setYesNoOpen={setYesNoOpen} response={yesNoResponse} />
 
       <div className={classes.left}>
