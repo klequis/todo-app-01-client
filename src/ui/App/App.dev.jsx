@@ -5,6 +5,8 @@ import Login from 'ui/Login'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/styles'
 
+import { green } from 'logger'
+
 const useStyles = makeStyles({
   nav: {
     display: 'flex',
@@ -16,6 +18,8 @@ const useStyles = makeStyles({
 const App = () => {
   const { loading, isAuthenticated } = useAuth0()
   const classes = useStyles()
+
+
 
   if (loading) {
     return null

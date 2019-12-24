@@ -42,8 +42,8 @@ const TodosContainer = props => {
     userId
   } = props
 
-  green('todos', todos)
-  green('userId', userId)
+  // green('todos', todos)
+  // green('userId', userId)
   
   useEffect(() => {
     ;(async () => {
@@ -86,9 +86,12 @@ const TodosContainer = props => {
   // }
 
   const handleDateChange = (_id, newDate) => {
+
     green('handleDateChange: _id', _id)
     green('handleDateChange: newDate', newDate)
+
     const isoDate = new Date(newDate).toISOString()
+
     green('isoDate', isoDate)
 
     // 1. get the todo
