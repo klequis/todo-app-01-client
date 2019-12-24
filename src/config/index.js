@@ -1,5 +1,8 @@
 // const domain = 'klequis-todo.auth0.com'
-import { testUserId } from './config.secret'
+
+// cb: Does not appear to be used
+// import { testUserId } from './config.secret'
+
 const config = {
   auth0: {
     // domain: domain,
@@ -11,7 +14,9 @@ const config = {
     redirectUri: 'http://localhost:3000/',
     responseType: 'id_token',
     scope: 'openid profile email',
-    testUserId: testUserId,
+
+    // cb: Does not appear to be used
+    // testUserId: testUserId,
   },
   dev: {
     logRequest: false,

@@ -41,6 +41,10 @@ const TodosContainer = props => {
     // todoUpdateRequest,
     userId
   } = props
+
+  green('todos', todos)
+  green('userId', userId)
+  
   useEffect(() => {
     ;(async () => {
       try {

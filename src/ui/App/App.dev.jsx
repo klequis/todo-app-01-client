@@ -16,10 +16,10 @@ const useStyles = makeStyles({
 const App = () => {
   const { loading, isAuthenticated } = useAuth0()
   const classes = useStyles()
+
   if (loading) {
     return null
   }
-
   
   return (
     <Container maxWidth='md'>
