@@ -99,9 +99,9 @@ const TodosContainer = props => {
     // 3. send request
   }
 
-  if (todos.length === 0) {
-    return null
-  }
+  // if (todos.length === 0) {
+  //   return null
+  // }
 
   return (
     <div id="todosContainer">

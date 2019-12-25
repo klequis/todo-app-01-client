@@ -47,12 +47,13 @@ const DueDate = ({ _id, handleDateChange, dueDate }) => {
         open={pickerOpen}
         onOpen={() => setPickerOpen(true)}
         onClose={() => setPickerOpen(false)}
-        style={{ backgroundColor: 'orange' }}
+        // style={{ backgroundColor: 'orange' }}
       />
-      <IconButton size="small">
+      <IconButton size="small"
+        onClick={() => setPickerOpen(true)}
+      >
         <DateRange
-          style={{ backgroundColor: 'purple' }}
-          onClick={() => setPickerOpen(true)}
+          // style={{ backgroundColor: 'purple' }}
         />
       </IconButton>
     </div>
