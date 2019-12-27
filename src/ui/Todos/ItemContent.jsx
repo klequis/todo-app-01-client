@@ -59,13 +59,7 @@ const useStyles = makeStyles({
   }
 })
 
-
-
-
-
-
-
-const ItemContent = ({ handleDateChange, todo }) => {
+const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   // green('todo', todo)
 
   const { _id, completed, title, dueDate } = todo
@@ -75,6 +69,8 @@ const ItemContent = ({ handleDateChange, todo }) => {
   const [_title, _setTitle] = useState(title)
   const open = Boolean(anchorEl)
   const [mode, setMode] = useState('view')
+
+  green('handleDeleteTodo', handleDeleteTodo)
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
@@ -89,6 +85,9 @@ const ItemContent = ({ handleDateChange, todo }) => {
     green('action', action)
     if (action === 'edit') {
       setMode('edit')
+    } else if (action === 'delete') {
+      green('_id', _id)
+      handleDeleteTodo(_id)
     }
   }
 
@@ -118,11 +117,14 @@ const ItemContent = ({ handleDateChange, todo }) => {
           style={{ color: 'white' }}
         />
 
-        {mode === 'view' ? (
+        {/* {mode === 'view' ? (
           <div className={classes.titleView}>
-            <Typography variant="body1">{_title}</Typography>
+            <Typography 
+              variant="body1">{_title}
+              onClick={setMode('edit')}
+            </Typography>
           </div>
-        ) : (
+        ) : ( */}
           <TextField
             className={classes.titleEdit}
             multiline={true}
@@ -131,7 +133,7 @@ const ItemContent = ({ handleDateChange, todo }) => {
             placeholder="Title / description"
             required={true}
           />
-        )}
+        // )}
         <div className={classes.dueDateWrapper}>
           <DueDate
             _id={_id}

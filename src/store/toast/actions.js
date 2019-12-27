@@ -1,6 +1,7 @@
 import { SET_TOAST, CLEAR_TOAST } from './constants'
 import shortid from 'shortid'
-import { yellow } from 'logger'
+// import { yellow } from 'logger'
+
 /**
  *
  * @param {toast} toast object {error, id, level, message}
@@ -12,7 +13,7 @@ export const setToast = ({
   level,
   message
 }) => {
-  yellow('setToast: error', error)
+  // yellow('setToast: error', error)
   return {
     type: SET_TOAST,
     payload: { error, id, level, message }

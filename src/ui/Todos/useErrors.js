@@ -33,6 +33,7 @@ export const useErrors = selector => {
   }
 
   // get an error from the existing errors or return ''
+  green('validationErrors', validationErrors)
   const getError = field => {
     const err = validationErrors.find(e => e.field === field)
     if (err) {

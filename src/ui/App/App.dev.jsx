@@ -8,7 +8,7 @@ import DevTools from 'ui/DevTools'
 import Nav from 'ui/Nav'
 import Typography from '@material-ui/core/Typography'
 
-import { green } from 'logger'
+// import { green } from 'logger'
 
 // 8, 16, 24, 32, 40, 48
 
@@ -41,7 +41,7 @@ const App = () => {
         <Nav />
         {isAuthenticated ? <Todos /> : null}
       </Container>
-      <DevTools />
+      {/* <DevTools /> */}
     </>
   )
 }

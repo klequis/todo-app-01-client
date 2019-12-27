@@ -35,7 +35,7 @@ const TodosContainer = props => {
   const classes = useStyles()
   const {
     todoCreateRequest,
-    // todoDeleteRequest,
+    todoDeleteRequest,
     todosReadRequest,
     todos,
     // todoUpdateRequest,
@@ -67,13 +67,13 @@ const TodosContainer = props => {
     }
   }
 
-  // const handleDeleteTodo = async todoId => {
-  //   try {
-  //     await todoDeleteRequest(userId, todoId)
-  //   } catch (e) {
-  //     red('App.handleDeleteTodo ERROR:', e)
-  //   }
-  // }
+  const handleDeleteTodo = async todoId => {
+    try {
+      await todoDeleteRequest(userId, todoId)
+    } catch (e) {
+      red('App.handleDeleteTodo ERROR:', e)
+    }
+  }
 
   // const handleCompletedChange = async todo => {
     
@@ -109,7 +109,11 @@ const TodosContainer = props => {
       <List className={classes.todoList}>
         {todos.map((t, index) => (
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>
-            <ItemContent handleDateChange={handleDateChange} todo={t} />
+            <ItemContent 
+              todo={t}
+              handleDateChange={handleDateChange}
+              handleDeleteTodo={handleDeleteTodo}
+            />
           </ListItem>
         ))}
       </List>

@@ -22,8 +22,6 @@ const useStyles = makeStyles({
 const formatNickname = nickname => {
   const len = nickname.length
   const lastLetter = nickname[len - 1]
-  green('lastLetter', lastLetter)
-  let returnName
   return lastLetter.toLowerCase() === 's' ? `${nickname}'` : `${nickname}'s`
 }
 
