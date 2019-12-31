@@ -68,9 +68,6 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   const [_completed, _setCompleted] = useState(completed)
   const [_title, _setTitle] = useState(title)
   const open = Boolean(anchorEl)
-  const [mode, setMode] = useState('view')
-
-  green('handleDeleteTodo', handleDeleteTodo)
 
   const handleMoreClick = e => {
     setAnchorEl(e.currentTarget)
@@ -80,11 +77,12 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
     setAnchorEl(null)
   }
 
+  // TODO: edit mode is no longer used
   const handleMenuItemClick = (e, action) => {
     setAnchorEl(null)
     green('action', action)
     if (action === 'edit') {
-      setMode('edit')
+      // setMode('edit')
     } else if (action === 'delete') {
       green('_id', _id)
       handleDeleteTodo(_id)
@@ -117,23 +115,14 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
           style={{ color: 'white' }}
         />
 
-        {/* {mode === 'view' ? (
-          <div className={classes.titleView}>
-            <Typography 
-              variant="body1">{_title}
-              onClick={setMode('edit')}
-            </Typography>
-          </div>
-        ) : ( */}
-          <TextField
-            className={classes.titleEdit}
-            multiline={true}
-            value={_title}
-            onChange={handleTitleChange}
-            placeholder="Title / description"
-            required={true}
-          />
-        // )}
+        <TextField
+          className={classes.titleEdit}
+          multiline={true}
+          value={_title}
+          onChange={handleTitleChange}
+          placeholder="Title / description"
+          required={true}
+        />
         <div className={classes.dueDateWrapper}>
           <DueDate
             _id={_id}

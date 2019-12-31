@@ -17,6 +17,10 @@ const useStyles = makeStyles({
     fontSize: 48,
     paddingTop: 32,
     paddingBottom: 32
+  },
+  devWrapper: {
+    display: 'flex',
+    alignItems: 'stretch'
   }
 })
 
@@ -29,8 +33,8 @@ const App = () => {
   }
 
   return (
-    <>
-      <Container maxWidth="md" className={classes.nav}>
+    <div className={classes.devWrapper}>
+      <Container maxWidth="md">
         <Typography
           variant="h1"
           className={classes.appTitle}
@@ -40,9 +44,11 @@ const App = () => {
         </Typography>
         <Nav />
         {isAuthenticated ? <Todos /> : null}
+        
       </Container>
-      {/* <DevTools /> */}
-    </>
+      <DevTools />
+      
+    </div>
   )
 }
 
