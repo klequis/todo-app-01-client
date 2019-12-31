@@ -46,7 +46,12 @@ const App = () => {
         {isAuthenticated ? <Todos /> : null}
         
       </Container>
-      <DevTools />
+      {
+        process.NODE_ENV !== 'production' 
+          ? <DevTools />
+          : null
+      }
+      
       
     </div>
   )
