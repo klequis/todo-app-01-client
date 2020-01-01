@@ -1,7 +1,6 @@
 import React from 'react'
 import { useAuth0 } from 'react-auth0-spa'
 import Todos from 'ui/Todos'
-
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/styles'
 import DevTools from 'ui/DevTools'
@@ -44,7 +43,6 @@ const App = () => {
         </Typography>
         <Nav />
         {isAuthenticated ? <Todos /> : null}
-        
       </Container>
       {
         process.NODE_ENV !== 'production' 

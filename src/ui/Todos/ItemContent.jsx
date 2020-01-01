@@ -4,11 +4,10 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles'
+import TitleField from './TitleField'
+import { makeStyles, createStyles } from '@material-ui/styles'
 
 import { green } from 'logger'
 
@@ -25,48 +24,61 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
-const useStyles = makeStyles({
-  contentWrapper: {
-    width: '100%',
-    display: 'flex',
-    flexWrap: 'nowrap',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    /* background-color: lightblue; */  
-  },
-  left: {
-    display: 'flex',
-    alignItems: 'center',
-    flexBasis: '100%',
-    /* background-color: red; */
-  },
-  completed: {
-    flexBasis: '5%',
-    '&&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)'
+const useStyles = makeStyles(theme =>
+  createStyles({
+    contentWrapper: {
+      width: '100%',
+      display: 'flex',
+      flexWrap: 'nowrap',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+      /* background-color: lightblue; */
+    },
+    left: {
+      display: 'flex',
+      alignItems: 'center',
+      flexBasis: '100%'
+      /* background-color: red; */
+    },
+    completed: {
+      flexBasis: '5%',
+      '&&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)'
+      }
+    },
+    titleView: {
+      flexBasis: '80%'
+    },
+    titleEdit: {
+      flexBasis: '100%'
+    },
+    underline: {
+      '&&&:before': {
+        borderBottom: 'none'
+      },
+      // '&&:after': {
+      //   borderBottom: 'none'
+      // },
+      '&:hover': {
+        borderBottom: `2px solid ${theme.palette.text.primary}`
+      }
+    },
+    dueDateWrapper: {
+      flexBasis: '20%',
+      display: 'flex',
+      justifyContent: 'center'
     }
-  },
-  titleView: {
-    flexBasis: '80%'
-  },
-  titleEdit: {
-    flexBasis: '100%',
-  },
-  dueDateWrapper: {
-    flexBasis: '20%',
-    display: 'flex',
-    justifyContent: 'center'
-  }
-})
+  })
+)
 
 const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   // green('todo', todo)
 
   const { _id, completed, title, dueDate } = todo
-
+  const [_title, _setTitle] = useState(title)
   const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
-  const [_title, _setTitle] = useState(title)
+
   const open = Boolean(anchorEl)
 
   const handleMoreClick = e => {
@@ -100,6 +112,9 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   }
 
   const classes = useStyles()
+  // const underline = classes.underline
+  green('classes', classes)
+  green('underline', classes.underline)
 
   return (
     <Paper className={classes.contentWrapper}>
@@ -113,16 +128,11 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
             'aria-label': 'primary checkbox'
           }}
           style={{ color: 'white' }}
+          onBlur={handleCompleteClick}
         />
 
-        <TextField
-          className={classes.titleEdit}
-          multiline={true}
-          value={_title}
-          onChange={handleTitleChange}
-          placeholder="Title / description"
-          required={true}
-        />
+        <TitleField handleTitleChange={handleTitleChange} title={_title} />
+
         <div className={classes.dueDateWrapper}>
           <DueDate
             _id={_id}
@@ -131,7 +141,7 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
           />
         </div>
       </div>
-      <div /*className={classes.right}*/>
+      <div>
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
