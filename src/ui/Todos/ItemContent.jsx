@@ -1,26 +1,13 @@
 import React, { useState } from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import DeleteForever from '@material-ui/icons/DeleteForever'
 import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
 import TitleField from './TitleField'
 import { makeStyles, createStyles } from '@material-ui/styles'
 
 import { green } from 'logger'
-
-const options = [
-  {
-    label: 'Edit',
-    action: 'edit'
-  },
-  {
-    label: 'Delete',
-    action: 'delete'
-  }
-]
 
 const ITEM_HEIGHT = 48
 
@@ -76,29 +63,11 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
 
   const { _id, completed, title, dueDate } = todo
   const [_title, _setTitle] = useState(title)
-  const [anchorEl, setAnchorEl] = useState(null)
   const [_completed, _setCompleted] = useState(completed)
 
-  const open = Boolean(anchorEl)
 
-  const handleMoreClick = e => {
-    setAnchorEl(e.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  // TODO: edit mode is no longer used
-  const handleMenuItemClick = (e, action) => {
-    setAnchorEl(null)
-    green('action', action)
-    if (action === 'edit') {
-      // setMode('edit')
-    } else if (action === 'delete') {
-      green('_id', _id)
-      handleDeleteTodo(_id)
-    }
+  const deleteClick = (e) => {
+    handleDeleteTodo(_id)
   }
 
   const handleCompleteClick = e => {
@@ -141,40 +110,9 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
           />
         </div>
       </div>
-      <div>
-        <IconButton
-          aria-label="more"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={handleMoreClick}
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id="more-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={open}
-          onClose={handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: 200
-            }
-          }}
-        >
-          {options.map(o => (
-            <MenuItem
-              key={o.action}
-              // selected={option === 'Pyxis'}
-              // onClick={handleClose}
-              onClick={event => handleMenuItemClick(event, o.action)}
-            >
-              {o.label}
-            </MenuItem>
-          ))}
-        </Menu>
-      </div>
+      <IconButton>
+        <DeleteForever onClick={deleteClick} />
+      </IconButton>
     </Paper>
   )
 }
