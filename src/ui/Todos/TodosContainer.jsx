@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 // import Todos from './Todos'
@@ -15,6 +15,7 @@ import ItemContent from './ItemContent'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import { makeStyles } from '@material-ui/styles'
+import AreYouSure from 'ui/AreYouSure'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -32,6 +33,10 @@ const useStyles = makeStyles({
 })
 
 const TodosContainer = props => {
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [delId, setDelId] = useState()
+
   const classes = useStyles()
   const {
     todoCreateRequest,
@@ -57,6 +62,11 @@ const TodosContainer = props => {
     })()
   }, [userId])
 
+  // const handleAreYouSureClose = (close) => {
+  //   setAreYouSureOpen(false)
+  //   if (close)
+  // }
+
   const handleAddTodo = async title => {
     try {
       // TODO: Temp code re dueDate
@@ -68,11 +78,24 @@ const TodosContainer = props => {
   }
 
   const handleDeleteTodo = async todoId => {
+    green('handleDeleteTodo: todoId', todoId)
+    setDelId(todoId)
+    setModalOpen(true)
+    
+  }
+
+  const deleteTodo = async () => {
+    setModalOpen(false)
     try {
-      await todoDeleteRequest(userId, todoId)
+      await todoDeleteRequest(userId, delId)
     } catch (e) {
       red('App.handleDeleteTodo ERROR:', e)
     }
+    
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
   }
 
   // const handleCompletedChange = async todo => {
@@ -105,6 +128,11 @@ const TodosContainer = props => {
 
   return (
     <div id="todosContainer">
+      <AreYouSure 
+        open={modalOpen} 
+        onYesAction={deleteTodo}
+        onNoAction={closeModal}
+      />
       <AddTodo handleAddTodo={handleAddTodo} />
       <List className={classes.todoList}>
         {todos.map((t, index) => (

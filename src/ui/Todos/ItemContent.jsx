@@ -65,8 +65,7 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   const [_title, _setTitle] = useState(title)
   const [_completed, _setCompleted] = useState(completed)
 
-
-  const deleteClick = (e) => {
+  const deleteClick = () => {
     handleDeleteTodo(_id)
   }
 
@@ -110,8 +109,8 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
           />
         </div>
       </div>
-      <IconButton>
-        <DeleteForever onClick={deleteClick} />
+      <IconButton onClick={deleteClick}>
+        <DeleteForever />
       </IconButton>
     </Paper>
   )
