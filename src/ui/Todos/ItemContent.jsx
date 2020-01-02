@@ -6,10 +6,8 @@ import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
 import TitleField from './TitleField'
 import { makeStyles, createStyles } from '@material-ui/styles'
-
+// eslint-disable-next-line
 import { green } from 'logger'
-
-const ITEM_HEIGHT = 48
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -19,13 +17,11 @@ const useStyles = makeStyles(theme =>
       flexWrap: 'nowrap',
       justifyContent: 'space-between',
       alignItems: 'center'
-      /* background-color: lightblue; */
     },
     left: {
       display: 'flex',
       alignItems: 'center',
       flexBasis: '100%'
-      /* background-color: red; */
     },
     completed: {
       flexBasis: '5%',
@@ -59,7 +55,6 @@ const useStyles = makeStyles(theme =>
 )
 
 const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
-  // green('todo', todo)
 
   const { _id, completed, title, dueDate } = todo
   const [_title, _setTitle] = useState(title)
@@ -80,9 +75,6 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   }
 
   const classes = useStyles()
-  // const underline = classes.underline
-  green('classes', classes)
-  green('underline', classes.underline)
 
   return (
     <Paper className={classes.contentWrapper}>

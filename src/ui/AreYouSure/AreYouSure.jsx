@@ -5,13 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { green } from 'logger'
 
 const AreYouSure = ({ open, onYesAction, onNoAction }) => {
-  // green('open', open)
-  // green('onYesAction', typeof onYesAction)
-  // green('onNoAction', typeof onNoAction)
-
   return (
     <div>
       <Dialog
