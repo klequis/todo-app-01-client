@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteForever from '@material-ui/icons/DeleteForever'
 import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
-import TitleField from './TitleField'
+import TextField from '@material-ui/core/TextField'
 import { makeStyles, createStyles } from '@material-ui/styles'
 // eslint-disable-next-line
 import { green } from 'logger'
@@ -55,7 +55,6 @@ const useStyles = makeStyles(theme =>
 )
 
 const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
-
   const { _id, completed, title, dueDate } = todo
   const [_title, _setTitle] = useState(title)
   const [_completed, _setCompleted] = useState(completed)
@@ -90,8 +89,21 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
           style={{ color: 'white' }}
           onBlur={handleCompleteClick}
         />
-
-        <TitleField handleTitleChange={handleTitleChange} title={_title} />
+        <TextField
+          className={classes.titleEdit}
+          // See issue #12 for important point about use
+          // of InputProps
+          InputProps={{
+            classes: {
+              underline: classes.underline
+            }
+          }}
+          multiline={true}
+          value={_title}
+          onChange={handleTitleChange}
+          placeholder="Title / description"
+          required={true}
+        />
 
         <div className={classes.dueDateWrapper}>
           <DueDate
