@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { DatePicker } from '@material-ui/pickers'
-import { isISO8601 } from 'validator'
+// import { isISO8601 } from 'validator'
 import DateRange from '@material-ui/icons/DateRange'
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton'
-
+// eslint-disable-next-line
 import { green } from 'logger'
 
 
@@ -18,16 +18,16 @@ const useStyles = makeStyles({
   
 })
 
-const DueDate = ({ _id, handleDateChange, dueDate }) => {
-  const [selectedDate, setSelectedDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
+const DueDate = ({ /*_id,*/ setDueDate, dueDate }) => {
+  // const [selectedDate, setSelectedDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
   const [pickerOpen, setPickerOpen] = useState(false)
   
   const handlePickerOnChange = newDate => {
-    green('DueDate: newDate', newDate)
+    // green('DueDate: newDate', newDate)
 
-    setSelectedDate(newDate)
+    // setSelectedDate(newDate)
     setPickerOpen(false)
-    handleDateChange(_id, newDate)
+    setDueDate(newDate)
   }
 
   const classes = useStyles()
@@ -38,7 +38,7 @@ const DueDate = ({ _id, handleDateChange, dueDate }) => {
         autoOk
         format="MMM d, yyyy"
         variant="inline"
-        value={selectedDate}
+        value={dueDate}
         onChange={handlePickerOnChange}
         InputProps={{
           disableUnderline: true

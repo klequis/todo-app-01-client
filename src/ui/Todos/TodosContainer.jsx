@@ -43,7 +43,7 @@ const TodosContainer = props => {
     todoDeleteRequest,
     todosReadRequest,
     todos,
-    // todoUpdateRequest,
+    todoUpdateRequest,
     userId
   } = props
 
@@ -60,7 +60,7 @@ const TodosContainer = props => {
         console.log('TheError', e)
       }
     })()
-  }, [userId])
+  }, [userId, todosReadRequest])
 
   // const handleAreYouSureClose = (close) => {
   //   setAreYouSureOpen(false)
@@ -108,23 +108,29 @@ const TodosContainer = props => {
   //   }
   // }
 
-  const handleDateChange = (_id, newDate) => {
+  const updateTodo = (_id, completed, dueDate, title, ) => {
 
-    green('handleDateChange: _id', _id)
-    green('handleDateChange: newDate', newDate)
+    green('updateTodo: _id', _id)
+    green('updateTodo: completed', completed)
+    green('updateTodo: dueDate', dueDate)
+    green('title', title)
 
-    const isoDate = new Date(newDate).toISOString()
+    const isoDate = new Date(dueDate).toISOString()
 
     green('isoDate', isoDate)
-
+    
     // 1. get the todo
     // 2. merge in new date
     // 3. send request
+
+    todoUpdateRequest(userId, _id, {
+      _id,
+      completed,
+      dueDate,
+      title
+    })
   }
 
-  // if (todos.length === 0) {
-  //   return null
-  // }
 
   return (
     <div id="todosContainer">
@@ -139,7 +145,7 @@ const TodosContainer = props => {
           <ListItem /*className={classes.todoListItem}*/ key={t._id}>
             <ItemContent 
               todo={t}
-              handleDateChange={handleDateChange}
+              updateTodo={updateTodo}
               handleDeleteTodo={handleDeleteTodo}
             />
           </ListItem>

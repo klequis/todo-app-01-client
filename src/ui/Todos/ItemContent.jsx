@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper'
 import DueDate from './DueDate'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles, createStyles } from '@material-ui/styles'
+import { isISO8601 } from 'validator'
+
 // eslint-disable-next-line
 import { green } from 'logger'
 
@@ -54,10 +56,19 @@ const useStyles = makeStyles(theme =>
   })
 )
 
-const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
+const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   const { _id, completed, title, dueDate } = todo
   const [_title, _setTitle] = useState(title)
   const [_completed, _setCompleted] = useState(completed)
+  const [_dueDate, _setDueDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
+
+  // green('_title', _title)
+  // green('_completed', _completed)
+  // green('_dueDate', _dueDate)
+
+  const handleDataChanged = () => {
+    updateTodo(_id, _completed, _dueDate, _title)
+  }
 
   const deleteClick = () => {
     handleDeleteTodo(_id)
@@ -66,11 +77,17 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
   const handleCompleteClick = e => {
     const b = e.target.checked
     _setCompleted(b)
+    handleDataChanged()
   }
 
   const handleTitleChange = e => {
     const t = e.target.value
     _setTitle(t)
+    
+  }
+
+  const handleTitleBlur = () => {
+    handleDataChanged()
   }
 
   const classes = useStyles()
@@ -81,13 +98,13 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
         <Checkbox
           checked={_completed}
           className={classes.completed}
+          onBlur={handleTitleBlur}
           onChange={handleCompleteClick}
           value="checkedA"
           inputProps={{
             'aria-label': 'primary checkbox'
           }}
           style={{ color: 'white' }}
-          onBlur={handleCompleteClick}
         />
         <TextField
           className={classes.titleEdit}
@@ -107,9 +124,9 @@ const ItemContent = ({ handleDateChange, todo, handleDeleteTodo }) => {
 
         <div className={classes.dueDateWrapper}>
           <DueDate
-            _id={_id}
-            handleDateChange={handleDateChange}
-            dueDate={dueDate}
+            // _id={_id}
+            setDueDate={_setDueDate}
+            dueDate={_dueDate}
           />
         </div>
       </div>
