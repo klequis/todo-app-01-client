@@ -3,6 +3,8 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
 import Login from 'ui/Login'
 import { useAuth0 } from 'react-auth0-spa'
+
+// eslint-disable-next-line
 import { green } from 'logger'
 
 const useStyles = makeStyles({
@@ -28,7 +30,7 @@ const formatNickname = nickname => {
 const Nav = () => {
   const { isAuthenticated, user } = useAuth0()
   const classes = useStyles()
-  green('user', user)
+  // green('user', user)
 
   return (
     <div className={classes.nav}>

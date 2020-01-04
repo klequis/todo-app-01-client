@@ -31,6 +31,9 @@ export default {
       return data
     },
     async update(userId, todoId, todo) {
+      orange('api.update: userId', userId)
+      orange('api.update: todoId', todoId)
+      orange('api.update: todo', todo)
       const data = await fetchJson(`api/todo/${userId}/${todoId}`, {
         method: 'PATCH',
         body: JSON.stringify(todo)

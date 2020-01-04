@@ -87,6 +87,7 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   }
 
   const handleTitleBlur = () => {
+    green('handleTitleBlur')
     handleDataChanged()
   }
 
@@ -98,7 +99,6 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
         <Checkbox
           checked={_completed}
           className={classes.completed}
-          onBlur={handleTitleBlur}
           onChange={handleCompleteClick}
           value="checkedA"
           inputProps={{
@@ -117,6 +117,7 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
           }}
           multiline={true}
           value={_title}
+          onBlur={handleTitleBlur}
           onChange={handleTitleChange}
           placeholder="Title / description"
           required={true}

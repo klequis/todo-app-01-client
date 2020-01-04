@@ -16,6 +16,8 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import { makeStyles } from '@material-ui/styles'
 import AreYouSure from 'ui/AreYouSure'
+import { mergeRight } from 'ramda'
+import { isISO8601 } from 'validator'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -98,16 +100,6 @@ const TodosContainer = props => {
     setModalOpen(false)
   }
 
-  // const handleCompletedChange = async todo => {
-    
-  //   try {
-  //     const todoId = todo._id
-  //     await todoUpdateRequest(userId, todoId, todo)
-  //   } catch (e) {
-  //     red('App.handleCompletedChange ERROR:', e)
-  //   }
-  // }
-
   const updateTodo = (_id, completed, dueDate, title, ) => {
 
     green('updateTodo: _id', _id)
@@ -116,19 +108,21 @@ const TodosContainer = props => {
     green('title', title)
 
     const isoDate = new Date(dueDate).toISOString()
-
-    green('isoDate', isoDate)
+    green('isISO8601', isISO8601(dueDate))
+    // green('isoDate', isoDate)
+    
     
     // 1. get the todo
-    // 2. merge in new date
-    // 3. send request
+    // filter returns an array so use [0] to get first and only item
+    const t1 = todos.filter(t => t._id === _id)[0]
+    // green('t1', t1)
 
-    todoUpdateRequest(userId, _id, {
-      _id,
-      completed,
-      dueDate,
-      title
-    })
+    // 2. merge in new data
+    const t2 = mergeRight(t1, { completed, dueDate, title})
+    // green('t2', t2)
+
+    // 3. send request
+    todoUpdateRequest(userId, _id, t2)
   }
 
 
