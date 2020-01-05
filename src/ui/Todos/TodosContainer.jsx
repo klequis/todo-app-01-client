@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-// import Todos from './Todos'
 import AddTodo from './AddTodo'
 import {
   todoCreateRequest,
@@ -17,7 +16,6 @@ import ListItem from '@material-ui/core/ListItem'
 import { makeStyles } from '@material-ui/styles'
 import AreYouSure from 'ui/AreYouSure'
 import { mergeRight } from 'ramda'
-import { isISO8601 } from 'validator'
 
 // eslint-disable-next-line
 import { green, red } from 'logger'
@@ -52,9 +50,6 @@ const TodosContainer = props => {
     userId
   } = props
 
-  // green('todos', todos)
-  // green('userId', userId)
-
   useEffect(() => {
     ;(async () => {
       try {
@@ -66,11 +61,6 @@ const TodosContainer = props => {
       }
     })()
   }, [userId, todosReadRequest])
-
-  // const handleAreYouSureClose = (close) => {
-  //   setAreYouSureOpen(false)
-  //   if (close)
-  // }
 
   const handleAddTodo = async title => {
     try {
@@ -103,40 +93,12 @@ const TodosContainer = props => {
 
   const updateTodo = (_id, field, value) => {
 
-    green('updateTodo: _id', _id)
-    green('updateTodo: field', field)
-    green('updateTodo: value', value)
-
     // 1. get the todo
     // filter returns an array so use [0] to get first and only item
     const t1 = todos.filter(t => t._id === _id)[0]
 
     // 2. merge in new data
     const t2 = mergeRight(t1, { [field]: value })
-
-    // 3. send request
-    todoUpdateRequest(userId, _id, t2)
-  }
-
-  // This works but ...
-  const zzupdateTodo = (_id, completed, dueDate, title) => {
-    green('updateTodo: _id', _id)
-    green('updateTodo: completed', completed)
-    green('updateTodo: dueDate', dueDate)
-    green('title', title)
-
-    const isoDate = new Date(dueDate).toISOString()
-    green('isISO8601', isISO8601(dueDate))
-    // green('isoDate', isoDate)
-
-    // 1. get the todo
-    // filter returns an array so use [0] to get first and only item
-    const t1 = todos.filter(t => t._id === _id)[0]
-    // green('t1', t1)
-
-    // 2. merge in new data
-    const t2 = mergeRight(t1, { completed, dueDate, title })
-    // green('t2', t2)
 
     // 3. send request
     todoUpdateRequest(userId, _id, t2)

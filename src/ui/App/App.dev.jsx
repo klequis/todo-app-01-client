@@ -6,11 +6,8 @@ import { makeStyles } from '@material-ui/styles'
 import DevTools from 'ui/DevTools'
 import Nav from 'ui/Nav'
 import Typography from '@material-ui/core/Typography'
-import Test from './Test'
 
 // import { green } from 'logger'
-
-// 8, 16, 24, 32, 40, 48
 
 const useStyles = makeStyles({
   appTitle: {
@@ -34,7 +31,6 @@ const App = () => {
 
   return (
     <div className={classes.devWrapper}>
-      <Test />
       <Container maxWidth="md">
         <Typography
           variant="h1"
