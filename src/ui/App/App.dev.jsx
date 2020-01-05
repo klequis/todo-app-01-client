@@ -32,23 +32,13 @@ const App = () => {
   return (
     <div className={classes.devWrapper}>
       <Container maxWidth="md">
-        <Typography
-          variant="h1"
-          className={classes.appTitle}
-          align="center"
-        >
+        <Typography variant="h1" className={classes.appTitle} align="center">
           Full-stack MERN Todos
         </Typography>
         <Nav />
         {isAuthenticated ? <Todos /> : null}
       </Container>
-      {
-        process.NODE_ENV !== 'production' 
-          ? <DevTools />
-          : null
-      }
-      
-      
+      {process.NODE_ENV !== 'production' ? <DevTools /> : null}
     </div>
   )
 }

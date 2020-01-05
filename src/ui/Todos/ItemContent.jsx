@@ -61,8 +61,9 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   const { _id, completed, title, dueDate } = todo
   const [_title, _setTitle] = useState(title)
   const [_completed, _setCompleted] = useState(completed)
-  const [_dueDate, _setDueDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
-
+  const [_dueDate, _setDueDate] = useState(
+    isISO8601(dueDate + '') ? dueDate : null
+  )
 
   const deleteClick = () => {
     handleDeleteTodo(_id)
@@ -74,7 +75,7 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
     updateTodo(_id, COMPLETED, b)
   }
 
-  const handleTitleBlur = (e) => {
+  const handleTitleBlur = e => {
     const value = e.target.value
     updateTodo(_id, TITLE, value)
   }
@@ -84,7 +85,7 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
     _setTitle(t)
   }
 
-  const handleDateChange = (newDate) => {
+  const handleDateChange = newDate => {
     updateTodo(_id, DUE_DATE, newDate)
   }
 

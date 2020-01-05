@@ -10,10 +10,10 @@ const Login = ({ setUser }) => {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0()
 
   useEffect(() => {
-      if (isAuthenticated) {
-        const { 'https://klequis-todo.tk/uuid': uid } = user
-        setUser(uid)
-      }
+    if (isAuthenticated) {
+      const { 'https://klequis-todo.tk/uuid': uid } = user
+      setUser(uid)
+    }
   }, [isAuthenticated, user, setUser])
 
   const handleLoginClick = () => {
@@ -29,12 +29,16 @@ const Login = ({ setUser }) => {
     <>
       {isAuthenticated ? (
         <div>
-          <Button onClick={handleLogoutClick} variant='outlined'>Logout</Button>
+          <Button onClick={handleLogoutClick} variant="outlined">
+            Logout
+          </Button>
         </div>
       ) : (
         <div>
           <h2>To see your todos ...</h2>
-          <Button onClick={handleLoginClick} variant='outlined'>Login</Button>
+          <Button onClick={handleLoginClick} variant="outlined">
+            Login
+          </Button>
         </div>
       )}
     </>
@@ -49,8 +53,4 @@ const mstp = state => {
 
 const actions = { setUser }
 
-export default connect(
-  mstp,
-  actions
-)(Login)
-
+export default connect(mstp, actions)(Login)

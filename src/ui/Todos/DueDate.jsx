@@ -8,23 +8,22 @@ import IconButton from '@material-ui/core/IconButton'
 // eslint-disable-next-line
 import { green } from 'logger'
 
-
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minWidth: 130,
+    minWidth: 130
   }
-  
 })
 
-const DueDate = ({handleDateChange, dueDate }) => {
-  const [selectedDate, setSelectedDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
+const DueDate = ({ handleDateChange, dueDate }) => {
+  const [selectedDate, setSelectedDate] = useState(
+    isISO8601(dueDate + '') ? dueDate : null
+  )
   const [pickerOpen, setPickerOpen] = useState(false)
-  
-  const handlePickerOnChange = newDate => {
 
+  const handlePickerOnChange = newDate => {
     setPickerOpen(false)
     const d = new Date(newDate).toISOString()
     setSelectedDate(d)
@@ -50,13 +49,10 @@ const DueDate = ({handleDateChange, dueDate }) => {
         onClose={() => setPickerOpen(false)}
       />
       <IconButton size="small">
-        <DateRange
-          onClick={() => setPickerOpen(true)}
-        />
+        <DateRange onClick={() => setPickerOpen(true)} />
       </IconButton>
     </div>
   )
-  
 }
 
 export default DueDate

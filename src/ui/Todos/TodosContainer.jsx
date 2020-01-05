@@ -92,7 +92,6 @@ const TodosContainer = props => {
   }
 
   const updateTodo = (_id, field, value) => {
-
     // 1. get the todo
     // filter returns an array so use [0] to get first and only item
     const t1 = todos.filter(t => t._id === _id)[0]
