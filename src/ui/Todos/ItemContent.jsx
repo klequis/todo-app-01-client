@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteForever from '@material-ui/icons/DeleteForever'
@@ -63,46 +63,20 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   const [_completed, _setCompleted] = useState(completed)
   const [_dueDate, _setDueDate] = useState(isISO8601(dueDate + '') ? dueDate : null)
 
-  // green('_title', _title)
-  // green('_completed', _completed)
-  // green('_dueDate', _dueDate)
-
-  // useEffect(() => {
-  //   updateTodo(_id, _completed, _dueDate, _title)
-  // }, [_id, _completed, _dueDate, _title, updateTodo])
-
-
-  // useEffect(() => {
-  //   ;(async () => {
-  //         await updateTodo(_id, _completed, _dueDate, _title)
-  //   })()
-  // },  [_id, _completed, _dueDate, _title, updateTodo])
-
-
-
-  const handleDataChanged = (field, value) => {
-    green(`handleDataChanged: field: ${field}, value: ${value}`)
-    updateTodo(_id, field, value)
-    // if (field === COMPLETED) {
-    //   updateTodo(_id, value, _dueDate, _title)
-    // } else {
-
-    //   updateTodo(_id, _completed, _dueDate, _title)
-    // }
-  }
 
   const deleteClick = () => {
     handleDeleteTodo(_id)
   }
 
   const handleCompleteClick = e => {
-    
     const b = e.target.checked
-    
-    // green('*****handleCompleteClick: b', b)
     _setCompleted(b)
-    // green('*****handleCompleteClick: _completed', _completed)
-    handleDataChanged(COMPLETED, b)
+    updateTodo(_id, COMPLETED, b)
+  }
+
+  const handleTitleBlur = (e) => {
+    const value = e.target.value
+    updateTodo(_id, TITLE, value)
   }
 
   const handleTitleChange = e => {
@@ -110,18 +84,9 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
     _setTitle(t)
   }
 
-  const handleTitleBlur = (e) => {
-    green('*********', e.target)
-    
-    const value = e.target.value
-    green('handleTitleBlur: e.target.value', value)
-    handleDataChanged(TITLE, value)
-    // handleDataChanged()
+  const handleDateChange = (newDate) => {
+    updateTodo(_id, DUE_DATE, newDate)
   }
-
-  // const handleCompleteBlur = () => {
-  //   handleDataChanged()
-  // }
 
   const classes = useStyles()
 
@@ -156,7 +121,7 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
 
         <div className={classes.dueDateWrapper}>
           <DueDate
-            // _id={_id}
+            handleDateChange={handleDateChange}
             setDueDate={_setDueDate}
             dueDate={_dueDate}
           />

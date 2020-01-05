@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { useAuth0 } from 'react-auth0-spa'
 import { setUser } from 'store/user/actions'
 import { getUserId } from 'store/user/selectors'
+import Button from '@material-ui/core/Button'
 // import { green } from 'logger'
 
 const Login = ({ setUser }) => {
@@ -28,12 +29,12 @@ const Login = ({ setUser }) => {
     <>
       {isAuthenticated ? (
         <div>
-          <button onClick={handleLogoutClick}>Logout</button>
+          <Button onClick={handleLogoutClick} variant='outlined'>Logout</Button>
         </div>
       ) : (
         <div>
           <h2>To see your todos ...</h2>
-          <button onClick={handleLoginClick}>Login</button>
+          <Button onClick={handleLoginClick} variant='outlined'>Login</Button>
         </div>
       )}
     </>
