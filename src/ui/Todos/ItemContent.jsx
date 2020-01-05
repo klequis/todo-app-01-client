@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteForever from '@material-ui/icons/DeleteForever'
@@ -7,6 +7,7 @@ import DueDate from './DueDate'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles, createStyles } from '@material-ui/styles'
 import { isISO8601 } from 'validator'
+import { COMPLETED, TITLE, DUE_DATE } from './TodosContainer'
 
 // eslint-disable-next-line
 import { green } from 'logger'
@@ -66,8 +67,28 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   // green('_completed', _completed)
   // green('_dueDate', _dueDate)
 
-  const handleDataChanged = () => {
-    updateTodo(_id, _completed, _dueDate, _title)
+  // useEffect(() => {
+  //   updateTodo(_id, _completed, _dueDate, _title)
+  // }, [_id, _completed, _dueDate, _title, updateTodo])
+
+
+  // useEffect(() => {
+  //   ;(async () => {
+  //         await updateTodo(_id, _completed, _dueDate, _title)
+  //   })()
+  // },  [_id, _completed, _dueDate, _title, updateTodo])
+
+
+
+  const handleDataChanged = (field, value) => {
+    green(`handleDataChanged: field: ${field}, value: ${value}`)
+    updateTodo(_id, field, value)
+    // if (field === COMPLETED) {
+    //   updateTodo(_id, value, _dueDate, _title)
+    // } else {
+
+    //   updateTodo(_id, _completed, _dueDate, _title)
+    // }
   }
 
   const deleteClick = () => {
@@ -75,21 +96,32 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
   }
 
   const handleCompleteClick = e => {
+    
     const b = e.target.checked
+    
+    // green('*****handleCompleteClick: b', b)
     _setCompleted(b)
-    handleDataChanged()
+    // green('*****handleCompleteClick: _completed', _completed)
+    handleDataChanged(COMPLETED, b)
   }
 
   const handleTitleChange = e => {
     const t = e.target.value
     _setTitle(t)
-    
   }
 
-  const handleTitleBlur = () => {
-    green('handleTitleBlur')
-    handleDataChanged()
+  const handleTitleBlur = (e) => {
+    green('*********', e.target)
+    
+    const value = e.target.value
+    green('handleTitleBlur: e.target.value', value)
+    handleDataChanged(TITLE, value)
+    // handleDataChanged()
   }
+
+  // const handleCompleteBlur = () => {
+  //   handleDataChanged()
+  // }
 
   const classes = useStyles()
 
@@ -100,7 +132,6 @@ const ItemContent = ({ updateTodo, todo, handleDeleteTodo }) => {
           checked={_completed}
           className={classes.completed}
           onChange={handleCompleteClick}
-          value="checkedA"
           inputProps={{
             'aria-label': 'primary checkbox'
           }}
